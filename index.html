@@ -16,7 +16,9 @@
   </head>
   <body>
     <div class="sidenav">
-      <embed src="assets/logo.svg" type="image/svg+xml" class="logo" />
+      <div class="logo-container">
+        <embed src="assets/logo.svg" type="image/svg+xml" class="logo" />
+      </div>
       <div class="contact-info">
         <ul>
           <li>
@@ -33,40 +35,83 @@
       </div>
     </div>
     <div class="main">
-      <div class="post-it-container">
-        <div class="post-it">
-          <div class="thumbtack"></div>
-          <img src="assets/stegaplot.png" alt="Post-it Note" />
+      <a href="https://github.com/lfrati/stegaplots" class="post-it-link">
+        <div class="post-it-container">
+          <div class="post-it">
+            <div class="thumbtack"></div>
+            <img src="assets/stegaplot.png" alt="Post-it Note" />
+          </div>
+          <div class="blog-info">
+            <h2 class="blog-title">
+              Stegaplots: hiding meta-data in matplotlib images.
+              <img src="assets/python_64x64.png" />
+            </h2>
+            <p class="blog-description">
+              Don't you hate it when you have an image of some cool experiment
+              you ran but no idea how you made it?. Maybe you tried to save some
+              info about how to reproduce it but god only knows where that file
+              went? What if you stored all the information you need INSIDE the
+              image itself? 🤯
+            </p>
+          </div>
         </div>
-        <div class="blog-info">
-          <h2 class="blog-title">Stegaplots: hiding meta-data in plainsight</h2>
-          <p class="blog-description">
-            This is a brief description of the blog post. It provides a summary
-            or key points of the blog content.
-          </p>
-        </div>
-      </div>
+      </a>
       <a href="https://github.com/lfrati/onesearch.nvim" class="post-it-link">
         <div class="post-it-container">
           <div class="post-it">
             <div class="thumbtack"></div>
             <img src="assets/onesearch.jpeg" alt="Post-it Note" />
           </div>
-          <div
-            class="blog-info"
-            href="https://github.com/lfrati"
-            target="_blank"
-          >
+          <div class="blog-info">
             <h2 class="blog-title">
-              OneSearch.nvim: the approximately one trick pony of neovim search
+              OneSearch.nvim: the (approximately) one trick pony of neovim
+              search
+              <img src="assets/lua_64x64.png" />
             </h2>
             <p class="blog-description">
-              This is a brief description of the blog post. It provides a
-              summary or key points of the blog content.
+              There are many search plugins for vim but they have so many
+              different features and getting them to do exactly what I want is
+              more difficult than writing my own. So I wrote my own. Few
+              features I use all the time and strong opinions. Have fun.
+            </p>
+          </div>
+        </div>
+      </a>
+      <a
+        href="/posts/neuromodularity/A peek into Neuromodularity.html"
+        class="post-it-link"
+      >
+        <div class="post-it-container">
+          <div class="post-it">
+            <div class="thumbtack"></div>
+            <img src="assets/neuromod.png" alt="Post-it Note" />
+          </div>
+          <div class="blog-info">
+            <h2 class="blog-title">
+              A peek into NeuroModularity
+              <img src="assets/javascript_64x64.png" />
+            </h2>
+            <p class="blog-description">
+              What happens when signals propagate in clusters of spiking
+              neurons? Let's find out.
             </p>
           </div>
         </div>
       </a>
     </div>
   </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Randomly set the post-it angle upon loading the page
+      let m = -10;
+      let M = 10;
+      var postits = document.querySelectorAll(".post-it");
+      for (let postit of postits) {
+        let rotation = `rotate(${Math.floor(m + Math.random() * (M - m))}deg)`;
+        postit.style.transform = rotation;
+        console.log(`rotated ${postit.style} to ${rotation}`);
+        console.log(postit.style);
+      }
+    });
+  </script>
 </html>

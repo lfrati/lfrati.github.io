@@ -1,67 +1,8 @@
 /*********** FONTS **********/
 
-/* MonaspaceArgon Regular */
-@font-face {
-  font-family: "MonaspaceArgon";
-  src: url("/fonts/MonaspaceArgon/MonaspaceArgon-Regular.woff2") format("woff2"),
-    url("/fonts/MonaspaceArgon/MonaspaceArgon-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-}
-
-/* MonaspaceArgon Bold */
-@font-face {
-  font-family: "MonaspaceArgon";
-  src: url("/fonts/MonaspaceArgon/MonaspaceArgon-Bold.woff2") format("woff2"),
-    url("/fonts/MonaspaceArgon/MonaspaceArgon-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-}
-
-/* MonaspaceArgon Italic */
-@font-face {
-  font-family: "MonaspaceArgon";
-  src: url("/fonts/MonaspaceArgon/MonaspaceArgon-Italic.woff2") format("woff2"),
-    url("/fonts/MonaspaceArgon/MonaspaceArgon-Italic.woff") format("woff");
-  font-weight: 400;
-  font-style: italic;
-}
-
-/* MonaspaceArgon Bold Italic */
-@font-face {
-  font-family: "MonaspaceArgon";
-  src: url("/fonts/MonaspaceArgon/MonaspaceArgon-BoldItalic.woff2")
-      format("woff2"),
-    url("/fonts/MonaspaceArgon/MonaspaceArgon-BoldItalic.woff") format("woff");
-  font-weight: 700;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "ExcaliFont";
-  src: url("/fonts/Virgil.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 400;
-  src: url("https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Me5Q.ttf")
-    format("truetype");
-}
-
-@font-face {
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 700;
-  src: url("https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlfBBc4.ttf")
-    format("truetype");
-}
-
 :root {
   --logo-size: 100px;
+  --sidenav-size: 200px;
 }
 
 html {
@@ -82,20 +23,17 @@ body {
   margin: 0;
 }
 
-article:hover {
-  box-shadow: 0px 0px 16px rgba(139, 4, 4, 0.1);
-}
-
 h1 {
-  font-size: 24px;
+  font-size: 3rem;
 }
 
 h2 {
-  font-size: 20px;
+  font-size: 2rem;
 }
 
 p {
-  line-height: 1.6;
+  font-size: 1.5rem;
+  line-height: 1.2;
 }
 
 /*******************  SIDENAV  ********************************/
@@ -103,7 +41,7 @@ p {
 .sidenav {
   font-family: "ExcaliFont", sans-serif;
   height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 160px; /* Set the width of the sidebar */
+  width: var(--sidenav-size); /* Set the width of the sidebar */
   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
   z-index: 1; /* Stay on top */
   top: 0; /* Stay at the top */
@@ -119,12 +57,18 @@ p {
   color: #6c98d3;
 }
 
-.logo {
-  padding: 50px;
-  height: var(--logo-size);
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 50px 0 20px 0;
 }
 
-/* Style page content */
+.logo {
+  height: var(--logo-size);
+  width: auto; /* Ensure the aspect ratio is maintained */
+}
 
 .main {
   width: 60%;
@@ -171,7 +115,7 @@ p {
 .post-it-container {
   display: flex;
   align-items: flex-start;
-  margin-top: 40px;
+  margin-top: 50px;
 }
 
 .post-it {
@@ -180,7 +124,7 @@ p {
   background-color: #fef68a; /* Post-it note color */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   position: relative;
-  transform: rotate(-10deg); /* Rotate to mimic a post-it note */
+  transform: rotate(-10deg); /* Rotate to mimic a post-it note, default value */
   border: 1px solid #ccc;
   padding: 10px;
   margin-right: 20px;
@@ -220,4 +164,35 @@ p {
 .blog-description {
   margin: 10px 0 0;
   color: #666;
+}
+
+/**************** Media Queries ******************/
+
+@media (max-width: 768px) {
+  .sidenav {
+    position: static; /* Make it flow with the document */
+    width: 100%; /* Full width */
+    height: auto; /* Auto height */
+  }
+
+  .main {
+    width: 100%; /* Full width */
+    margin-top: 20px; /* Space between sidenav and main content */
+  }
+
+  .post-it-container {
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center align */
+  }
+
+  .post-it {
+    margin-right: 0; /* Remove right margin */
+    margin-bottom: 20px; /* Add bottom margin */
+  }
+}
+
+.blog-title img {
+  height: 1em;
+  float: right;
+  margin-left: 10px;
 }
