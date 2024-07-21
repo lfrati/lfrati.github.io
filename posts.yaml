@@ -1,0 +1,38 @@
+# url : the url to open when clicking on the post
+# image_src : image to put in the post-it
+# logos: list of language logos used
+# title: the H2 title to show
+# description: a short description of what this entry is about
+entries:
+  - url: "https://github.com/lfrati/stegaplots"
+    image_src: "assets/stegaplot.png"
+    logos:
+      - "assets/python_64x64.png"
+    title: "Stegaplots: hiding meta-data in matplotlib images."
+    description: >
+      Don't you hate it when you have an image of some cool experiment
+      you ran but no idea how you made it? Maybe you tried to save some
+      info about how to reproduce it but god only knows where that file
+      went? What if you stored all the information you need INSIDE the
+      image itself? 🤯
+
+  - url: "https://github.com/lfrati/onesearch.nvim"
+    image_src: "assets/onesearch.jpeg"
+    logos:
+      - "assets/lua_64x64.png"
+    title: "OneSearch.nvim: the (approximately) one trick pony of neovim search"
+    description: >
+      There are many search plugins for vim but they have so many
+      different features and getting them to do exactly what I want is
+      more difficult than writing my own. So I wrote my own. Few
+      features I use all the time and strong opinions. Have fun.
+
+  - url: "/posts/neuromodularity/A peek into Neuromodularity.html"
+    image_src: "assets/neuromod.png"
+    logos:
+      - "assets/javascript_64x64.png"
+      - "assets/p5_64x64.png"
+    title: "A peek into NeuroModularity"
+    description: >
+      What happens when signals propagate in clusters of spiking
+      neurons? Let's find out.

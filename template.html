@@ -1,0 +1,68 @@
+<html lang="en">
+  <head>
+    <link rel="icon" href="assets/favicon.png" type="image/png" />
+    <title>BarelyTitled</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="sidenav">
+      <div class="logo-container">
+        <embed src="assets/logo.svg" type="image/svg+xml" class="logo" />
+      </div>
+      <div class="contact-info">
+        <ul>
+          <li>
+            <a href="mailto:fratietal@gmail.com" target="_blank"
+              ><i class="fas fa-envelope"></i>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/lfrati" target="_blank"
+              ><i class="fab fa-github"></i
+            ></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="main">
+      {% for entry in entries %}
+      <a href="{{ entry.url }}" class="post-it-link">
+        <div class="post-it-container">
+          <div class="post-it">
+            <div class="thumbtack"></div>
+            <img src="{{ entry.image_src }}" alt="Post-it Note" />
+          </div>
+          <div class="blog-info">
+            <h2 class="blog-title">
+              {{ entry.title }} {% for logo in entry.logos %}
+              <img src="{{ logo }}" />
+              {% endfor %}
+            </h2>
+            <p class="blog-description">{{ entry.description }}</p>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Randomly set the post-it angle upon loading the page
+      let m = -10;
+      let M = 10;
+      var postits = document.querySelectorAll(".post-it");
+      for (let postit of postits) {
+        let rotation = `rotate(${Math.floor(m + Math.random() * (M - m))}deg)`;
+        postit.style.transform = rotation;
+        console.log(`rotated ${postit.style} to ${rotation}`);
+        console.log(postit.style);
+      }
+    });
+  </script>
+</html>
