@@ -5,7 +5,6 @@ html {
 @font-face {
   font-family: "Abel";
   src: url("fonts/Abel-Regular.woff2") format("woff2");
-  font-display: optional;
 }
 
 body {
@@ -19,6 +18,13 @@ body {
   display: flex;
   flex-direction: column;
   pointer-events: none;
+}
+
+.header,
+.scroll-indicator,
+.piece,
+.background-iframe {
+  pointer-events: auto;
 }
 
 .landing-section {
@@ -38,12 +44,6 @@ body {
   border: none;
   z-index: -1;
   object-fit: cover;
-}
-
-.header,
-.scroll-indicator,
-.background-iframe {
-  pointer-events: auto;
 }
 
 .content {
@@ -75,14 +75,14 @@ body {
 .gallery-grid {
   display: flex;
   flex-wrap: wrap; /* Add this to allow wrapping to multiple rows */
-  gap: 2rem;
+  gap: 4rem;
   max-width: 1400px;
   justify-content: space-between;
   margin: 0 auto; /* This centers the grid horizontally */
   width: 100%; /* Ensure it takes full width up to max-width */
 }
 
-.art-piece {
+.piece {
   position: relative;
   overflow: hidden;
   background: #000000;
@@ -95,38 +95,55 @@ body {
   color: inherit; /* Keep text color */
 }
 
-.art-piece.rect {
+.piece.rect {
   aspect-ratio: 2 / 1;
 }
 
-.art-piece.square {
+.piece.square {
   aspect-ratio: 1 / 1;
   max-width: 45%;
 }
 
-.art-piece img {
+.piece img {
   width: 100%;
-  height: auto; /* Change from 100% to auto */
-  object-fit: contain; /* Change from cover to contain */
+  height: auto;
+  object-fit: contain;
   display: block; /* Prevent unwanted spacing */
 }
 
-.art-piece-info {
+.piece-info {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.6);
+  padding: 0.5rem;
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.art-piece-title {
+.piece-title {
   font-size: 1.5rem;
   padding: 0 0 0 0.5rem;
-  /* margin-bottom: 0.5rem; */
 }
 
-.art-piece-description {
+.piece-description {
   font-size: 0.9rem;
   opacity: 0.8;
+}
+
+.piece:hover {
+  transform: scale(1.01); /* Slightly enlarges the card */
+  box-shadow: 0 0px 20px rgba(255, 255, 255, 0.4); /* Adds a glowing shadow */
+}
+
+.piece:hover .art-piece-info {
+  opacity: 0;
+}
+
+.piece img {
+  width: 100%;
+  height: auto; /* Change from 100% to auto */
+  object-fit: contain; /* Change from cover to contain */
+  display: block; /* Prevent unwanted spacing */
 }
