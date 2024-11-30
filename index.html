@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BarelyArt</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/chevron.css" />
+  </head>
+  <body>
+    <header class="header">
+      <a href="#" class="logo-link">
+        <img src="logo.svg" type="image/svg+xml" class="logo" />
+      </a>
+      <nav class="nav-links">
+        <a href="#gallery">GALLERY</a>
+        <a href="#contact">CONTACT</a>
+      </nav>
+    </header>
+
+    <section class="landing-section">
+      <iframe
+        class="background-iframe"
+        src="projects/fourierforms/index.html"
+      ></iframe>
+      <a href="#gallery" class="scroll-indicator">
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </a>
+    </section>
+
+    <section id="gallery" class="gallery-section">
+      <h1 class="gallery-title">GALLERY</h1>
+      <div class="gallery-grid">
+        <a href="projects/cyberloops/index.html" class="art-piece rect">
+          <img src="thumbnails/cyberloops.png" />
+          <div class="art-piece-info">
+            <div class="art-piece-title">% Cyber Loops</div>
+            <!-- <div class="art-piece-description">This.</div> -->
+          </div>
+        </a>
+        <a href="projects/neuraljourney/index.html" class="art-piece square">
+          <img src="thumbnails/neuraljourney.png" />
+          <div class="art-piece-info">
+            <div class="art-piece-title">$ Neural Journey</div>
+          </div>
+        </a>
+        <a href="projects/pixelnet/index.html" class="art-piece square">
+          <img src="thumbnails/pixelnet.png" />
+          <div class="art-piece-info">
+            <div class="art-piece-title">~ Pixel Nets</div>
+          </div>
+        </a>
+      </div>
+    </section>
+    <script>
+      document.addEventListener("scroll", () => {
+        const scrollIndicator = document.querySelector(".scroll-indicator");
+        const maxOpacityScroll = 0.3 * window.innerHeight;
+        const scrollY = window.scrollY;
+        const opacity = Math.max(0, 1 - scrollY / maxOpacityScroll);
+        scrollIndicator.style.opacity = opacity;
+      });
+    </script>
+  </body>
+</html>
