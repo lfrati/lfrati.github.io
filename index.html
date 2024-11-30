@@ -2,8 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" href="favicon.png" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BarelyArt</title>
+    <title>Endless Forms</title>
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/chevron.css" />
@@ -15,8 +16,30 @@
       </a>
       <nav class="nav-links">
         <a href="#gallery">GALLERY</a>
-        <a href="#contact">CONTACT</a>
+        <div id="about-button" style="cursor: pointer">ABOUT</div>
       </nav>
+
+      <div id="about-overlay" class="about-overlay">
+        <div class="overlay-content">
+          <p style="margin-top: 1rem">
+            Seeker, pause. Complexity is an illusion; simplicity, the pulse of
+            creation. Here lies the threshold where art meets logic, where
+            silent codes summon endless forms. Within, shifting patterns whisper
+            truths of order and chaos, beauty and precision. Step through, and
+            glimpse the geometry that binds all things.
+          </p>
+          <hr style="color: darkgray" />
+          <p style="color: gray; margin: 0px">
+            For questions:
+            <a
+              style="text-decoration: none; color: gray"
+              href="mailto:fratietal@gmail.com"
+              target="_blank"
+              >fratietal@gmail.com</a
+            >
+          </p>
+        </div>
+      </div>
     </header>
 
     <section class="landing-section">
@@ -43,27 +66,58 @@
     <section id="gallery" class="gallery-section">
       <h1 class="gallery-title">GALLERY</h1>
       <div class="gallery-grid">
-        <a href="projects/cyberloops/index.html" class="art-piece rect">
-          <img src="thumbnails/cyberloops.png" />
-          <div class="art-piece-info">
-            <div class="art-piece-title">% Cyber Loops</div>
-            <!-- <div class="art-piece-description">This.</div> -->
+        <!-- First gallery piece -->
+        <div class="piece rect">
+          <a href="projects/cyberloops/index.html" target="_blank">
+            <img src="thumbnails/cyberloops.png" alt="Cyber Loops" />
+          </a>
+          <div class="piece-info">
+            <div class="piece-title">% Cyber Loops</div>
+            <a
+              href="https://simplesystems.notion.site/cyberloops"
+              class="piece-action"
+              target="_blank"
+              >/docs</a
+            >
           </div>
-        </a>
-        <a href="projects/neuraljourney/index.html" class="art-piece square">
-          <img src="thumbnails/neuraljourney.png" />
-          <div class="art-piece-info">
-            <div class="art-piece-title">$ Neural Journey</div>
+        </div>
+
+        <!-- Second gallery piece -->
+        <div class="piece square">
+          <a href="projects/neuraljourney/index.html" target="_blank">
+            <img src="thumbnails/neuraljourney.png" alt="Neural Journey" />
+          </a>
+          <div class="piece-info">
+            <div class="piece-title">$ Neural Journey</div>
+            <a
+              href="https://simplesystems.notion.site/neuraljourney"
+              class="piece-action"
+              target="_blank"
+              >/docs</a
+            >
           </div>
-        </a>
-        <a href="projects/pixelnet/index.html" class="art-piece square">
-          <img src="thumbnails/pixelnet.png" />
-          <div class="art-piece-info">
-            <div class="art-piece-title">~ Pixel Nets</div>
+        </div>
+
+        <!-- Third gallery piece -->
+        <div class="piece square">
+          <a href="projects/pixelnet/index.html" target="_blank">
+            <img src="thumbnails/pixelnet.png" alt="Pixel Nets" />
+          </a>
+          <div class="piece-info">
+            <div class="piece-title">~ Pixel Nets</div>
+            <a
+              href="https://simplesystems.notion.site/pixelnet"
+              class="piece-action"
+              target="_blank"
+              >/docs</a
+            >
           </div>
-        </a>
+        </div>
       </div>
     </section>
+    <footer class="footer">
+      <p>&copy; 2024 Frati Lapo. All rights reserved.</p>
+    </footer>
     <script>
       document.addEventListener("scroll", () => {
         const scrollIndicator = document.querySelector(".scroll-indicator");
@@ -71,6 +125,21 @@
         const scrollY = window.scrollY;
         const opacity = Math.max(0, 1 - scrollY / maxOpacityScroll);
         scrollIndicator.style.opacity = opacity;
+      });
+      document.addEventListener("DOMContentLoaded", () => {
+        const aboutButton = document.getElementById("about-button");
+        const aboutOverlay = document.getElementById("about-overlay");
+
+        aboutButton.addEventListener("click", () => {
+          aboutOverlay.classList.add("visible");
+        });
+
+        // Optional: Close overlay if clicked outside content
+        aboutOverlay.addEventListener("click", (e) => {
+          if (e.target === aboutOverlay) {
+            aboutOverlay.classList.remove("visible");
+          }
+        });
       });
     </script>
   </body>
