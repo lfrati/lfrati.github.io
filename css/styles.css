@@ -1,10 +1,16 @@
-html {
-  scroll-behavior: smooth;
-}
-
 @font-face {
   font-family: "Abel";
   src: url("fonts/Abel-Regular.woff2") format("woff2");
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
 }
 
 body {
