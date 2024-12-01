@@ -57,16 +57,43 @@ body {
   z-index: 1;
 }
 
+/*TODO: make sure this work*/
+@media (max-width: 768px) {
+  .gallery-section {
+    padding: 4rem 1rem;
+  }
+  .gallery-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  .gallery-grid {
+    gap: 2rem;
+  }
+  .piece.square {
+    max-width: 100%; /* Allow square items to take full width on smaller screens */
+  }
+}
+
 .gallery-section {
-  min-height: 100vh;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-  padding: 8rem 8rem 2rem 8rem;
-  box-sizing: border-box;
-  background-color: black;
-  justify-content: center; /* Center the content horizontally */
-  align-items: flex-start; /* Align to the top */
+  display: flex; /* Enable flexbox */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  min-height: 100vh; /* Ensure full viewport height */
+  width: 100%; /* Full width of the viewport */
+  padding: 8rem 8rem; /* Add padding for spacing */
+  box-sizing: border-box; /* Include padding in width/height */
+  background-color: black; /* Background for the gallery */
+}
+
+.gallery-grid {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to next row */
+  gap: 4rem; /* Space between items */
+  justify-content: center; /* Center items horizontally */
+  align-items: stretch; /* Stretch items vertically (or center for consistency) */
+  margin: 0 auto; /* Center the grid within the section */
+  width: 100%; /* Ensure grid spans full width up to max-width */
 }
 
 .gallery-title {
@@ -76,16 +103,6 @@ body {
   font-family: "Abel", sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-}
-
-.gallery-grid {
-  display: flex;
-  flex-wrap: wrap; /* Add this to allow wrapping to multiple rows */
-  gap: 4rem;
-  max-width: 1400px;
-  justify-content: space-between;
-  margin: 0 auto; /* This centers the grid horizontally */
-  width: 100%; /* Ensure it takes full width up to max-width */
 }
 
 .piece {
@@ -103,11 +120,12 @@ body {
 
 .piece.rect {
   aspect-ratio: 2 / 1;
+  max-width: 64rem;
 }
 
 .piece.square {
   aspect-ratio: 1 / 1;
-  max-width: 45%;
+  max-width: 30rem;
 }
 
 .piece img {
@@ -122,34 +140,45 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+  justify-content: space-between; /* Distribute elements: one to the left, one to the right */
+  align-items: center;
   padding: 0.5rem;
-  opacity: 1;
+  opacity: 0;
   background-color: rgba(0, 0, 0, 0.6);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .piece-title {
   font-size: 1.5rem;
-  padding: 0 0 0 0.5rem;
+  padding-left: 0.5rem;
 }
 
-.piece-description {
-  font-size: 0.9rem;
-  opacity: 0.8;
+.piece-action {
+  font-size: 1.5rem;
+  padding-right: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
 }
 
-.piece:hover {
-  transform: scale(1.01); /* Slightly enlarges the card */
-  box-shadow: 0 0px 20px rgba(255, 255, 255, 0.4); /* Adds a glowing shadow */
-}
-
-.piece:hover .art-piece-info {
-  opacity: 0;
+.piece:hover .piece-info {
+  opacity: 1;
 }
 
 .piece img {
   width: 100%;
-  height: auto; /* Change from 100% to auto */
-  object-fit: contain; /* Change from cover to contain */
-  display: block; /* Prevent unwanted spacing */
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.footer {
+  background-color: black;
+  color: grey;
+  text-align: center;
+  padding: 1rem 0;
+  position: relative;
+  width: 100%;
+  font-size: 0.9rem;
 }
