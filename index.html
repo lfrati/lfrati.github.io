@@ -15,8 +15,30 @@
       </a>
       <nav class="nav-links">
         <a href="#gallery">GALLERY</a>
-        <a href="#contact">CONTACT</a>
+        <!-- Contact Button -->
+        <label for="contact-toggle" class="contact-button">CONTACT</label>
       </nav>
+
+      <!-- Hidden Checkbox for Toggle -->
+      <input type="checkbox" id="contact-toggle" class="contact-checkbox" />
+
+      <!-- Contact Overlay -->
+      <div class="contact-overlay">
+        <div class="overlay-content">
+          <h2>Contact Me</h2>
+          <p>
+            Email:
+            <a
+              style="text-decoration: none; color: white"
+              href="mailto:fratietal@gmail.com"
+              target="_blank"
+              >fratietal@gmail.com</a
+            >
+          </p>
+          <!-- Close Button -->
+          <label for="contact-toggle" class="close-overlay">Close</label>
+        </div>
+      </div>
     </header>
 
     <section class="landing-section">
