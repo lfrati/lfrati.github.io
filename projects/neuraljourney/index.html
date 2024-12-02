@@ -2,12 +2,13 @@
 <html lang="en">
   <head>
     <script src="p5.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <meta charset="utf-8" />
+    <title>Neural Journey</title>
   </head>
   <body>
     <audio id="audioElement" audioplay preload="auto">
-        <source src="interstellar.mp3" type="audio/mp4" />
+      <source src="interstellar.mp3" type="audio/mp4" />
     </audio>
 
     <script src="utils.js"></script>
@@ -16,19 +17,20 @@
       <!-- Our sketch will go here! -->
     </div>
     <script>
-    document.addEventListener( "click",
+      document.addEventListener(
+        "click",
         () => {
-        var audio = document.getElementById("audioElement");
-        console.log("clicked");
-        audio.currentTime = 2;
-        audio.play().catch(function (error) {
-        console.error("Audio playback failed:", error);
-        // does this only work in chrome?
-        document.querySelector('body').webkitRequestFullscreen();
-      });
-      },
-      { once: true }
-    );
+          var audio = document.getElementById("audioElement");
+          console.log("clicked");
+          audio.currentTime = 2;
+          audio.play().catch(function (error) {
+            console.error("Audio playback failed:", error);
+            // does this only work in chrome?
+            document.querySelector("body").webkitRequestFullscreen();
+          });
+        },
+        { once: true }
+      );
     </script>
   </body>
 </html>
