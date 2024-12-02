@@ -158,9 +158,17 @@ body {
 .piece-action {
   font-size: 1.5rem;
   padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  border: 1px solid grey;
+  border-radius: 4px;
   cursor: pointer;
   text-decoration: none;
   color: white;
+}
+
+.piece-action:hover {
+  color: black;
+  background-color: white;
 }
 
 .piece:hover .piece-info {
