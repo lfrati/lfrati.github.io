@@ -15,15 +15,11 @@
       </a>
       <nav class="nav-links">
         <a href="#gallery">GALLERY</a>
-        <!-- Contact Button -->
-        <label for="contact-toggle" class="contact-button">CONTACT</label>
+        <div id="about-button" style="cursor: pointer">ABOUT</div>
       </nav>
 
-      <!-- Hidden Checkbox for Toggle -->
-      <input type="checkbox" id="contact-toggle" class="contact-checkbox" />
-
-      <!-- Contact Overlay -->
-      <div class="contact-overlay">
+      <!-- Overlay -->
+      <div id="about-overlay" class="about-overlay">
         <div class="overlay-content">
           <h2>Contact Me</h2>
           <p>
@@ -35,8 +31,6 @@
               >fratietal@gmail.com</a
             >
           </p>
-          <!-- Close Button -->
-          <label for="contact-toggle" class="close-overlay">Close</label>
         </div>
       </div>
     </header>
@@ -124,6 +118,21 @@
         const scrollY = window.scrollY;
         const opacity = Math.max(0, 1 - scrollY / maxOpacityScroll);
         scrollIndicator.style.opacity = opacity;
+      });
+      document.addEventListener("DOMContentLoaded", () => {
+        const aboutButton = document.getElementById("about-button");
+        const aboutOverlay = document.getElementById("about-overlay");
+
+        aboutButton.addEventListener("click", () => {
+          aboutOverlay.classList.add("visible");
+        });
+
+        // Optional: Close overlay if clicked outside content
+        aboutOverlay.addEventListener("click", (e) => {
+          if (e.target === aboutOverlay) {
+            aboutOverlay.classList.remove("visible");
+          }
+        });
       });
     </script>
   </body>

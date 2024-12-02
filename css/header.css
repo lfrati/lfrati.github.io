@@ -86,27 +86,7 @@
   transition-delay: 0s, 0.3s, 0s;
 }
 
-/* Contact Button */
-.contact-button {
-  color: white;
-  text-decoration: none;
-  font-size: 1.5rem;
-  padding: 1rem;
-  text-transform: uppercase;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.3s ease;
-}
-
-/* Hidden Checkbox */
-.contact-checkbox {
-  display: none;
-}
-
-/* Overlay Styling */
-.contact-overlay {
+.about-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -122,8 +102,7 @@
   z-index: 1000;
 }
 
-/* Fade-in State for Overlay */
-.contact-checkbox:checked ~ .contact-overlay {
+.about-overlay.visible {
   opacity: 1;
   visibility: visible;
   transition: opacity 0.5s ease, visibility 0s linear 0s;
@@ -137,28 +116,6 @@
   padding: 2rem 3rem;
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
-  animation: slideDown 0.5s ease-in-out;
-}
-
-/* Close Button Styling */
-.close-overlay {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #444; /* Neutral dark gray */
-  color: #fff;
-  text-decoration: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  border: 1px solid #fff; /* Thin border for definition */
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.close-overlay:hover {
-  background-color: #fff; /* Invert colors on hover */
-  color: #444;
 }
 
 /* Keyframe Animations */
@@ -168,14 +125,5 @@
   }
   to {
     opacity: 1;
-  }
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-20px);
-  }
-  to {
-    transform: translateY(0);
   }
 }
