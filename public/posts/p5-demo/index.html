@@ -1,0 +1,314 @@
+<!doctype html>
+<html
+  lang="en-us"
+  dir="ltr"
+>
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+
+
+
+
+
+
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="/favicon/favicon.svg"
+  media="(prefers-color-scheme: light)"
+/>
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="/favicon-dark/favicon.svg"
+  media="(prefers-color-scheme: dark)"
+/>
+
+<link
+  rel="icon"
+  type="image/png"
+  href="/favicon/favicon-96x96.png"
+  sizes="96x96"
+  media="(prefers-color-scheme: light)"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  href="/favicon-dark/favicon-96x96.png"
+  sizes="96x96"
+  media="(prefers-color-scheme: dark)"
+/>
+
+<link
+  rel="icon"
+  type="image/x-icon"
+  href="/favicon/favicon.ico"
+  media="(prefers-color-scheme: light)"
+/>
+<link
+  rel="icon"
+  type="image/x-icon"
+  href="/favicon-dark/favicon.ico"
+  media="(prefers-color-scheme: dark)"
+/>
+<title>
+  
+    Geometric Random Graphs: Visualizing Network Connectivity with P5.js | while(True):
+  
+</title>
+
+  <link rel="stylesheet" href="/css/bundle.css" />
+
+
+
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']]                  
+    },
+    loader:{
+      load: ['ui/safe']
+    },
+  };
+</script>
+
+
+
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+  <div class="glider-container">
+    <div class="glider">
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+  </div>
+  <h1 class="site-title">
+    <a href="http://localhost:1313/" class="site-title-link">while(<span class="true">True</span>):</a>
+  </h1>
+  <div class="spacer"></div>
+  <ul>
+      <li>
+        <a
+          href="/"
+          class="brackets "
+          
+        >
+          Home
+        </a>
+      </li>
+      <li>
+        <a
+          href="/about/"
+          class="brackets "
+          
+        >
+          About
+        </a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+    <main class="main">
+      
+  
+  
+
+  <article class="post">
+
+    <header class="post-header">
+      <h1 class="post-title">Geometric Random Graphs: Visualizing Network Connectivity with P5.js</h1>
+      <time datetime="2025-03-15T00:00:00&#43;00:00">March 15, 2025</time>
+    </header>
+
+    <div class="post-content">
+    
+
+<div class="box box-shortcode warning" >
+    <span class="icon-box baseline">⚠️</span>
+    <p>Warning: All sketches in this page are running on your machine. May the gods of computing bestow their blessing upon you.</p>
+  </div>
+
+<h2 id="geometric-graphs">
+  <a href="#geometric-graphs" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Geometric graphs
+</h2>
+<p>When working with networks it is common to assume that edge properties and node properties are somewhat independent. Nodes often contain information about the entity they represent and edges describe the relationships between those entities. However in <code>practice</code> it is often the case that nodes may be embedded in some space of interested. Let us consider the case where nodes represent cities and edges are the roads between them. It is intuitive to assume that each node (i.e. city) is associated <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> with some coordinates. Given the coordinates of a node it is natural to assume that each link (i.e. road) has a certain length that might not be explicitly listed among the properties of those edges.</p>
+
+
+
+
+
+
+<span class="sidenote">
+    <label class="sidenote-label" for="sn-6">this sidenote</label>
+    <input class="sidenote-checkbox" type="checkbox" id="sn-6"></input>
+    <span class="sidenote-content sidenote-right">
+     This is a sidenote content block, shown on the right on wide screens and toggled inline on mobile when the label is tapped.  
+    </span>
+</span>
+
+<p>These extra pieces of information are introduced by the space in which the nodes are embedded thanks to some <strong>distance metric</strong> (e.g. Euclidean distance) defined on it.
+When this extra information is available we can employ it to enrich the mechanism that shape our networks. For example, we can make the rule that nodes are only able to make connections within a certain &ldquo;range&rdquo; defined by that distance like in the sketch below.</p>
+
+
+
+
+
+
+<span class="sidenote">
+    <label class="sidenote-label" for="sn-7">left sidenote</label>
+    <input class="sidenote-checkbox" type="checkbox" id="sn-7"></input>
+    <span class="sidenote-content sidenote-left">
+     This is a sidenote content block positioned on the left side.  
+    </span>
+</span>
+
+
+
+
+
+
+
+<div class="p5-embed">
+  <iframe
+    class="p5-iframe"
+    src="/sketches/geometricgraph"
+    title="Geometric Graph"
+    loading="lazy"
+    scrolling="no"
+    width="400"
+    height="400"
+    referrerpolicy="no-referrer"
+    onload="resizeSketch(this)"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<h3 id="image-sidenote-example">
+  <a href="#image-sidenote-example" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Image sidenote example
+</h3>
+<p>Use the <code>sideimg</code> shortcode to show an image as a sidenote on wide screens and inline on mobile. You can specify the position as the third parameter:</p>
+
+
+
+
+
+
+
+
+
+<span class="sideimg">
+    <label class="sideimg-label" for="sn-8">architecture</label>
+    <input class="sideimg-checkbox" type="checkbox" id="sn-8"></input>
+    <span class="sideimg-content sideimg-right">
+        <a href="/neural.webp" target="_blank" rel="noopener noreferrer">
+            <img src="/neural.webp" alt="architecture" style="max-width: 100%; height: auto;">
+        </a>
+    </span>
+</span>
+<p>Here&rsquo;s an example with left positioning:</p>
+
+
+
+
+
+
+
+
+
+<span class="sideimg">
+    <label class="sideimg-label" for="sn-9">left example</label>
+    <input class="sideimg-checkbox" type="checkbox" id="sn-9"></input>
+    <span class="sideimg-content sideimg-left">
+        <a href="/nnet.png" target="_blank" rel="noopener noreferrer">
+            <img src="/nnet.png" alt="left example" style="max-width: 100%; height: auto;">
+        </a>
+    </span>
+</span>
+<h2 id="other-section">
+  <a href="#other-section" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Other Section
+</h2>
+<p>This embedding into a 2D space can open up many new possibilities. As we have seen before the generation of random networks can now rely on the new concept of &ldquo;distance&rdquo;.
+It is now possible to define a <strong>local</strong> connectivity (i.e. connecting preferentially to nodes at a short distance) vs <strong>global</strong> (i.e. connecting equally to nodes at every distance).  
+
+
+
+
+
+<span class="sidenote">
+    <label class="sidenote-label" for="sn-10">this other sidenote</label>
+    <input class="sidenote-checkbox" type="checkbox" id="sn-10"></input>
+    <span class="sidenote-content sidenote-right">
+     This is a other sidenote content block, shown on the right on wide screens and toggled inline on mobile when the label is tapped.  
+    </span>
+</span>
+ This approach<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> is called <a href="https://en.wikipedia.org/wiki/Random_geometric_graph">Geometric Random Graph<span style="white-space: nowrap;">&thinsp;<svg style="height: 0.7em; width: 0.7em;" focusable="false" data-prefix="fas" data-icon="external-link-alt" class="svg-inline--fa fa-external-link-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><title>external link</title><path fill="currentColor" d="M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z"></path></svg></span></a>. In this type of network the connectivity is controlled by a radius parameter, such that each node wires with all the nodes within that radius. Below you can see how the number of links and connected components vary as the radius parameter changes. The network starts off with no edges but as the connection radius increase the number of connected components quickly converges to a single giant component. We are employing a hard threshold (i.e. connections are made with every node within the range, and no nodes outside the range) for simplicity for now but other alternatives exist, where connections are made probabilistically and closer nodes have higher probabilities (i.e. Gaussian probability decay as distance increases), which we are going to use later on.</p>
+
+
+<div class="box box-shortcode info" >
+    <span class="icon-box baseline">ℹ️</span>
+    <p>Incididunt labore eiusmod culpa eu nostrud tempor laborum consequat eiusmod excepteur.</p>
+  </div>
+
+
+
+<div class="box box-shortcode tip" >
+    <span class="icon-box baseline">✅</span>
+    <p>Incididunt labore eiusmod culpa eu nostrud tempor laborum consequat eiusmod excepteur.</p>
+  </div>
+
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>This is a friggin test&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p><a href="https://en.wikipedia.org/wiki/Random_geometric_graph">https://en.wikipedia.org/wiki/Random_geometric_graph<span style="white-space: nowrap;">&thinsp;<svg style="height: 0.7em; width: 0.7em;" focusable="false" data-prefix="fas" data-icon="external-link-alt" class="svg-inline--fa fa-external-link-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><title>external link</title><path fill="currentColor" d="M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z"></path></svg></span></a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+    </div>
+
+  </article>
+
+
+    </main>
+    <footer>
+      <hr />
+<div class="footer-content">
+  <span>&copy 2023 - 2025 Lapo Frati</span>
+  
+    <a href="http://localhost:1313/index.xml" class="rss-link" title="RSS Feed">
+      RSS Feed
+      <img src="/RSS-icon.svg" alt="RSS" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: middle; margin-left: 6px;">
+    </a>
+  
+</div>
+
+    </footer>
+    
+      <script src="/js/main.js"></script>
+
+  </body>
+</html>

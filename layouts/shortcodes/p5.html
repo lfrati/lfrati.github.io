@@ -1,0 +1,28 @@
+{{/*
+  Usage:
+  {{< p5 src="geometricgraph" width="100%" height="420" title="Geometric Graph" >}}
+
+  - src: path under /static/sketches (without leading slash)
+  - width: iframe width (default 100%)
+  - height: iframe height in px (default 420)
+  - title: iframe title (optional)
+*/}}
+{{ $src := .Get "src" }}
+{{ $src = printf "/sketches/%s" $src }}
+{{ $width := or (.Get "width") "100%" }}
+{{ $height := or (.Get "height") "400" }}
+{{ $title := or (.Get "title") (print "p5 sketch: " $src) }}
+<div class="p5-embed">
+  <iframe
+    class="p5-iframe"
+    src="{{ $src }}"
+    title="{{ $title }}"
+    loading="lazy"
+    scrolling="no"
+    width="{{ $width }}"
+    height="{{ $height }}"
+    referrerpolicy="no-referrer"
+    onload="resizeSketch(this)"
+    allowfullscreen>
+  </iframe>
+</div>

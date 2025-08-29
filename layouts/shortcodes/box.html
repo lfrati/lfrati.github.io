@@ -1,0 +1,32 @@
+{{/*  Source:https://gitlab.com/Roneo/hugo-shortcode-roneo-collection  */}}
+
+{{/* Available box types: warning, info, tip */}}
+{{- $boxType := .Get 0 | default "info" -}}
+
+{{/* Workaround markdownify inconsistency for single/multiple paragraphs */}}
+{{- $raw := (markdownify .Inner | chomp) -}}
+{{- $block := findRE "(?is)^<(?:address|article|aside|blockquote|canvas|dd|div|dl|dt|fieldset|figcaption|figure|footer|form|h(?:1|2|3|4|5|6)|header|hgroup|hr|li|main|nav|noscript|ol|output|p|pre|section|table|tfoot|ul|video)\\b" $raw 1 -}}
+
+{{/*  Emoji icons  */}}
+{{- $tipEmoji := "✅" -}}
+{{- $warningEmoji := "⚠️" -}}
+{{- $infoEmoji := "ℹ️" -}}
+
+{{- $.Page.Scratch.Add "box_count" 1 -}}
+
+<div class="box box-shortcode {{ $boxType }}" {{ if len .Params | eq 2 }} id="{{ .Get 1 }}" {{ end }}>
+    <span class="icon-box baseline">
+      {{- if eq $boxType "tip" -}}
+        {{ $tipEmoji }}
+      {{- else if eq $boxType "warning" -}}
+        {{ $warningEmoji }}
+      {{- else -}}
+        {{ $infoEmoji }}
+      {{- end -}}
+    </span>
+  {{- if or $block (not $raw) }}
+    {{ $raw }}
+  {{ else }}
+    <p>{{ $raw }}</p>
+  {{ end -}}
+</div>

@@ -1,0 +1,243 @@
+<!doctype html>
+<html
+  lang="en-us"
+  dir="ltr"
+>
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=60088&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+
+
+
+
+
+
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="/favicon/favicon.svg"
+  media="(prefers-color-scheme: light)"
+/>
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="/favicon-dark/favicon.svg"
+  media="(prefers-color-scheme: dark)"
+/>
+
+<link
+  rel="icon"
+  type="image/png"
+  href="/favicon/favicon-96x96.png"
+  sizes="96x96"
+  media="(prefers-color-scheme: light)"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  href="/favicon-dark/favicon-96x96.png"
+  sizes="96x96"
+  media="(prefers-color-scheme: dark)"
+/>
+
+<link
+  rel="icon"
+  type="image/x-icon"
+  href="/favicon/favicon.ico"
+  media="(prefers-color-scheme: light)"
+/>
+<link
+  rel="icon"
+  type="image/x-icon"
+  href="/favicon-dark/favicon.ico"
+  media="(prefers-color-scheme: dark)"
+/>
+<title>
+  
+    Understanding Python Decorators: A Practical Guide | while(True):
+  
+</title>
+
+  <link rel="stylesheet" href="/css/bundle.css" />
+
+
+
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']]                  
+    },
+    loader:{
+      load: ['ui/safe']
+    },
+  };
+</script>
+
+
+
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+  <div class="glider-container">
+    <div class="glider">
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+  </div>
+  <h1 class="site-title">
+    <a href="http://localhost:60088/" class="site-title-link">while(<span class="true">True</span>):</a>
+  </h1>
+  <div class="spacer"></div>
+  <ul>
+      <li>
+        <a
+          href="/"
+          class="brackets "
+          
+        >
+          Home
+        </a>
+      </li>
+      <li>
+        <a
+          href="/about/"
+          class="brackets "
+          
+        >
+          About
+        </a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+    <main class="main">
+      
+  
+  
+
+  <article class="post">
+
+    <header class="post-header">
+      <h1 class="post-title">Understanding Python Decorators: A Practical Guide</h1>
+      <time datetime="2023-01-15T09:00:00-07:00">January 15, 2023</time>
+    </header>
+
+    <div class="post-content">
+    <p>Python decorators are one of the most powerful and elegant features of the language, yet they can be intimidating for beginners. In this post, we&rsquo;ll explore what decorators are, how they work, and how to use them effectively in your code.</p>
+<h2 id="what-are-decorators">
+  <a href="#what-are-decorators" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  What are Decorators?
+</h2>
+<p>Decorators are functions that modify the behavior of other functions. They allow you to add functionality to existing functions without modifying their source code directly. This follows the principle of separation of concerns and makes your code more modular and reusable.</p>
+<h2 id="basic-decorator-syntax">
+  <a href="#basic-decorator-syntax" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Basic Decorator Syntax
+</h2>
+<p>Here&rsquo;s a simple example of a decorator that logs function calls:</p>
+<div class="highlight"><pre tabindex="0" style="color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f"> 1</span><span><span style="color:#c678dd">import</span> <span style="color:#e06c75">functools</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f"> 2</span><span><span style="color:#c678dd">import</span> <span style="color:#e06c75">time</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f"> 4</span><span><span style="color:#c678dd">def</span> <span style="color:#61afef;font-weight:bold">log_function_call</span>(<span style="color:#e06c75">func</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f"> 5</span><span>    <span style="color:#61afef">@functools.wraps</span>(<span style="color:#e06c75">func</span>)
+</span></span><span style="display:flex; background-color:#3d4148"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f"> 6</span><span>    <span style="color:#c678dd">def</span> <span style="color:#61afef;font-weight:bold">wrapper</span>(<span style="color:#56b6c2">*</span><span style="color:#e06c75">args</span>, <span style="color:#56b6c2">**</span><span style="color:#e06c75">kwargs</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f"> 7</span><span>        <span style="color:#e5c07b">print</span>(<span style="color:#98c379">f</span><span style="color:#98c379">&#34;Calling </span><span style="color:#98c379">{</span><span style="color:#e06c75">func</span><span style="color:#56b6c2">.</span><span style="color:#e06c75">__name__</span><span style="color:#98c379">}</span><span style="color:#98c379"> with args: </span><span style="color:#98c379">{</span><span style="color:#e06c75">args</span><span style="color:#98c379">}</span><span style="color:#98c379">, kwargs: </span><span style="color:#98c379">{</span><span style="color:#e06c75">kwargs</span><span style="color:#98c379">}</span><span style="color:#98c379">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f"> 8</span><span>        <span style="color:#e06c75">result</span> <span style="color:#56b6c2">=</span> <span style="color:#e06c75">func</span>(<span style="color:#56b6c2">*</span><span style="color:#e06c75">args</span>, <span style="color:#56b6c2">**</span><span style="color:#e06c75">kwargs</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f"> 9</span><span>        <span style="color:#e5c07b">print</span>(<span style="color:#98c379">f</span><span style="color:#98c379">&#34;</span><span style="color:#98c379">{</span><span style="color:#e06c75">func</span><span style="color:#56b6c2">.</span><span style="color:#e06c75">__name__</span><span style="color:#98c379">}</span><span style="color:#98c379"> returned: </span><span style="color:#98c379">{</span><span style="color:#e06c75">result</span><span style="color:#98c379">}</span><span style="color:#98c379">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f">10</span><span>        <span style="color:#c678dd">return</span> <span style="color:#e06c75">result</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f">11</span><span>    <span style="color:#c678dd">return</span> <span style="color:#e06c75">wrapper</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f">13</span><span><span style="color:#61afef">@log_function_call</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f">14</span><span><span style="color:#c678dd">def</span> <span style="color:#61afef;font-weight:bold">calculate_area</span>(<span style="color:#e06c75">radius</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f">15</span><span>    <span style="color:#c678dd">return</span> <span style="color:#d19a66">3.14159</span> <span style="color:#56b6c2">*</span> <span style="color:#e06c75">radius</span> <span style="color:#56b6c2">**</span> <span style="color:#d19a66">2</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f">17</span><span><span style="color:#c678dd">if</span> <span style="color:#e06c75">__name__</span> <span style="color:#56b6c2">==</span> <span style="color:#98c379">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f">18</span><span>    <span style="color:#e06c75">area</span> <span style="color:#56b6c2">=</span> <span style="color:#e06c75">calculate_area</span>(<span style="color:#d19a66">5</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#55595f">19</span><span>    <span style="color:#e5c07b">print</span>(<span style="color:#98c379">f</span><span style="color:#98c379">&#34;The area is: </span><span style="color:#98c379">{</span><span style="color:#e06c75">area</span><span style="color:#98c379">}</span><span style="color:#98c379">&#34;</span>)
+</span></span></code></pre></div><h2 id="decorators-with-parameters">
+  <a href="#decorators-with-parameters" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Decorators with Parameters
+</h2>
+<p>Sometimes you need decorators that accept parameters. Here&rsquo;s how to create them:</p>
+<div class="highlight"><pre tabindex="0" style="color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#c678dd">import</span> <span style="color:#e06c75">functools</span>
+</span></span><span style="display:flex;"><span><span style="color:#c678dd">import</span> <span style="color:#e06c75">time</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#c678dd">def</span> <span style="color:#61afef;font-weight:bold">retry</span>(<span style="color:#e06c75">max_attempts</span><span style="color:#56b6c2">=</span><span style="color:#d19a66">3</span>, <span style="color:#e06c75">delay</span><span style="color:#56b6c2">=</span><span style="color:#d19a66">1</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#c678dd">def</span> <span style="color:#61afef;font-weight:bold">decorator</span>(<span style="color:#e06c75">func</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#61afef">@functools.wraps</span>(<span style="color:#e06c75">func</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#c678dd">def</span> <span style="color:#61afef;font-weight:bold">wrapper</span>(<span style="color:#56b6c2">*</span><span style="color:#e06c75">args</span>, <span style="color:#56b6c2">**</span><span style="color:#e06c75">kwargs</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#c678dd">for</span> <span style="color:#e06c75">attempt</span> <span style="color:#56b6c2">in</span> <span style="color:#e5c07b">range</span>(<span style="color:#e06c75">max_attempts</span>):
+</span></span><span style="display:flex;"><span>                <span style="color:#c678dd">try</span>:
+</span></span><span style="display:flex;"><span>                    <span style="color:#c678dd">return</span> <span style="color:#e06c75">func</span>(<span style="color:#56b6c2">*</span><span style="color:#e06c75">args</span>, <span style="color:#56b6c2">**</span><span style="color:#e06c75">kwargs</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#c678dd">except</span> <span style="color:#e06c75">Exception</span> <span style="color:#c678dd">as</span> <span style="color:#e06c75">e</span>:
+</span></span><span style="display:flex;"><span>                    <span style="color:#c678dd">if</span> <span style="color:#e06c75">attempt</span> <span style="color:#56b6c2">==</span> <span style="color:#e06c75">max_attempts</span> <span style="color:#56b6c2">-</span> <span style="color:#d19a66">1</span>:
+</span></span><span style="display:flex;"><span>                        <span style="color:#c678dd">raise</span> <span style="color:#e06c75">e</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#e5c07b">print</span>(<span style="color:#98c379">f</span><span style="color:#98c379">&#34;Attempt </span><span style="color:#98c379">{</span><span style="color:#e06c75">attempt</span> <span style="color:#56b6c2">+</span> <span style="color:#d19a66">1</span><span style="color:#98c379">}</span><span style="color:#98c379"> failed: </span><span style="color:#98c379">{</span><span style="color:#e06c75">e</span><span style="color:#98c379">}</span><span style="color:#98c379">&#34;</span>)
+</span></span><span style="display:flex;"><span>                    <span style="color:#e06c75">time</span><span style="color:#56b6c2">.</span><span style="color:#e06c75">sleep</span>(<span style="color:#e06c75">delay</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#c678dd">return</span> <span style="color:#e5c07b">None</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#c678dd">return</span> <span style="color:#e06c75">wrapper</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#c678dd">return</span> <span style="color:#e06c75">decorator</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#61afef">@retry</span>(<span style="color:#e06c75">max_attempts</span><span style="color:#56b6c2">=</span><span style="color:#d19a66">5</span>, <span style="color:#e06c75">delay</span><span style="color:#56b6c2">=</span><span style="color:#d19a66">2</span>)
+</span></span><span style="display:flex;"><span><span style="color:#c678dd">def</span> <span style="color:#61afef;font-weight:bold">unreliable_function</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#c678dd">import</span> <span style="color:#e06c75">random</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#c678dd">if</span> <span style="color:#e06c75">random</span><span style="color:#56b6c2">.</span><span style="color:#e06c75">random</span>() <span style="color:#56b6c2">&lt;</span> <span style="color:#d19a66">0.7</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#c678dd">raise</span> <span style="color:#e06c75">ValueError</span>(<span style="color:#98c379">&#34;Random failure&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#c678dd">return</span> <span style="color:#98c379">&#34;Success!&#34;</span>
+</span></span></code></pre></div><h2 id="real-world-use-cases">
+  <a href="#real-world-use-cases" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Real-World Use Cases
+</h2>
+<p>Decorators are commonly used for:</p>
+<ol>
+<li><strong>Caching</strong>: Store function results to avoid recomputation</li>
+<li><strong>Authentication</strong>: Check user permissions before executing functions</li>
+<li><strong>Logging</strong>: Track function calls and performance</li>
+<li><strong>Validation</strong>: Ensure input parameters meet certain criteria</li>
+<li><strong>Rate limiting</strong>: Control how often a function can be called</li>
+</ol>
+<h2 id="performance-considerations">
+  <a href="#performance-considerations" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Performance Considerations
+</h2>
+<p>While decorators are powerful, they do add a small overhead to function calls. For performance-critical applications, consider using them judiciously. The <code>@functools.wraps</code> decorator is important because it preserves the original function&rsquo;s metadata, which is crucial for debugging and introspection.</p>
+<p>Decorators are a fundamental concept in Python that every developer should understand. They promote code reuse, improve readability, and enable elegant solutions to common programming problems. Start with simple decorators and gradually work your way up to more complex ones as you become comfortable with the concept.</p>
+
+    </div>
+
+  </article>
+
+
+    </main>
+    <footer>
+      <hr />
+<div class="footer-content">
+  <span>&copy 2023 - 2025 Lapo Frati</span>
+  
+    <a href="http://localhost:60088/index.xml" class="rss-link" title="RSS Feed">
+      RSS Feed
+      <img src="/RSS-icon.svg" alt="RSS" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: middle; margin-left: 6px;">
+    </a>
+  
+</div>
+
+    </footer>
+    
+      <script src="/js/main.js"></script>
+
+  </body>
+</html>

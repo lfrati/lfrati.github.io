@@ -1,0 +1,218 @@
+<!doctype html>
+<html
+  lang="en-us"
+  dir="ltr"
+>
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=60088&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+
+
+
+
+
+
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="/favicon/favicon.svg"
+  media="(prefers-color-scheme: light)"
+/>
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="/favicon-dark/favicon.svg"
+  media="(prefers-color-scheme: dark)"
+/>
+
+<link
+  rel="icon"
+  type="image/png"
+  href="/favicon/favicon-96x96.png"
+  sizes="96x96"
+  media="(prefers-color-scheme: light)"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  href="/favicon-dark/favicon-96x96.png"
+  sizes="96x96"
+  media="(prefers-color-scheme: dark)"
+/>
+
+<link
+  rel="icon"
+  type="image/x-icon"
+  href="/favicon/favicon.ico"
+  media="(prefers-color-scheme: light)"
+/>
+<link
+  rel="icon"
+  type="image/x-icon"
+  href="/favicon-dark/favicon.ico"
+  media="(prefers-color-scheme: dark)"
+/>
+<title>
+  
+    Testing LaTeX Math Rendering | while(True):
+  
+</title>
+
+  <link rel="stylesheet" href="/css/bundle.css" />
+
+
+
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']]                  
+    },
+    loader:{
+      load: ['ui/safe']
+    },
+  };
+</script>
+
+
+
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+  <div class="glider-container">
+    <div class="glider">
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+  </div>
+  <h1 class="site-title">
+    <a href="http://localhost:60088/" class="site-title-link">while(<span class="true">True</span>):</a>
+  </h1>
+  <div class="spacer"></div>
+  <ul>
+      <li>
+        <a
+          href="/"
+          class="brackets "
+          
+        >
+          Home
+        </a>
+      </li>
+      <li>
+        <a
+          href="/about/"
+          class="brackets "
+          
+        >
+          About
+        </a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+    <main class="main">
+      
+  
+  
+
+  <article class="post">
+
+    <header class="post-header">
+      <h1 class="post-title">Testing LaTeX Math Rendering</h1>
+      <time datetime="2024-01-24T18:09:49-08:00">January 24, 2024</time>
+    </header>
+
+    <div class="post-content">
+    <h1 id="testing-latex-math-rendering">
+  <a href="#testing-latex-math-rendering" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Testing LaTeX Math Rendering
+</h1>
+<p>This post demonstrates how LaTeX math equations are rendered in your Hugo blog.</p>
+<h2 id="inline-math">
+  <a href="#inline-math" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Inline Math
+</h2>
+<p>You can include inline equations like this: \(a^*=x-b^*\) within your text.</p>
+<p>Here&rsquo;s another inline example: \(E = mc^2\) which is Einstein&rsquo;s famous equation.</p>
+<h2 id="block-math">
+  <a href="#block-math" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Block Math
+</h2>
+<p>For standalone equations, you can use block formatting:</p>
+\[
+\begin{aligned}
+KL(\hat{y} || y) &= \sum_{c=1}^{M}\hat{y}_c \log{\frac{\hat{y}_c}{y_c}} \\
+JS(\hat{y} || y) &= \frac{1}{2}(KL(y||\frac{y+\hat{y}}{2}) + KL(\hat{y}||\frac{y+\hat{y}}{2}))
+\end{aligned}
+\]<h2 id="alternative-block-format">
+  <a href="#alternative-block-format" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Alternative Block Format
+</h2>
+<p>You can also use dollar signs for block equations:</p>
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$<h2 id="more-examples">
+  <a href="#more-examples" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  More Examples
+</h2>
+<p>Here&rsquo;s a simple quadratic equation: \(ax^2 + bx + c = 0\)</p>
+<p>And its solution:</p>
+\[
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+\]<h2 id="matrix-example">
+  <a href="#matrix-example" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
+  Matrix Example
+</h2>
+\[
+\begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y
+\end{bmatrix} = 
+\begin{bmatrix}
+ax + by \\
+cx + dy
+\end{bmatrix}
+\]
+    </div>
+
+  </article>
+
+
+    </main>
+    <footer>
+      <hr />
+<div class="footer-content">
+  <span>&copy 2023 - 2025 Lapo Frati</span>
+  
+    <a href="http://localhost:60088/index.xml" class="rss-link" title="RSS Feed">
+      RSS Feed
+      <img src="/RSS-icon.svg" alt="RSS" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: middle; margin-left: 6px;">
+    </a>
+  
+</div>
+
+    </footer>
+    
+      <script src="/js/main.js"></script>
+
+  </body>
+</html>

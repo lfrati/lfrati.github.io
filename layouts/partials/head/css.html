@@ -1,0 +1,23 @@
+{{- $bundle := resources.Concat "css/bundle.css" (slice
+  (resources.Get "css/main.css")
+  (resources.Get "css/glider.css")
+  (resources.Get "css/glitch.css")
+  (resources.Get "css/box-shortcode.css")
+  (resources.Get "css/p5-shortcode.css")
+  (resources.Get "css/sidenote-shortcode.css")
+  (resources.Get "css/sideimg-shortcode.css")
+  )
+}}
+
+{{- if eq hugo.Environment "development" }}
+  <link rel="stylesheet" href="{{ $bundle.RelPermalink }}" />
+{{- else }}
+  {{- with $bundle | minify | fingerprint }}
+    <link
+      rel="stylesheet"
+      href="{{ .RelPermalink }}"
+      integrity="{{ .Data.Integrity }}"
+      crossorigin="anonymous"
+    />
+  {{- end }}
+{{- end }}

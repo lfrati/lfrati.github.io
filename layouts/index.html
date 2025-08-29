@@ -1,0 +1,30 @@
+{{ define "main" }}
+  <div class="posts">
+  {{ range where site.RegularPages "Section" "posts" }}
+    <div class="post">
+      {{ if .Params.thumbnail }}
+        <div class="post-thumbnail">
+          <a href="{{ .RelPermalink }}">
+            <img src="{{ .Params.thumbnail }}" alt="{{ .Title }}" />
+          </a>
+        </div>
+      {{ end }}
+
+
+      <a class="post-title" href="{{ .RelPermalink }}">
+        {{ .Title }}
+      </a>
+
+      <div class="post-info">
+        <div class="post-metadata">
+          {{ .Date.Format "2006-01-02" }}
+        </div>
+
+        {{ if .Params.summary }}
+          <div class="post-description">{{ .Params.summary }}</div>
+        {{ end }}
+      </div>
+    </div>
+  {{ end }}
+  </div>
+{{ end }}

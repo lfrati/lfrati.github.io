@@ -1,0 +1,56 @@
+/* Box Shortcode Styles */
+.box-shortcode {
+  padding: 1.6em;
+  padding-top: 1.4em;
+  line-height: 1.4em;
+  margin-top: 1em;
+  margin-bottom: 2em;
+  border-radius: 4px;
+  background: #f3ebe850;
+}
+
+.box-title {
+  margin: -18px -18px 12px;
+  padding: 4px 18px;
+  border-radius: 4px 4px 0 0;
+  font-weight: 700;
+  color: #fff;
+  background: #6ab0de;
+}
+
+.box-shortcode.warning {
+  background: rgba(255, 107, 107, 0.15);
+}
+
+.box-shortcode.info {
+  background: rgba(0, 137, 228, 0.15);
+  box-shadow: 3px 3px 5px rgba(0, 137, 228, 0.06);
+}
+
+.box-shortcode.tip {
+  background: rgba(163, 255, 163, 0.15);
+  box-shadow: 3px 3px 5px rgba(0, 137, 228, 0.06);
+}
+
+.icon-box {
+  display: inline-flex;
+  align-self: center;
+  margin-right: 8px;
+  font-size: 1.2em;
+}
+
+.box-shortcode p {
+  margin-bottom: 0.6em;
+}
+
+.box-shortcode p:first-of-type {
+  display: inline;
+}
+
+.box-shortcode p:nth-of-type(2) {
+  margin-top: 0.6em;
+}
+
+.box-shortcode p:last-child {
+  margin-bottom: 0;
+}
