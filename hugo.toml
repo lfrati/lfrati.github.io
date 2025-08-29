@@ -67,6 +67,9 @@ disableKinds = ["taxonomy", "term"]
 [markup.goldmark.renderer]
   unsafe = true
 
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
 
 [menu]
     [[menu.main]]
