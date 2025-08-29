@@ -1,0 +1,14 @@
+/* p5 Shortcode Styles */
+.p5-embed {
+  max-width: 100%;
+  margin: 1rem auto;
+  display: flex;
+  justify-content: center;
+}
+
+.p5-embed .p5-iframe {
+  width: 100%;
+  display: block;
+  border: 0;
+  background: #000;
+}

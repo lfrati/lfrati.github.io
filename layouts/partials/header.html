@@ -1,0 +1,32 @@
+<nav class="navbar">
+  <div class="glider-container">
+    <div class="glider">
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+  </div>
+  <h1 class="site-title">
+    <a href="{{ .Site.BaseURL }}" class="site-title-link">{{ replaceRE "True" "<span class=\"true\">True</span>" site.Title | safeHTML }}</a>
+  </h1>
+  <div class="spacer"></div>
+  <ul>
+    {{- range .Site.Menus.main }}
+      <li>
+        <a
+          href="{{ .URL }}"
+          class="brackets {{ if $.IsMenuCurrent .Menu . }}active{{ end }}"
+          {{ if $.IsMenuCurrent .Menu . }}aria-current="page"{{ end }}
+        >
+          {{ .Name }}
+        </a>
+      </li>
+    {{- end }}
+  </ul>
+</nav>

@@ -1,0 +1,20 @@
+{{ $label := .Get 0 }}
+{{ $path := .Get 1 }}
+{{ $position := .Get 2 | default "right" }}
+
+{{ if not (.Page.Scratch.Get "sidenote_counter") }}
+  {{ .Page.Scratch.Set "sidenote_counter" 0 }}
+{{ end }}
+{{ $counter := add 1 (.Page.Scratch.Get "sidenote_counter") }}
+{{ .Page.Scratch.Set "sidenote_counter" $counter }}
+{{ $id := printf "sn-%d" $counter }}
+
+<span class="sideimg">
+    <label class="sideimg-label" for="{{ $id }}">{{ $label }}</label>
+    <input class="sideimg-checkbox" type="checkbox" id="{{ $id }}"></input>
+    <span class="sideimg-content sideimg-{{ $position }}">
+        <a href="{{ $path }}" target="_blank" rel="noopener noreferrer">
+            <img src="{{ $path }}" alt="{{ $label }}" style="max-width: 100%; height: auto;">
+        </a>
+    </span>
+</span>

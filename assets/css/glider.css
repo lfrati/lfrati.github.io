@@ -1,0 +1,214 @@
+.glider-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.glider-container > h1 {
+  margin-left: 1rem;
+}
+
+.glider {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: fit-content;
+  animation: glider-states 4s infinite steps(1);
+  /* Safari-specific fix: ensure proper animation rendering */
+  -webkit-animation: glider-states 4s infinite steps(1);
+  /* Force hardware acceleration for better Safari performance */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.cell {
+  width: 15px;
+  height: 15px;
+  background: var(--alive-color);
+  border-radius: 4px;
+  margin: 2px;
+  /* Safari-specific fix: ensure proper rendering */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  /* transition: background-color 0.2s ease-in; */
+}
+
+.cell.alive {
+  background: #2d3748;
+}
+
+@keyframes glider-states {
+  0% {
+    /* □ ■ □
+       □ □ ■ 
+       ■ ■ ■ */
+    --c1: var(--dead-color);
+    --c2: var(--alive-color);
+    --c3: var(--dead-color);
+    --c4: var(--dead-color);
+    --c5: var(--dead-color);
+    --c6: var(--alive-color);
+    --c7: var(--alive-color);
+    --c8: var(--alive-color);
+    --c9: var(--alive-color);
+  }
+  25% {
+    /* ■ □ ■ 
+       □ ■ ■ 
+       □ ■ □ */
+    --c1: var(--alive-color);
+    --c2: var(--dead-color);
+    --c3: var(--alive-color);
+    --c4: var(--dead-color);
+    --c5: var(--alive-color);
+    --c6: var(--alive-color);
+    --c7: var(--dead-color);
+    --c8: var(--alive-color);
+    --c9: var(--dead-color);
+  }
+  50% {
+    /* □ □ ■ 
+       ■ □ ■ 
+       □ ■ ■ */
+    --c1: var(--dead-color);
+    --c2: var(--dead-color);
+    --c3: var(--alive-color);
+    --c4: var(--alive-color);
+    --c5: var(--dead-color);
+    --c6: var(--alive-color);
+    --c7: var(--dead-color);
+    --c8: var(--alive-color);
+    --c9: var(--alive-color);
+  }
+  75% {
+    /* ■ □ □ 
+       □ ■ ■ 
+       ■ ■ □ */
+    --c1: var(--alive-color);
+    --c2: var(--dead-color);
+    --c3: var(--dead-color);
+    --c4: var(--dead-color);
+    --c5: var(--alive-color);
+    --c6: var(--alive-color);
+    --c7: var(--alive-color);
+    --c8: var(--alive-color);
+    --c9: var(--dead-color);
+  }
+  100% {
+    /* Explicit 100% state to ensure smooth loop back to 0% */
+    /* □ ■ □
+       □ □ ■ 
+       ■ ■ ■ */
+    --c1: var(--dead-color);
+    --c2: var(--alive-color);
+    --c3: var(--dead-color);
+    --c4: var(--dead-color);
+    --c5: var(--dead-color);
+    --c6: var(--alive-color);
+    --c7: var(--alive-color);
+    --c8: var(--alive-color);
+    --c9: var(--alive-color);
+  }
+}
+
+/* Safari-specific keyframes */
+@-webkit-keyframes glider-states {
+  0% {
+    /* □ ■ □
+       □ □ ■ 
+       ■ ■ ■ */
+    --c1: var(--dead-color);
+    --c2: var(--alive-color);
+    --c3: var(--dead-color);
+    --c4: var(--dead-color);
+    --c5: var(--dead-color);
+    --c6: var(--alive-color);
+    --c7: var(--alive-color);
+    --c8: var(--alive-color);
+    --c9: var(--alive-color);
+  }
+  25% {
+    /* ■ □ ■ 
+       □ ■ ■ 
+       □ ■ □ */
+    --c1: var(--alive-color);
+    --c2: var(--dead-color);
+    --c3: var(--alive-color);
+    --c4: var(--dead-color);
+    --c5: var(--alive-color);
+    --c6: var(--alive-color);
+    --c7: var(--dead-color);
+    --c8: var(--alive-color);
+    --c9: var(--dead-color);
+  }
+  50% {
+    /* □ □ ■ 
+       ■ □ ■ 
+       □ ■ ■ */
+    --c1: var(--dead-color);
+    --c2: var(--dead-color);
+    --c3: var(--alive-color);
+    --c4: var(--alive-color);
+    --c5: var(--dead-color);
+    --c6: var(--alive-color);
+    --c7: var(--dead-color);
+    --c8: var(--alive-color);
+    --c9: var(--alive-color);
+  }
+  75% {
+    /* ■ □ □ 
+       □ ■ ■ 
+       ■ ■ □ */
+    --c1: var(--alive-color);
+    --c2: var(--dead-color);
+    --c3: var(--dead-color);
+    --c4: var(--dead-color);
+    --c5: var(--alive-color);
+    --c6: var(--alive-color);
+    --c7: var(--alive-color);
+    --c8: var(--alive-color);
+    --c9: var(--dead-color);
+  }
+  100% {
+    /* Explicit 100% state to ensure smooth loop back to 0% */
+    /* □ ■ □
+       □ □ ■ 
+       ■ ■ ■ */
+    --c1: var(--dead-color);
+    --c2: var(--alive-color);
+    --c3: var(--dead-color);
+    --c4: var(--dead-color);
+    --c5: var(--dead-color);
+    --c6: var(--alive-color);
+    --c7: var(--alive-color);
+    --c8: var(--alive-color);
+    --c9: var(--alive-color);
+  }
+}
+
+.cell:nth-child(1) {
+  background: var(--c1);
+}
+.cell:nth-child(2) {
+  background: var(--c2);
+}
+.cell:nth-child(3) {
+  background: var(--c3);
+}
+.cell:nth-child(4) {
+  background: var(--c4);
+}
+.cell:nth-child(5) {
+  background: var(--c5);
+}
+.cell:nth-child(6) {
+  background: var(--c6);
+}
+.cell:nth-child(7) {
+  background: var(--c7);
+}
+.cell:nth-child(8) {
+  background: var(--c8);
+}
+.cell:nth-child(9) {
+  background: var(--c9);
+}

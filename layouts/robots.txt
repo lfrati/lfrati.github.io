@@ -1,0 +1,9 @@
+{{ range $robot := .Site.Params.robots }}
+User-agent: {{ $robot }}
+Disallow: /
+{{end}}
+
+User-agent: *
+Allow: /
+
+Sitemap: {{ "sitemap.xml" | absURL }}

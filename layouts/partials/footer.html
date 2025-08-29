@@ -1,0 +1,10 @@
+<hr />
+<div class="footer-content">
+  <span>&copy 2023 - {{ now.Year }} {{ site.Params.author }}</span>
+  {{ with site.Home.OutputFormats.Get "rss" }}
+    <a href="{{ .Permalink }}" class="rss-link" title="RSS Feed">
+      RSS Feed
+      <img src="/RSS-icon.svg" alt="RSS" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: middle; margin-left: 6px;">
+    </a>
+  {{ end }}
+</div>

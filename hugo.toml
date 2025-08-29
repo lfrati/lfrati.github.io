@@ -1,0 +1,82 @@
+baseURL = 'https://fratilapo.com/'
+languageCode = 'en-us'
+title = 'while(True):'
+enableRobotsTXT = true
+disableKinds = ["taxonomy", "term"]
+
+# Author information for RSS feeds
+[params]
+  author = "Lapo Frati"
+  math = true
+  robots = [
+  "AdsBot-Google",
+  "Amazonbot",
+  "anthropic-ai",
+  "Applebot",
+  "Applebot-Extended",
+  "AwarioRssBot",
+  "AwarioSmartBot",
+  "Bytespider",
+  "CCBot",
+  "ChatGPT",
+  "ChatGPT-User",
+  "Claude-Web",
+  "ClaudeBot",
+  "cohere-ai",
+  "DataForSeoBot",
+  "Diffbot",
+  "FacebookBot",
+  "Google-Extended",
+  "GPTBot",
+  "ImagesiftBot",
+  "magpie-crawler",
+  "omgili",
+  "Omgilibot",
+  "peer39_crawler",
+  "PerplexityBot",
+  "YouBot"
+]
+
+# RSS Feed Configuration
+[outputFormats]
+  [outputFormats.RSS]
+    mediaType = "application/rss+xml"
+    baseName = "index"
+    isPlainText = true
+    notAlternative = true
+
+[outputs]
+  home = ['html', 'rss']
+  section = ['html', 'rss']
+
+
+[markup.highlight]
+    lineNos = true
+    lineNumbersInTable = false  # For inline line numbers
+    # if line numbers are set to table there is a weird effect where
+    # line highlight height doesn't match line-number highlight height
+    style = "onedark"
+    guessSyntax = false
+
+[markup.goldmark.extensions.passthrough]
+  enable = true
+  [markup.goldmark.extensions.passthrough.delimiters]
+    block = [['\[', '\]'], ['$$', '$$']]
+    inline = [['\(', '\)']]
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
+
+[menu]
+    [[menu.main]]
+        name = "Home"
+        pageref = "/"
+        weight = 1
+    [[menu.main]]
+        name = "About"
+        pageref = "/about/"
+        weight = 2
