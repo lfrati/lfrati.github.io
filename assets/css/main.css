@@ -28,6 +28,8 @@ CSS VARIABLES & GLOBAL SETTINGS
 
   --code-color: #515152;
 
+  --post-description-color: #cbd5e0a5;
+
   --posts-width: 768px;
   /* Sidenote sizing */
   --sidenote-width: 400px;
@@ -189,6 +191,122 @@ HEADER & NAVIGATION
 POSTS & CONTENT
 ============================================================================*/
 
+/* Three-column post list layout for home page */
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid rgba(176, 196, 222, 0.15);
+  margin-top: 2rem;
+}
+
+.post-item-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.post-item {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 30px;
+  padding: 30px 0;
+  border-bottom: 1px solid rgba(176, 196, 222, 0.15);
+  align-items: start;
+  cursor: pointer;
+}
+
+.post-item-link:hover .post-content {
+  transform: scale(1.02);
+}
+
+.post-item .post-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.post-item .post-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--tertiary-color);
+  line-height: 1.3;
+  margin-bottom: 0px;
+  margin-top: 0;
+}
+
+.post-item-link:hover .post-title {
+  color: #ffd199;
+  transition: color 0.3s ease;
+}
+
+
+.post-item .post-description {
+  color: var(--post-description-color);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.post-item .post-illustration {
+  width: 180px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #34d399 100%);
+  margin-left: auto;
+}
+
+.post-item .post-illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-item .post-illustration a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  border: none;
+  outline: none;
+}
+
+/* Arrow wrapper and animation */
+.arrow-wrapper {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0;
+  /* transform: translateX(-5px); */
+  transition: opacity 0.3s ease;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.arrow {
+  width: 16px;
+  height: 16px;
+  fill: var(--post-description-color);
+}
+
+.post-item-link:hover .arrow-wrapper {
+  opacity: 1;
+  animation: pulse-right 1.0s ease-in-out infinite;
+}
+
+@keyframes pulse-right {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+
 .post {
   margin-top: 25px;
   padding: 1rem 0px;
@@ -296,32 +414,11 @@ article.post {
   text-decoration-color: #ffd199;
 }
 
-.post-info {
-  font-size: 0.9rem;
-  color: gray;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  flex-wrap: wrap;
-}
-
 .post-title {
   font-size: 2rem;
   color: var(--tertiary-color);
   text-decoration: none;
   font-weight: bold;
-}
-
-
-.post-metadata {
-  color: gray;
-  opacity: 0.5;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  padding-right: 1rem;
-  word-wrap: break-word;
 }
 
 a.footnote-ref::before {
@@ -331,15 +428,6 @@ a.footnote-ref::before {
 a.footnote-ref::after {
   content: ']';
 }
-
-/* .separator {
-  display: inline-block;
-  width: 1px;
-  height: 1em;
-  background-color: currentColor;
-  margin: 0 0.5em;
-  vertical-align: middle;
-} */
 
 .post-description {
   color: rgb(202, 189, 189);
@@ -514,7 +602,6 @@ RESPONSIVE DESIGN & MOBILE STYLES
 /* Media query for mobile devices */
 @media (max-width: 640px) {
   /* Hide elements */
-  .post-metadata,
   .glider-container,
   footer {
     display: none !important;
@@ -522,6 +609,19 @@ RESPONSIVE DESIGN & MOBILE STYLES
 
   .post-title {
     font-size: 1.5rem;
+  }
+
+  /* Mobile layout for post list */
+  .post-item {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .post-item .post-illustration {
+    width: 100%;
+    height: 100px;
+    margin: 0 auto;
   }
 
   /* Mobile adjustments for post styling */

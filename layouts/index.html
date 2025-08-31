@@ -1,30 +1,27 @@
 {{ define "main" }}
-  <div class="posts">
-  {{ range where site.RegularPages "Section" "posts" }}
-    <div class="post">
-      {{ if .Params.thumbnail }}
-        <div class="post-thumbnail">
-          <a href="{{ .RelPermalink }}">
-            <img src="{{ .Params.thumbnail }}" alt="{{ .Title }}" />
-          </a>
-        </div>
-      {{ end }}
-
-
-      <a class="post-title" href="{{ .RelPermalink }}">
-        {{ .Title }}
+  <div class="posts-list">
+    {{ range where site.RegularPages "Section" "posts" }}
+      <a href="{{ .RelPermalink }}" class="post-item-link">
+        <article class="post-item">
+          <div class="post-content">
+            <h2 class="post-title">
+              {{ .Title }}
+            </h2>
+            {{ if .Params.summary }}
+              <p class="post-description">{{ .Params.summary }}<span class="arrow-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="arrow"><path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"></path></svg></span></p>
+            {{ else }}
+              <p class="post-description">{{ .Summary }}<span class="arrow-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="arrow"><path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"></path></svg></span></p>
+            {{ end }}
+          </div>
+          <div class="post-illustration">
+            {{ $thumbnail := .Resources.GetMatch .Params.thumbnail }}
+            {{ if not $thumbnail }}
+              {{ errorf "Post '%s': thumbnail '%s' not found (missing frontmatter param or file doesn't exist)" .Title (.Params.thumbnail | default "MISSING") }}
+            {{ end }}
+            <img src="{{ $thumbnail.RelPermalink }}" alt="{{ .Title }}" />
+          </div>
+        </article>
       </a>
-
-      <div class="post-info">
-        <div class="post-metadata">
-          {{ .Date.Format "2006-01-02" }}
-        </div>
-
-        {{ if .Params.summary }}
-          <div class="post-description">{{ .Params.summary }}</div>
-        {{ end }}
-      </div>
-    </div>
-  {{ end }}
+    {{ end }}
   </div>
 {{ end }}
