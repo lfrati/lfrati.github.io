@@ -1,7 +1,7 @@
 +++
 title = 'Geometric Random Graphs and P5.js'
 date = 2025-03-15
-draft = false
+draft = true
 summary = "Explore how geometric embedding affects network structure through interactive visualizations, demonstrating local vs global connectivity patterns in 2D space."
 thumbnail = "neural.jpg"
 +++
