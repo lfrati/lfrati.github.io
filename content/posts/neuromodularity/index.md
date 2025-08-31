@@ -3,6 +3,7 @@ title = 'A Peek into Neuromodularity'
 date = 2023-11-12
 draft = false
 summary = "Exploring the intersection of geometric graphs, complex contagion, and neural networks through interactive visualizations and reservoir computing."
+thumbnail = "neuromod.png"
 +++
 
 {{< box warning >}} Warning: All sketches in this page are running on your machine. May the gods of computing bestow their blessing upon you. {{< /box >}}

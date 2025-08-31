@@ -189,6 +189,88 @@ HEADER & NAVIGATION
 POSTS & CONTENT
 ============================================================================*/
 
+/* Three-column post list layout for home page */
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid rgba(176, 196, 222, 0.15);
+  margin-top: 2rem;
+}
+
+.post-item {
+  display: grid;
+  grid-template-columns: 90px 1fr 200px;
+  gap: 30px;
+  padding: 30px 0;
+  border-bottom: 1px solid rgba(176, 196, 222, 0.15);
+  align-items: start;
+}
+
+.post-item .post-date {
+  color: #94a3b892;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: left;
+  padding-top: 4px;
+}
+
+.post-item .post-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.post-item .post-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--tertiary-color);
+  line-height: 1.3;
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+/* .post-item .post-title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+} */
+
+.post-item .post-description {
+  color: #cbd5e0a5;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.post-item .post-illustration {
+  width: 180px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #34d399 100%);
+  margin-left: auto;
+}
+
+.post-item .post-illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.post-item .post-illustration a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  border: none;
+  outline: none;
+}
+
 .post {
   margin-top: 25px;
   padding: 1rem 0px;
@@ -522,6 +604,23 @@ RESPONSIVE DESIGN & MOBILE STYLES
 
   .post-title {
     font-size: 1.5rem;
+  }
+
+  /* Mobile layout for three-column post list */
+  .post-item {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .post-item .post-date {
+    text-align: center;
+  }
+
+  .post-item .post-illustration {
+    width: 100%;
+    height: 100px;
+    margin: 0 auto;
   }
 
   /* Mobile adjustments for post styling */
