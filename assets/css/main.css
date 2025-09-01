@@ -213,11 +213,10 @@ POSTS & CONTENT
   padding: 30px 0;
   border-bottom: 1px solid rgba(176, 196, 222, 0.15);
   align-items: start;
-  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: pointer;
 }
 
-.post-item-link:hover .post-item {
+.post-item-link:hover .post-content {
   transform: scale(1.02);
 }
 
@@ -225,6 +224,7 @@ POSTS & CONTENT
   display: flex;
   flex-direction: column;
   gap: 12px;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .post-item .post-title {
