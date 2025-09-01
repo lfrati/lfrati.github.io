@@ -1,0 +1,9 @@
+{{/* Extract headings from .TableOfContents and return a slice of {id, text} */}}
+{{ $h1s := slice }}
+{{ $tocHTML := .TableOfContents }}
+{{ range findRE `(?s)<a\s+href="#([^"]+)"[^>]*>(.*?)</a>` $tocHTML }}
+  {{ $id := . | replaceRE `(?s).*href=\"#([^\"]+)\".*` "$1" }}
+  {{ $text := . | replaceRE `(?s).*>(.*?)</a>` "$1" | replaceRE "<[^>]*>" "" | plainify | strings.TrimSpace }}
+  {{ $h1s = $h1s | append (dict "id" $id "text" $text) }}
+{{ end }}
+{{ return $h1s }}

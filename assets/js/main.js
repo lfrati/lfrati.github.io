@@ -71,3 +71,151 @@ window.resizeSketch = function resizeSketch(obj) {
   }
 };
 
+// ========== TABLE OF CONTENTS FUNCTIONALITY ==========
+document.addEventListener('DOMContentLoaded', function() {
+  // Discover ToC elements and derive section IDs from DOM
+  const tocButton = document.getElementById('tocButton');
+  const tocPane = document.getElementById('tocPane');
+  const tocItems = document.querySelectorAll('.toc-item');
+  const lines = document.querySelectorAll('.line');
+  if (!tocButton || !tocPane || tocItems.length === 0) return; // No ToC on this page
+
+  // Cache arrays for faster access
+  const tocItemEls = Array.from(tocItems);
+  const lineEls = Array.from(lines);
+
+  const sectionIds = tocItemEls
+    .map((item) => item.getAttribute('data-target'))
+    .filter((id) => typeof id === 'string' && id.length > 0);
+  if (sectionIds.length === 0) return;
+
+  // Build lookup dictionary once
+  const sectionById = {};
+  sectionIds.forEach((id, index) => {
+    sectionById[id] = index;
+  });
+
+  // Cache section elements once
+  const sectionEls = sectionIds.map((id) => document.getElementById(id));
+
+  let isPaneOpen = false;
+
+  // Add event listeners to ToC items
+  tocItemEls.forEach((item, index) => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      // Smooth scroll to section with offset for header
+      const section = sectionEls[index];
+      if (!section) return;
+      const sectionRect = section.getBoundingClientRect();
+      const h1Offset = sectionRect.height ? sectionRect.height / 3 : 30;
+      const offsetTop = sectionRect.top + window.pageYOffset - h1Offset;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+
+      // Add highlight animation to target section
+      highlightSection(section);
+
+      // Close TOC pane
+      closeTocPane();
+    });
+  });
+
+  // IntersectionObserver-based highlighting observing server-wrapped sections
+  const sectionWrappers = Array.from(document.querySelectorAll('.post-content .toc-section'));
+  if (sectionWrappers.length === 0) return;
+
+  // // DEBUG: visualize server-wrapped sections without affecting layout
+  // sectionWrappers.forEach((wrapper) => {
+  //   wrapper.style.outline = '1px solid rgba(128, 145, 155, 0.5)';
+  //   wrapper.style.outlineOffset = '4px';
+  //   wrapper.style.borderRadius = '8px';
+  // });
+
+  // Track visibility state of wrappers and toggle active classes accordingly
+  const visibleSections = new Set();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const attr = entry.target.getAttribute('data-section');
+      const index = attr ? parseInt(attr, 10) : NaN;
+      if (Number.isNaN(index)) return;
+      if (entry.isIntersecting) {
+        visibleSections.add(index);
+      } else {
+        visibleSections.delete(index);
+      }
+    });
+
+    tocItemEls.forEach((el, idx) => {
+      el.classList.toggle('active', visibleSections.has(idx));
+    });
+    lineEls.forEach((el, idx) => {
+      el.classList.toggle('active', visibleSections.has(idx));
+    });
+  });
+
+  sectionWrappers.forEach((wrapper) => observer.observe(wrapper));
+
+  // Handle direct navigation to fragments and browser navigation (flash target)
+  function handleHashNavigation() {
+    if (window.location.hash) {
+      const targetId = window.location.hash.substring(1);
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) {
+        highlightSection(targetSection);
+      }
+    }
+  }
+
+  // Handle initial hash and hash changes
+  handleHashNavigation();
+  window.addEventListener('hashchange', handleHashNavigation);
+
+  // IntersectionObserver handles resize/layout changes; no manual recompute needed
+
+  // Toggle TOC pane on button click
+  tocButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    isPaneOpen ? closeTocPane() : openTocPane();
+  });
+
+  // Close pane when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!tocPane.contains(e.target) && !tocButton.contains(e.target)) {
+      closeTocPane();
+    }
+  });
+
+  // Pane control functions
+  function openTocPane() {
+    tocPane.classList.add('open');
+    isPaneOpen = true;
+  }
+
+  function closeTocPane() {
+    tocPane.classList.remove('open');
+    isPaneOpen = false;
+  }
+
+  // Helper function to highlight a section heading
+  function highlightSection(sectionElement) {
+    if (!sectionElement) return;
+    
+    // Remove any existing highlight class
+    sectionElement.classList.remove('section-highlight');
+    
+    // Add highlight class with a small delay to trigger animation
+    setTimeout(() => {
+      sectionElement.classList.add('section-highlight');
+      
+      // Remove the class after animation completes
+      setTimeout(() => {
+        sectionElement.classList.remove('section-highlight');
+      }, 2000);
+    }, 100);
+  }
+});
+

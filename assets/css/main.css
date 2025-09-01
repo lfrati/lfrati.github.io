@@ -694,6 +694,160 @@ RESPONSIVE DESIGN & MOBILE STYLES
 }
 
 /*============================================================================
+TABLE OF CONTENTS (TOC) STYLES
+============================================================================*/
+
+/* Main TOC button - positioned fixed on left side */
+.toc-button {
+  position: fixed;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.25s ease;
+  z-index: 1000;
+  padding: 12px 4px 12px 8px;
+  border-radius: 8px;
+}
+
+/* Hover effect - transparent box around entire TOC */
+.toc-button:hover {
+  opacity: 1;
+  background-color: rgba(176, 196, 222, 0.1);
+}
+
+/* Container for the lines */
+.toc-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  width: 24px;
+}
+
+/* Individual lines representing sections */
+.line {
+  width: 16px;
+  height: 2px;
+  background-color: #9ca3af;
+  border-radius: 1px;
+  transition: all 0.25s ease;
+}
+
+/* Active line styling */
+.line.active {
+  background-color: var(--tertiary-color);
+  width: 20px;
+}
+
+/* Expandable TOC pane */
+.toc-pane {
+  position: fixed;
+  left: 44px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-10px);
+  background: var(--background-color);
+  border: 1px solid rgba(176, 196, 222, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  padding: 16px;
+  width: max-content; /* fit to longest entry */
+  max-width: min(350px, calc((100vw - var(--posts-width)) / 2 - 60px)); /* constrain to left gutter */
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+}
+
+/* Open state for pane */
+.toc-pane.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Pane header */
+.toc-pane h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tertiary-color);
+  margin: 0 0 12px 0;
+  font-family: "Mulish", sans-serif;
+}
+
+/* Individual TOC items in pane */
+.toc-item {
+  display: block;
+  padding: 8px 12px;
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 1.4;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  margin-bottom: 2px;
+  font-family: "Mulish", sans-serif;
+  white-space: nowrap; /* keep items on one line so pane fits longest */
+  overflow: hidden;
+  text-overflow: ellipsis; /* gracefully truncate when hitting max width */
+}
+
+.toc-item:hover {
+  background-color: rgba(176, 196, 222, 0.1);
+  color: #ffd199;
+}
+
+.toc-item.active {
+  background-color: rgba(176, 196, 222, 0.15);
+  color: var(--tertiary-color);
+  font-weight: 500;
+}
+
+/* Section heading highlight animation */
+.section-highlight {
+  position: relative;
+}
+
+/* Use overlay to avoid layout shift */
+.section-highlight::before {
+  content: '';
+  position: absolute;
+  top: -0.5rem;
+  left: -1rem;
+  right: -1rem;
+  bottom: -0.5rem;
+  background-color: rgba(255, 209, 153, 0.4);
+  border-radius: 12px;
+  pointer-events: none;
+  will-change: opacity, transform;
+  animation: section-flash 2s ease-out;
+}
+
+@keyframes section-flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Hide TOC on mobile */
+@media (max-width: 768px) {
+  .toc-button,
+  .toc-pane {
+    display: none;
+  }
+}
+
+/*============================================================================
 ABOUT PAGE STYLES
 ============================================================================*/
 

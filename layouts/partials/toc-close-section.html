@@ -1,0 +1,7 @@
+{{/* Close the last open toc-section if TOC wrapping was enabled (namespaced) */}}
+{{ $open := .Scratch.Get "tocwrap_open" }}
+{{ if $open }}
+</div>
+{{ .Scratch.Set "tocwrap_open" false }}
+{{ end }}
+
