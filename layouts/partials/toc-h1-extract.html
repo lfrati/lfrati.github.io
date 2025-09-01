@@ -1,12 +1,9 @@
-{{/* Extract H1 headings from content and return them as a slice */}}
+{{/* Extract headings from .TableOfContents and return a slice of {id, text} */}}
 {{ $h1s := slice }}
-{{ $content := .Content }}
-{{ range findRE `(?s)<h1[^>]*id="([^"]*)"[^>]*>(.*?)</h1>` $content }}
-  {{ $matches := findRE `id="([^"]*)"` . }}
-  {{ if $matches }}
-    {{ $id := index $matches 0 | replaceRE `id="([^"]*)"` "$1" }}
-    {{ $text := . | replaceRE `(?s)<h1[^>]*>(.*?)</h1>` "$1" | replaceRE "<[^>]*>" "" | plainify }}
-    {{ $h1s = $h1s | append (dict "id" $id "text" $text) }}
-  {{ end }}
+{{ $tocHTML := .TableOfContents }}
+{{ range findRE `(?s)<a\s+href="#([^"]+)"[^>]*>(.*?)</a>` $tocHTML }}
+  {{ $id := . | replaceRE `(?s).*href=\"#([^\"]+)\".*` "$1" }}
+  {{ $text := . | replaceRE `(?s).*>(.*?)</a>` "$1" | replaceRE "<[^>]*>" "" | plainify | strings.TrimSpace }}
+  {{ $h1s = $h1s | append (dict "id" $id "text" $text) }}
 {{ end }}
 {{ return $h1s }}

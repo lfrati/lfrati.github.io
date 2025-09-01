@@ -724,7 +724,8 @@ TABLE OF CONTENTS (TOC) STYLES
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: flex-end;
+  align-items: flex-start;
+  width: 24px;
 }
 
 /* Individual lines representing sections */
@@ -808,6 +809,7 @@ TABLE OF CONTENTS (TOC) STYLES
   position: relative;
 }
 
+/* Use overlay to avoid layout shift */
 .section-highlight::before {
   content: '';
   position: absolute;
@@ -817,22 +819,20 @@ TABLE OF CONTENTS (TOC) STYLES
   bottom: -0.5rem;
   background-color: rgba(255, 209, 153, 0.4);
   border-radius: 12px;
-  z-index: -1;
+  pointer-events: none;
+  will-change: opacity, transform;
   animation: section-flash 2s ease-out;
 }
 
 @keyframes section-flash {
   0% {
     opacity: 1;
-    background-color: rgba(255, 209, 153, 0.4);
   }
   50% {
     opacity: 1;
-    background-color: rgba(255, 209, 153, 0.2);
   }
   100% {
     opacity: 0;
-    background-color: transparent;
   }
 }
 
