@@ -15,10 +15,16 @@
 
   </article>
 
+  {{ if .TableOfContents }}
+  {{ $h1s := partial "toc-h1-extract.html" . }}
+  
+  {{ if gt (len $h1s) 0 }}
   <!-- Table of Contents Component -->
   <button class="toc-button" id="tocButton" aria-label="Table of Contents">
     <div class="toc-lines" id="tocLines">
-      <!-- Lines generated dynamically by JavaScript -->
+      {{ range $h1s }}
+        <div class="line"></div>
+      {{ end }}
     </div>
   </button>
 
@@ -26,8 +32,12 @@
   <div class="toc-pane" id="tocPane">
     <h3>Table of Contents</h3>
     <div id="tocItems">
-      <!-- TOC items generated dynamically by JavaScript -->
+      {{ range $h1s }}
+        <a href="#{{ .id }}" class="toc-item">{{ .text }}</a>
+      {{ end }}
     </div>
   </div>
+  {{ end }}
+  {{ end }}
 
 {{ end }}

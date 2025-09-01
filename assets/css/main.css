@@ -803,6 +803,39 @@ TABLE OF CONTENTS (TOC) STYLES
   font-weight: 500;
 }
 
+/* Section heading highlight animation */
+.section-highlight {
+  position: relative;
+}
+
+.section-highlight::before {
+  content: '';
+  position: absolute;
+  top: -0.5rem;
+  left: -1rem;
+  right: -1rem;
+  bottom: -0.5rem;
+  background-color: rgba(255, 209, 153, 0.4);
+  border-radius: 12px;
+  z-index: -1;
+  animation: section-flash 2s ease-out;
+}
+
+@keyframes section-flash {
+  0% {
+    opacity: 1;
+    background-color: rgba(255, 209, 153, 0.4);
+  }
+  50% {
+    opacity: 1;
+    background-color: rgba(255, 209, 153, 0.2);
+  }
+  100% {
+    opacity: 0;
+    background-color: transparent;
+  }
+}
+
 /* Hide TOC on mobile */
 @media (max-width: 768px) {
   .toc-button,
