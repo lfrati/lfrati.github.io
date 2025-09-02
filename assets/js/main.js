@@ -128,12 +128,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const sectionWrappers = Array.from(document.querySelectorAll('.post-content .toc-section'));
   if (sectionWrappers.length === 0) return;
 
-  // DEBUG: visualize server-wrapped sections without affecting layout
-  sectionWrappers.forEach((wrapper) => {
-    wrapper.style.outline = '1px solid rgba(128, 145, 155, 0.5)';
-    wrapper.style.outlineOffset = '4px';
-    wrapper.style.borderRadius = '8px';
-  });
+  // // DEBUG: visualize server-wrapped sections without affecting layout
+  // sectionWrappers.forEach((wrapper) => {
+  //   wrapper.style.outline = '1px solid rgba(128, 145, 155, 0.5)';
+  //   wrapper.style.outlineOffset = '4px';
+  //   wrapper.style.borderRadius = '8px';
+  // });
 
   // Track visibility state of wrappers and toggle active classes accordingly
   const visibleSections = new Set();
