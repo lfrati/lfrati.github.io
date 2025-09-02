@@ -1,3 +1,22 @@
+{{/* Server-side section wrapping for TOC using Scratch (namespaced keys) */}}
+{{ $tocIds := .Page.Scratch.Get "tocwrap_ids" }}
+{{ $tocEnabled := and $tocIds (gt (len $tocIds) 0) }}
+{{ $isBoundary := and $tocEnabled (in $tocIds .Anchor) }}
+
+{{ if $isBoundary }}
+  {{/* Close previous open wrapper if any */}}
+  {{ $open := .Page.Scratch.Get "tocwrap_open" }}
+  {{ if $open }}
+    </div>
+  {{ end }}
+
+  {{/* Increment section counter and open new wrapper */}}
+  {{ .Page.Scratch.Add "tocwrap_index" 1 }}
+  {{ $idx := .Page.Scratch.Get "tocwrap_index" }}
+  {{ .Page.Scratch.Set "tocwrap_open" true }}
+  <div class="toc-section" data-section="{{ $idx }}">
+{{ end }}
+
 <h{{ .Level }} id="{{ .Anchor | safeURL }}">
   <a href="#{{ .Anchor | safeURL }}" class="heading-anchor" aria-hidden="true" style="text-decoration: none; color: #999;">#</a>
   {{ .Text | safeHTML }}

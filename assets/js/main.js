@@ -124,56 +124,40 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // IntersectionObserver-based highlighting for entire section content
-  const contentContainer = document.querySelector('.post-content');
-  const endSentinel = document.createElement('div');
-  endSentinel.id = 'toc-end-sentinel';
-  endSentinel.style.position = 'relative';
-  endSentinel.style.width = '1px';
-  endSentinel.style.height = '1px';
-  if (contentContainer) {
-    contentContainer.appendChild(endSentinel);
-  }
+  // IntersectionObserver-based highlighting observing server-wrapped sections
+  const sectionWrappers = Array.from(document.querySelectorAll('.post-content .toc-section'));
+  if (sectionWrappers.length === 0) return;
 
-  function recomputeVisibleSections() {
-    const viewportTop = 0;
-    const viewportBottom = window.innerHeight || document.documentElement.clientHeight;
+  // DEBUG: visualize server-wrapped sections without affecting layout
+  sectionWrappers.forEach((wrapper) => {
+    wrapper.style.outline = '1px solid rgba(128, 145, 155, 0.5)';
+    wrapper.style.outlineOffset = '4px';
+    wrapper.style.borderRadius = '8px';
+  });
 
-    sectionEls.forEach((topEl, index) => {
-      const bottomEl = (index + 1 < sectionEls.length)
-        ? sectionEls[index + 1]
-        : endSentinel;
-      if (!topEl || !bottomEl) return;
-
-      const topRect = topEl.getBoundingClientRect();
-      const bottomRect = bottomEl.getBoundingClientRect();
-      const sectionTop = topRect.top;
-      const sectionBottom = bottomRect.top; // start of next section (or end sentinel)
-
-      // Visible if any part of [sectionTop, sectionBottom) intersects viewport
-      const visibleTop = Math.max(sectionTop, viewportTop);
-      const visibleBottom = Math.min(sectionBottom, viewportBottom);
-      const isVisible = visibleTop < visibleBottom;
-
-      const tocLink = tocItemEls[index];
-      const line = lineEls[index];
-      if (tocLink) tocLink.classList.toggle('active', !!isVisible);
-      if (line) line.classList.toggle('active', !!isVisible);
+  // Track visibility state of wrappers and toggle active classes accordingly
+  const visibleSections = new Set();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const attr = entry.target.getAttribute('data-section');
+      const index = attr ? parseInt(attr, 10) : NaN;
+      if (Number.isNaN(index)) return;
+      if (entry.isIntersecting) {
+        visibleSections.add(index);
+      } else {
+        visibleSections.delete(index);
+      }
     });
-  }
 
-  const observer = new IntersectionObserver(() => {
-    // Any intersection change may alter visibility; recompute for all sections
-    recomputeVisibleSections();
+    tocItemEls.forEach((el, idx) => {
+      el.classList.toggle('active', visibleSections.has(idx));
+    });
+    lineEls.forEach((el, idx) => {
+      el.classList.toggle('active', visibleSections.has(idx));
+    });
   });
 
-  // Observe all H1 sections with ids derived from DOM and the end sentinel
-  sectionEls.forEach((section) => {
-    if (section) observer.observe(section);
-  });
-  observer.observe(endSentinel);
-  // Initial computation
-  recomputeVisibleSections();
+  sectionWrappers.forEach((wrapper) => observer.observe(wrapper));
 
   // Handle direct navigation to fragments and browser navigation (flash target)
   function handleHashNavigation() {
@@ -190,8 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
   handleHashNavigation();
   window.addEventListener('hashchange', handleHashNavigation);
 
-  // Recompute on resize to account for layout changes
-  window.addEventListener('resize', recomputeVisibleSections);
+  // IntersectionObserver handles resize/layout changes; no manual recompute needed
 
   // Toggle TOC pane on button click
   tocButton.addEventListener('click', function(e) {

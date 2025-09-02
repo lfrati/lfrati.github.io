@@ -10,13 +10,25 @@
     </header>
 
     <div class="post-content">
+    {{/* Precompute TOC items and share ids with render hooks via Scratch */}}
+    {{ $h1s := partial "toc-h1-extract.html" . }}
+    {{ .Scratch.Set "tocwrap_ids" (slice) }}
+    {{ range $h1s }}
+      {{ $.Scratch.Add "tocwrap_ids" (slice .id) }}
+    {{ end }}
+    {{ .Scratch.Set "tocwrap_open" false }}
+    {{ .Scratch.Set "tocwrap_index" -1 }}
+    {{ .Scratch.Set "tocwrap_init" true }}
+
     {{ .Content }}
+
+    {{/* Close any open section wrapper after content render */}}
+    {{ partial "toc-close-section.html" . }}
     </div>
 
   </article>
 
   {{ if .TableOfContents }}
-  {{ $h1s := partial "toc-h1-extract.html" . }}
   
   {{ if gt (len $h1s) 0 }}
   <!-- Table of Contents Component with pre-generated data -->
