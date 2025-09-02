@@ -69,10 +69,10 @@ function setup() {
   });
   mu = 0;
   muSpan = createSpan(" &#x3BC; : " + str(nf(mu, 0, 2)));
-  muSpan.style("font-size:18pt");
+  muSpan.style("font-size:18pt; color: white");
 
   checkbox = createCheckbox("SABOTAGE", false);
-  checkbox.style("font-family:arial");
+  checkbox.style("font-family:arial; color: white");
   checkbox.changed(() => {
     reset();
   });

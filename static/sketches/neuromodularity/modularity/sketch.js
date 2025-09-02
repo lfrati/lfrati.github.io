@@ -85,7 +85,7 @@ function setup() {
   });
   mu = slider.value();
   muSpan = createSpan(" &#x3BC; : " + str(mu));
-  muSpan.style("font-size:18pt");
+  muSpan.style("font-size:18pt; color: white");
 
   reset();
   frameRate(30);
