@@ -32,7 +32,7 @@ CSS VARIABLES & GLOBAL SETTINGS
   --posts-width: 768px;
   /* Sidenote sizing */
   --sidenote-width: 400px;
-  --sidenote-offset: 16px;
+  --sidenote-offset: 20px;
 }
 
 /*============================================================================
@@ -317,6 +317,8 @@ article.post {
   text-align: justify;
   text-justify: auto;
 }
+
+/* Removed toggle logic: no justification overrides needed */
 
 /* Only add border-bottom to .post if it is not an article element */
 .post:not(article) {

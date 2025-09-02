@@ -11,9 +11,6 @@
   cursor: pointer;
 }
 
-.sidenote-checkbox {
-  display: none;
-}
 
 .sidenote-content {
   display: block;
@@ -31,12 +28,14 @@
 
 .sidenote-content.sidenote-right {
   right: 0;
-  margin-right: calc(-1 * (var(--sidenote-width) + var(--sidenote-offset)));
+  margin-right: 0;
+  transform: translateX(calc(100% + var(--sidenote-offset)));
 }
 
 .sidenote-content.sidenote-left {
   left: 0;
-  margin-left: calc(-1 * (var(--sidenote-width) + var(--sidenote-offset)));
+  margin-left: 0;
+  transform: translateX(calc(-100% - var(--sidenote-offset)));
 }
 
 /* More specific selectors to override main.css */
@@ -51,22 +50,4 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Mobile: show inline when toggled */
-@media screen and (max-width: 1024px) {
-  .sidenote-content {
-    position: static;
-    width: 100%;
-    display: none;
-    margin: 10px 0;
-  }
-
-  .sidenote .sidenote-checkbox:checked ~ .sidenote-content {
-    display: block;
-  }
-
-  .sidenote-content.sidenote-right,
-  .sidenote-content.sidenote-left {
-    margin-right: 0;
-    margin-left: 0;
-  }
-}
+/* Removed mobile inline behavior; keep side positioning at all sizes */

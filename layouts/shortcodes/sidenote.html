@@ -1,14 +1,7 @@
 {{ $label := .Get 0 }}
 {{ $position := .Get 1 | default "right" }}
-{{ if not (.Page.Scratch.Get "sidenote_counter") }}
-  {{ .Page.Scratch.Set "sidenote_counter" 0 }}
-{{ end }}
-{{ $counter := add 1 (.Page.Scratch.Get "sidenote_counter") }}
-{{ .Page.Scratch.Set "sidenote_counter" $counter }}
-{{ $id := printf "sn-%d" $counter }}
 <span class="sidenote">
-    <label class="sidenote-label" for="{{ $id }}">{{ $label }}</label>
-    <input class="sidenote-checkbox" type="checkbox" id="{{ $id }}"></input>
+    <span class="sidenote-label">{{ $label }}</span>
     <span class="sidenote-content sidenote-{{ $position }}">
     {{ .Inner }}
     </span>

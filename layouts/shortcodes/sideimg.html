@@ -10,8 +10,7 @@
 {{ $id := printf "sn-%d" $counter }}
 
 <span class="sideimg">
-    <label class="sideimg-label" for="{{ $id }}">{{ $label }}</label>
-    <input class="sideimg-checkbox" type="checkbox" id="{{ $id }}"></input>
+    <span class="sideimg-label">{{ $label }}</span>
     <span class="sideimg-content sideimg-{{ $position }}">
         <a href="{{ $path }}" target="_blank" rel="noopener noreferrer">
             <img src="{{ $path }}" alt="{{ $label }}" style="max-width: 100%; height: auto;">
