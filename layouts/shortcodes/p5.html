@@ -1,17 +1,29 @@
 {{/*
   Usage:
-  {{< p5 src="geometricgraph" width="100%" height="420" title="Geometric Graph" >}}
+  {{< p5 src="geometricgraph" size="640 420" title="Geometric Graph" >}}
+  {{< p5 src="geometricgraph" size="auto" title="Geometric Graph" >}}
 
   - src: path under /static/sketches (without leading slash)
-  - width: iframe width (default 100%)
-  - height: iframe height in px (default 420)
+  - size: either "auto" or two integers "WIDTH HEIGHT" (pixels)
   - title: iframe title (optional)
 */}}
 {{ $src := .Get "src" }}
 {{ $src = printf "/sketches/%s" $src }}
-{{ $width := or (.Get "width") "100%" }}
-{{ $height := or (.Get "height") "400" }}
+{{ $size := .Get "size" }}
 {{ $title := or (.Get "title") (print "p5 sketch: " $src) }}
+
+{{/* Compose attribute string based on size */}}
+{{ $attr := "" }}
+{{ if eq (lower $size) "auto" }}
+  {{ $attr = `onload="resizeSketch(this)" width="400px" height="400px"` }}
+{{ else }}
+  {{ $parts := split $size " " }}
+  {{ if eq (len $parts) 2 }}
+    {{ $w := index $parts 0 }}
+    {{ $h := index $parts 1 }}
+    {{ $attr = printf `width="%spx" height="%spx"` $w $h }}
+  {{ end }}
+{{ end }}
 <div class="p5-embed">
   <iframe
     class="p5-iframe"
@@ -19,10 +31,8 @@
     title="{{ $title }}"
     loading="lazy"
     scrolling="no"
-    width="{{ $width }}"
-    height="{{ $height }}"
+    {{ $attr | safeHTMLAttr }}
     referrerpolicy="no-referrer"
-    onload="resizeSketch(this)"
     allowfullscreen>
   </iframe>
 </div>

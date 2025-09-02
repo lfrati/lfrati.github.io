@@ -31,8 +31,10 @@ let cur_signals = 0; // How many infected agents are travelling
 let timeless_signals = 0;
 
 function mousePressed() {
+    let mx = mouseX;
+    if (mx > width/2) { mx = mouseX % (width/2) - 25; }
     for (let node of time_network.nodes) {
-        let d = dist(mouseX, mouseY, node.pos.x, node.pos.y);
+        let d = dist(mx, mouseY, node.pos.x, node.pos.y);
         if (d < 10) {
             node.infect(true);
             timeless_network.nodes[node.id].infect(true);
@@ -90,7 +92,10 @@ function draw() {
     text('TIME-less', width - 220, height - 20);
 
     for (let node of time_network.nodes) {
-        let d = dist(mouseX, mouseY, node.pos.x, node.pos.y);
+        let mx = mouseX;
+        if (mx > width/2) { mx = mouseX % (width/2) - 25; }
+        // ellipse(mx, mouseY, 10, 10);
+        let d = dist(mx, mouseY, node.pos.x, node.pos.y);
         if (d < 10) {
             node.selected = true;
             timeless_network.nodes[node.id].selected = true;
@@ -99,8 +104,11 @@ function draw() {
             timeless_network.nodes[node.id].selected = false;
         }
     }
-    fill(255);
-    rect(width / 2 - 25, height, 40, -height - 2);
+    // fill(255);
+    // rect(width / 2 - 25, height, 40, -height - 2);
+    stroke(100);
+    strokeWeight(1);
+    line(width / 2 - 5, height, width / 2 -5, height - height);  
 
     textSize(map(cur_signals / max_signals, 0, 1, 10, 32));
     let col = lerpColor(white, red, cur_signals / max_signals);
