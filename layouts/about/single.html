@@ -26,7 +26,8 @@
     const camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
 
     const loader = new THREE.TextureLoader();
-    const tex = await loader.loadAsync("/me.jpg");
+    // const tex = await loader.loadAsync("{{ `me.jpg` | absURL }}"); // to get it from static
+    const tex = await loader.loadAsync("me.jpg"); // to get it from the about folder
     tex.minFilter = THREE.LinearFilter;
     tex.magFilter = THREE.LinearFilter;
     tex.wrapS = THREE.RepeatWrapping;
