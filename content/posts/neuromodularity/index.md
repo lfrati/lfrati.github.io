@@ -50,7 +50,6 @@ When these mechanisms (geometric embedding and complex contagion) are combined t
 Feel free to experiment exciting different neurons and see how the activity spreads through the network. To keep the overall activity under control the amount of impulses that can be present at any given time is capped. Also, since the threshold for spiking increases as the neurons keep spiking we can see that increasing the connectivity of the network the neurons will blow up incredibly before starting to deflate.
 
 {{< p5 src="neuromodularity/spiketrain" size="auto" title="Spike Train Dynamics" >}}
-{{< p5 src="neuromodularity/spiketrain" size="auto" title="Spike Train Dynamics" >}}
 
 **I**: determines the threshold level, raising it will result in the activity to spread much less.  
 **r**: represents the connection radius, raising it the number of edges will increase.  
@@ -84,7 +83,7 @@ This problem can be counteracted either by using some careful wiring and appropr
 
 On the left we have a version of our network where edges are crossed at a constant speed based on the distance between the endpoints. On the right instead we have the same network but the time to cross an edge is constant no matter it's length. You can select a node on the left and it's counterpart on the right (both highlighted in yellow) and click to start releasing signals. The more signals are sent the faster the symmetry between the two versions will be broken. If enough signals are sent the time-based version will probably start blowing up (signals are capped at 1000 for your own safety), while the time-less counterpart will probably settle on a steady activation level.
 
-{{< p5 src="neuromodularity/time" size="auto" title="Time vs Timeless Networks" >}}
+{{< p5 src="neuromodularity/time" size="750 450" title="Time vs Timeless Networks" >}}
 
 **Left**: signals propagate at fixed speed so crossing longer edges take more time.  
 **Right**: every edge takes the same time to be travelled so all the signals arrive simultaneously at their destination.  
@@ -98,7 +97,7 @@ In that scenario producing and sustaining spikes requires multiple simultaneous 
 
 In the following sketch we show a simple scenario using a lattice network with local connections and low activation threshold of 3. Nodes are connected randomly with a local preference that scales linearly with distance. As you change the level of connectivity of the network you can observe that activity can either _saturate_ (i.e. almost all nodes fire all the time) or _vanish_ (i.e. the signals are not sufficient to cross the thresholds).
 
-{{< p5 src="neuromodularity/lattice" size="auto" title="Lattice Networks" >}}
+{{< p5 src="neuromodularity/lattice" size="350 540" title="Lattice Networks" >}}
 
 Use the slider to change the level of connectivity in the system. Use the mouse to send signals from certain nodes or use the button "spark" to send one signal from every node at the same time. The activity bar shows the number of nodes that are currently spiking (i.e. green for none, red for all).
 
@@ -116,7 +115,7 @@ Between these two extremes it is possible to find a **balance** point where the 
 Below you can see a sketch that shows a simplified version of the setup we just mentioned.
 There are 9 communities of 16 nodes each that start initially fully wired within their local communities. As you increase the value of μ local connections are selected at random and turned into global connections by rewiring them to connect to a random node from another community. This process is repeated until the ratio of local/global connections equals μ. This process involves only rewiring so the overall number of connections remains the same, only the wiring structure is changed. The problem has been simplified by assuming that every connection is of equal unitary weight and that interactions are only excitatory. This obviously reduces the possible dynamics of the system but is still sufficient to see how different levels of modularity influence the outcomes.
 
-{{< p5 src="neuromodularity/modularity" size="auto" title="Modularity Control" >}}
+{{< p5 src="neuromodularity/modularity" size="600 650" title="Modularity Control" >}}
 
 Click on nodes to send signals to their neighbours. Use the "reset" button to sample new networks.  
 Use the "seed" button to send signals to an entire community at once. Use the slider to adjust the value of μ.
@@ -200,7 +199,7 @@ Once an activation threshold is determined then a minimal surviving **clique** i
 
 To minimally connect two communities we need to make every node in the kernel of the community we want to excite spike. Since the kernel contains _threshold+1_ nodes and each of them needs to receive at least _threshold_ signals for a total of _threshold x (threshold + 1)_ edges. We can see this set up in the sketch below. Each community is connected to the next one forming a chain of communities that spans the whole network. The whole structure is resting on a precarious **equilibrium** since the network has barely enough signal to overcome the threshold barrier. We can see an example of this by using the "sabotage" button below. If enabled one single edge is removed from every center node of each community (the crippled node is shown in black). In this new regime the damaged kernel doesn't have enough activity to keep spiking so after propagating the signal the activity in the community dies out. This creates an interesting effect where the signal travels along the chain of communities like a propagating wave.
 
-{{< p5 src="neuromodularity/minimal" size="auto" title="Minimal Communities" >}}
+{{< p5 src="neuromodularity/minimal" size="480 550" title="Minimal Communities" >}}
 
 Use the "seed" button to manually spark the first community.  
 Use the "sabotage" checkbox to remove one edge from each community.  
