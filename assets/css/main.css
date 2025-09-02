@@ -5,7 +5,6 @@
 - POSTS & CONTENT                    : All post-related styles (containers, headers, content, links, lists)
 - CODE HIGHLIGHTING & SYNTAX         : Code blocks, copy buttons, syntax highlighting
 - FOOTER                             : Footer styles and RSS link
-- EMBEDDED CONTENT                   : P5 embeds and other embedded content
 - RESPONSIVE DESIGN & MOBILE STYLES  : All mobile-specific styles in one place
 */
 
@@ -575,24 +574,6 @@ footer > hr {
 
 .rss-link:hover svg {
   transform: scale(1.1);
-}
-
-/*============================================================================
-EMBEDDED CONTENT
-============================================================================*/
-
-/* p5 embed */
-.p5-embed {
-  max-width: 100%;
-  margin: 1rem auto;
-  display: flex;
-  justify-content: center;
-}
-.p5-embed .p5-iframe {
-  width: 100%;
-  display: block;
-  border: 0;
-  background: #000;
 }
 
 /*============================================================================
