@@ -1,0 +1,28 @@
+{{/*
+  Inline footnote shortcode
+  Usage:
+  {{< fn >}}Footnote content here{{< /fn >}}
+  - Auto-numbers per page; no parameters needed
+  - Renders an inline sidenote box and also collects items for the bottom list
+*/}}
+
+{{- $next := or (.Page.Store.Get "fn_next") 1 -}}
+{{- $fnId := $next -}}
+{{- .Page.Store.Set "fn_next" (add $next 1) -}}
+
+{{- $idStr := printf "fn%v" $fnId -}}
+{{- $refStr := printf "fnref%v" $fnId -}}
+
+{{/* Collect for bottom list */}}
+{{- $list := or (.Page.Store.Get "fn_list") (slice) -}}
+{{- $entry := dict "id" $idStr "ref" $refStr "content" (.Inner | safeHTML) -}}
+{{- $list = $list | append $entry -}}
+{{- .Page.Store.Set "fn_list" $list -}}
+
+<span class="footnote-sidenote">
+  <a href="#{{$idStr}}" id="{{$refStr}}" class="footnote-ref" role="doc-noteref">[{{$fnId}}]</a>
+  <span class="footnote-content" data-footnote-id="{{$idStr}}">{{$fnId}}. {{ .Inner | safeHTML }}</span>
+  {{/* Keep original content flow intact */}}
+</span>
+
+

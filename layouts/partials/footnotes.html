@@ -1,0 +1,15 @@
+{{- $list := .Page.Store.Get "fn_list" -}}
+{{- if $list -}}
+<section class="footnotes" role="doc-endnotes">
+  <hr />
+  <ol>
+    {{- range $list -}}
+    <li id="{{ .id }}" role="doc-endnote">
+      <p>{{ .content | safeHTML }} <a href="#{{ .ref }}" class="footnote-backref" role="doc-backlink">↩︎</a></p>
+    </li>
+    {{- end -}}
+  </ol>
+</section>
+{{- end -}}
+
+

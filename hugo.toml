@@ -58,6 +58,9 @@ disableKinds = ["taxonomy", "term"]
     style = "onedark"
     guessSyntax = false
 
+[markup.goldmark.extensions]
+  footnote = false
+
 [markup.goldmark.extensions.passthrough]
   enable = true
   [markup.goldmark.extensions.passthrough.delimiters]

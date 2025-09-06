@@ -8,7 +8,7 @@
   box-sizing: border-box;
   color: #d8dee9;
   background: rgba(255, 255, 255, 0.03);
-  border: 2px dashed rgba(176, 196, 222, 0.474);
+  border: 1px solid rgba(176, 196, 222, 0.474);
   border-radius: 8px;
   padding: 0.8rem;
   font-size: 0.95rem;
@@ -21,8 +21,8 @@
   margin: 0.2rem 0;
 }
 
+
 @media (min-width: 1201px) {
-  /* Reuse the effective width computed for side images */
   .footnote-content {
     display: block;
     float: right;
@@ -45,6 +45,18 @@
     border-color: #ffd199;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
+}
+
+/* TODO: DO I NEED THIS? */
+/* Ensure bottom footnotes list is visible and not wrapped by floats */
+section.footnotes {
+  display: block;
+  clear: both;
+  margin-top: 1.5rem;
+}
+
+section.footnotes ol {
+  padding-left: 1.25rem;
 }
 
 
