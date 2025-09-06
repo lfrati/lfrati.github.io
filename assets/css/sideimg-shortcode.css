@@ -1,23 +1,14 @@
-/* Sideimg Shortcode Styles */
 
-/* Intentionally non-positioned to allow absolute children to anchor to .post */
 .sideimg {
-  display: inline-block;
+  display: inline;
 }
 
-.sideimg-label {
-  text-decoration: underline 2px dashed rgba(176, 196, 222, 0.8);
-  text-underline-offset: 0.2em;
-  cursor: pointer;
-}
 
 
 .sideimg-content {
-  display: block;
-  position: absolute;
+  /* visual styles only; layout is handled in wide-screen media query */
   max-width: var(--sidenote-width);
   box-sizing: border-box;
-  margin-top: -1.5em;
   color: #d8dee9;
   background: rgba(255, 255, 255, 0.03);
   border: 2px dashed rgba(176, 196, 222, 0.474);
@@ -25,52 +16,60 @@
   padding: 0.8rem;
   font-size: 0.95rem;
   line-height: 1.5;
-  /* Make the box fit content snugly */
-  width: fit-content;
-  min-width: 120px; /* Minimum width for very narrow images */
+  min-width: 120px;
+  display: none; /* hidden by default; enabled on wide screens */
 }
 
-.sideimg-content.sideimg-right {
-  right: 0;
-  margin-right: 0;
-  transform: translateX(calc(100% + var(--sidenote-offset)));
-}
-
-.sideimg-content.sideimg-left {
-  left: 0;
-  margin-left: 0;
-  transform: translateX(calc(-100% - var(--sidenote-offset)));
-}
-
-/* More specific selectors to override main.css */
-.post-content .sideimg:hover .sideimg-label {
-  color: #ffd199;
-  text-decoration-color: #ffd199;
-}
-
-.post-content .sideimg:hover .sideimg-content {
-  /* background: rgba(255, 255, 255, 0.08); */
-  border-color: #ffd199;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Image styles */
 .sideimg-content img {
   max-width: 100%;
   height: auto;
   border-radius: 4px;
   transition: opacity 0.2s ease-in-out;
-  display: block; /* Remove any inline spacing */
-  margin: 0 auto; /* Center the image */
+  display: block;
+  margin: 0 auto;
 }
 
 .sideimg-content a {
-  display: block; /* Make the link fill the container */
-  text-align: center; /* Center the image */
+  display: block;
+  text-align: center;
 }
 
-.sideimg-content a:hover img {
-  opacity: 0.8;
-}
+/* Use float-based layout on wide screens to prevent overlap */
+@media (min-width: 1201px) {
+  /* Compute effective width that fits in the outer margin on wide screens */
+  .post-content {
+    --sideimg-effective-width: min(
+      var(--sidenote-width),
+      calc((100vw - var(--posts-width)) / 2 - var(--sidenote-offset))
+    );
+  }
 
-/* Removed mobile inline behavior; keep side positioning at all sizes */
+  .sideimg-content {
+    display: block;
+    float: right;
+    clear: right; /* stack alongside previous right floats only */
+    width: var(--sideimg-effective-width);
+    margin-right: calc(-1 * (var(--sideimg-effective-width) + var(--sidenote-offset)));
+    margin-top: 0; /* align with the line containing the label */
+    margin-left: 1rem; /* gap from main text */
+    margin-bottom: 0.75rem;
+  }
+
+  .sideimg-label {
+    text-decoration: underline 2px dashed rgba(176, 196, 222, 0.8);
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+
+  .post-content .sideimg:hover .sideimg-label {
+    color: #ffd199;
+    text-decoration-color: #ffd199;
+  }
+
+  .post-content .sideimg:hover .sideimg-content {
+    /* background: rgba(255, 255, 255, 0.08); */
+    border-color: #ffd199;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+}

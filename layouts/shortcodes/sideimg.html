@@ -1,6 +1,5 @@
 {{ $label := .Get 0 }}
 {{ $path := .Get 1 }}
-{{ $position := .Get 2 | default "right" }}
 
 {{ if not (.Page.Scratch.Get "sidenote_counter") }}
   {{ .Page.Scratch.Set "sidenote_counter" 0 }}
@@ -11,7 +10,7 @@
 
 <span class="sideimg">
     <span class="sideimg-label">{{ $label }}</span>
-    <span class="sideimg-content sideimg-{{ $position }}">
+    <span class="sideimg-content">
         <a href="{{ $path }}" target="_blank" rel="noopener noreferrer">
             <img src="{{ $path }}" alt="{{ $label }}" style="max-width: 100%; height: auto;">
         </a>

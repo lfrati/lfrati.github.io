@@ -1,8 +1,0 @@
-{{ $label := .Get 0 }}
-{{ $position := .Get 1 | default "right" }}
-<span class="sidenote">
-    <span class="sidenote-label">{{ $label }}</span>
-    <span class="sidenote-content sidenote-{{ $position }}">
-    {{ .Inner }}
-    </span>
-</span>
