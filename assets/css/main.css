@@ -35,6 +35,16 @@ CSS VARIABLES & GLOBAL SETTINGS
   --sidenote-offset: 20px;
 }
 
+/* Compute effective sidenote width for right-margin floats on wide screens */
+@media (min-width: 1201px) {
+  .post-content {
+    --sideimg-effective-width: min(
+      var(--sidenote-width),
+      calc((100vw - var(--posts-width)) / 2 - var(--sidenote-offset))
+    );
+  }
+}
+
 /*============================================================================
 BASE LAYOUT & BODY STYLES
 ============================================================================*/
