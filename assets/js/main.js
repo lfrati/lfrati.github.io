@@ -219,3 +219,5 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// Floating footnotes now handled by Hugo shortcode `fn`; no JS needed
+

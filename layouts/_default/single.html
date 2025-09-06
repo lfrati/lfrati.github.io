@@ -19,11 +19,11 @@
     {{ .Scratch.Set "tocwrap_open" false }}
     {{ .Scratch.Set "tocwrap_index" -1 }}
     {{ .Scratch.Set "tocwrap_init" true }}
-
     {{ .Content }}
 
     {{/* Close any open section wrapper after content render */}}
     {{ partial "toc-close-section.html" . }}
+    {{ partial "footnotes.html" . }}
     </div>
 
   </article>

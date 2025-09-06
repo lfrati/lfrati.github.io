@@ -1,41 +1,29 @@
-
-.sideimg {
+.footnote-sidenote {
   display: inline;
 }
 
-.sideimg-content {
+.footnote-content {
   /* visual styles only; layout is handled in wide-screen media query */
-  min-width: 120px;
   max-width: var(--sidenote-width);
   box-sizing: border-box;
   color: #d8dee9;
   background: rgba(255, 255, 255, 0.03);
-  border: 2px dashed rgba(176, 196, 222, 0.474);
+  border: 1px solid rgba(176, 196, 222, 0.474);
   border-radius: 8px;
   padding: 0.8rem;
   font-size: 0.95rem;
   line-height: 1.5;
+  min-width: 120px;
   display: none; /* hidden by default; enabled on wide screens */
 }
 
-.sideimg-content img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
-  transition: opacity 0.2s ease-in-out;
-  display: block;
-  margin: 0 auto;
+.footnote-content p {
+  margin: 0.2rem 0;
 }
 
-.sideimg-content a {
-  display: block;
-  text-align: center;
-}
 
-/* Use float-based layout on wide screens to prevent overlap */
 @media (min-width: 1600px) {
-
-  .sideimg-content {
+  .footnote-content {
     display: block;
     float: right;
     clear: right; /* stack alongside previous right floats only */
@@ -46,22 +34,29 @@
     margin-bottom: 0.75rem;
   }
 
-  .sideimg-label {
-    color: var(--link-color);
-    text-decoration: underline 2px dashed rgba(176, 196, 222, 0.8);
-    text-underline-offset: 0.2em;
-    cursor: pointer;
-  }
-
-  .post-content .sideimg:hover .sideimg-label {
+  .post-content .footnote-sidenote:hover a.footnote-ref,
+  .post-content a.footnote-ref.footnote-highlight {
     color: #ffd199;
     text-decoration-color: #ffd199;
   }
 
-  .post-content .sideimg:hover .sideimg-content {
-    /* background: rgba(255, 255, 255, 0.08); */
+  .post-content .footnote-sidenote:hover .footnote-content,
+  .post-content .footnote-content.footnote-highlight {
     border-color: #ffd199;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
-
 }
+
+/* TODO: DO I NEED THIS? */
+/* Ensure bottom footnotes list is visible and not wrapped by floats */
+section.footnotes {
+  display: block;
+  clear: both;
+  margin-top: 1.5rem;
+}
+
+section.footnotes ol {
+  padding-left: 1.25rem;
+}
+
+

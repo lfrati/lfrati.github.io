@@ -24,16 +24,17 @@ CSS VARIABLES & GLOBAL SETTINGS
   /* Colors for the alive and dead states in the logo */
   --alive-color: #e5e5e5;
   --dead-color: #2d3748;
-
   --code-color: #515152;
-
   --post-description-color: #cbd5e0a5;
+  --link-color: #7cc8ff;
 
   --posts-width: 768px;
-  /* Sidenote sizing */
   --sidenote-width: 400px;
   --sidenote-offset: 20px;
+  --sideimg-effective-width: min( var(--sidenote-width), calc((100vw - var(--posts-width)) / 2 - var(--sidenote-offset))
+  );
 }
+
 
 /*============================================================================
 BASE LAYOUT & BODY STYLES
@@ -86,7 +87,7 @@ main {
 }
 
 a {
-  color: #7cc8ff;
+  color: var(--link-color);
   text-decoration: none;
   transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
@@ -422,13 +423,7 @@ article.post {
   font-weight: bold;
 }
 
-a.footnote-ref::before {
-  content: '[';
-}
-
-a.footnote-ref::after {
-  content: ']';
-}
+/* Moved footnote ref brackets into footnote-shortcode.css */
 
 .post-description {
   color: rgb(202, 189, 189);
@@ -838,7 +833,7 @@ TABLE OF CONTENTS (TOC) STYLES
 }
 
 /* Hide TOC on mobile */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .toc-button,
   .toc-pane {
     display: none;
