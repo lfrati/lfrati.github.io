@@ -344,6 +344,7 @@ article.post {
   font-size: 2rem;
   font-weight: 400;
   color: var(--tertiary-color);
+  text-align: left;
   margin: 0 0 1rem 0;
   line-height: 1.2;
   letter-spacing: -0.02em;
