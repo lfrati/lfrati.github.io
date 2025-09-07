@@ -443,11 +443,21 @@ CODE HIGHLIGHTING & SYNTAX
 ============================================================================*/
 
 
-code {
+/* Inline backticks only (exclude fenced code blocks) */
+.post-content :not(pre) > code {
   font-family: inconsolata, monospace, stixgeneral;
   background-color: var(--code-color);
   border: .075rem solid #d7d7d790;
   padding: 0 .25rem;
+  border-radius: 4px;
+}
+
+/* Reset inside Hugo/Chroma code blocks */
+.highlight code,
+pre code {
+  background: none;
+  border: 0;
+  padding: 0;
 }
 
 /* Make code blocks horizontally scrollable */
