@@ -81,8 +81,8 @@ disableKinds = ["taxonomy", "term"]
 
 [menu]
     [[menu.main]]
-        name = "Home"
-        pageref = "/"
+        name = "Projects"
+        pageref = "/projects/"
         weight = 1
     [[menu.main]]
         name = "About"

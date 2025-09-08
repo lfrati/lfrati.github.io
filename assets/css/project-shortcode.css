@@ -1,0 +1,118 @@
+/* removed .projects-list wrapper; projects are listed inline in content */
+
+.project-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid rgba(176, 196, 222, 0.15);
+  border-radius: 12px;
+  background: rgba(20, 20, 26, 0.6);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  text-decoration: none; /* link wrapper */
+  color: inherit; /* link wrapper */
+}
+
+/* vertical spacing between inline project entries */
+.project-item + .project-item {
+  margin-top: 14px;
+}
+
+.project-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(176, 196, 222, 0.25);
+  background: rgba(20, 20, 26, 0.7);
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.project-title {
+  margin: 0 0 6px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--tertiary-color);
+}
+
+.project-summary {
+  margin: 0 0 10px 0;
+  color: var(--post-description-color);
+}
+
+.project-langs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-lang {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  line-height: 1;
+  color: #9fb4d1;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  background: rgba(176, 196, 222, 0.12);
+  border: 1px solid rgba(176, 196, 222, 0.2);
+}
+
+.project-actions {
+  display: flex;
+  align-items: center;
+}
+
+.project-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(37, 99, 235, 0.15);
+  color: #9ec1ff;
+  text-decoration: none;
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  position: relative;
+  line-height: 0;
+}
+
+.project-cta.has-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  gap: 0;
+  font-size: 0; /* collapse any whitespace text nodes */
+  line-height: 0;
+  box-sizing: border-box;
+}
+
+.project-cta .icon {
+  width: 18px;
+  height: 18px;
+  display: block; /* avoid inline whitespace quirks */
+}
+
+.project-cta:hover {
+  background: rgba(37, 99, 235, 0.25);
+  color: #cce0ff;
+}
+
+@media (max-width: 640px) {
+  .project-item {
+    grid-template-columns: 1fr;
+  }
+  .project-actions {
+    justify-content: flex-start;
+  }
+}
+
+

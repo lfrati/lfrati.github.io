@@ -2,6 +2,10 @@
 title = "About"
 +++
 
+## Who am I?
+
+Just a guy with a keen interest in all things computation, a PhD in [Complex Systems and Data Science](https://vermontcomplexsystems.org/education/phd/), a bunch of deep learning experience in continual and meta-learning, and a passion for cellular automata.
+
 ## What is this blog?
 A quiet place for some thoughts?  
 
