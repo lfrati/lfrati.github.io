@@ -81,10 +81,14 @@ disableKinds = ["taxonomy", "term"]
 
 [menu]
     [[menu.main]]
+        name = "Art"
+        url = "https://fratilapo.com/barelycomplex"
+        weight = 1
+    [[menu.main]]
         name = "Projects"
         pageref = "/projects/"
-        weight = 1
+        weight = 2
     [[menu.main]]
         name = "About"
         pageref = "/about/"
-        weight = 2
+        weight = 3
