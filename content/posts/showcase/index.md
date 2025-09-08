@@ -9,17 +9,34 @@ thumbnail = "helloworld.avif"
 
 <script src="leader-line.min.js"></script>
 <script>
+    let width = 0;
+    function getWidth() {
+    return Math.max(
+      document.body.scrollWidth,
+      document.documentElement.scrollWidth,
+      document.body.offsetWidth,
+      document.documentElement.offsetWidth,
+      document.documentElement.clientWidth
+    );}
     document.addEventListener('DOMContentLoaded', function() {
         let start = document.getElementById('table-of-contents');
         let end = document.getElementById('tocButton');
-        new LeaderLine( start, end, {color: 'grey', size:4, dash: {animation: true}, endPlug: 'hand', endPlugSize:0.8});
+        new LeaderLine( start, end, {color: 'grey', size:4, dash: {animation: true}, endPlug: 'hand', endPlugSize:0.8, startSocket : 'left', endSocket: 'top'});
         start = document.getElementById('start');
         end = document.querySelector('[data-footnote-id="fn1"]');
-        new LeaderLine( start, end, {color: 'grey', size:4, dash: {animation: true}, endPlug: 'hand', endPlugSize:0.8, startSocket : "right", endSocket: 'bottom', path :'grid'});//, startSocketGravity:600});
+        let style = window.getComputedStyle(end)
+        if (style.display != 'none'){
+          new LeaderLine( start, end, {color: 'grey', size:4, dash: {animation: true}, endPlug: 'hand', endPlugSize:0.8, startSocket : "right", endSocket: 'bottom', path :'grid'});//, startSocketGravity:600});
+        }
+        width = getWidth()
+        const pageWidthSpan = document.getElementById('pageWidth')
+        if (pageWidthSpan) { pageWidthSpan.textContent = width + 'px' }
+        pageWidthSpan.style = 'color:red'
+        if(width >= 1600){pageWidthSpan.style = 'color:green'}
     });
 </script>
 
-{{< box info >}}This post demonstrates the blog's interactive features and styling with practical examples.{{< /box >}}
+{{< box info "topbox" >}}This blog is best viewed on a screen at least 1600px wide. Your width: <span id="pageWidth"></span>{{< /box >}}
 
 # Table of Contents
 
