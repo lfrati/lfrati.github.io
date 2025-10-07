@@ -1,0 +1,1502 @@
+================
+CODE SNIPPETS
+================
+TITLE: Vector2 Arithmetic Operators: Multiplication
+DESCRIPTION: Performs element-wise multiplication of a Vector2 by another Vector2, a float, or an int. Returns a new Vector2 with the results. Note that multiplication by Transform2D has specific behavior related to orthonormal transformations.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: GDScript
+CODE:
+```
+print(Vector2(10, 20) * Vector2(3, 4)) # Prints (30.0, 80.0)
+```
+
+--------------------------------
+
+TITLE: Vector2 Constructor: Copying Another Vector2 (GDScript)
+DESCRIPTION: Creates a new Vector2 by copying the values from an existing Vector2. This is useful for duplicating vector data.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: GDScript
+CODE:
+```
+var original_vec = Vector2(10.0, 5.0)
+var copied_vec = Vector2(from: original_vec)
+```
+
+--------------------------------
+
+TITLE: Vector2 Constructor: Default Initialization (GDScript)
+DESCRIPTION: Constructs a default Vector2 with all components set to 0. This is the most basic way to create a Vector2 instance.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: GDScript
+CODE:
+```
+var vec = Vector2()
+```
+
+--------------------------------
+
+TITLE: Vector2 Class Documentation
+DESCRIPTION: This section details the Vector2 class, a fundamental type for 2D operations in Godot Engine.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: APIDOC
+CODE:
+```
+## Vector2 Class
+
+A 2D vector using floating-point coordinates.
+
+### Description
+A 2-element structure that can be used to represent 2D coordinates or any other pair of numeric values. It uses floating-point coordinates. By default, these floating-point values use 32-bit precision, unlike float which is always 64-bit. If double precision is needed, compile the engine with the option `precision=double`. See Vector2i for its integer counterpart.
+
+**Note:** In a boolean context, a Vector2 will evaluate to `false` if it's equal to `Vector2(0, 0)`. Otherwise, a Vector2 will always evaluate to `true`.
+
+### Properties
+- **x** (float) - The x-coordinate of the vector.
+- **y** (float) - The y-coordinate of the vector.
+
+### Constructors
+- **Vector2()**: Creates a default Vector2 (0, 0).
+- **Vector2(from: Vector2)**: Creates a new Vector2 by copying another Vector2.
+- **Vector2(from: Vector2i)**: Creates a new Vector2 from a Vector2i.
+- **Vector2(x: float, y: float)**: Creates a new Vector2 with the given x and y coordinates.
+
+### Methods
+- **abs()**: Returns the absolute value of the vector (all components are positive).
+- **angle()**: Returns the angle of the vector in radians.
+- **angle_to(to: Vector2)**: Returns the angle between this vector and `to` in radians.
+- **angle_to_point(to: Vector2)**: Returns the angle to `to` in radians.
+- **aspect()**: Returns the aspect ratio (x / y) of the vector.
+- **bezier_derivative(control_1: Vector2, control_2: Vector2, end: Vector2, t: float)**: Computes the derivative of a cubic Bezier curve at position `t`.
+- **bezier_interpolate(control_1: Vector2, control_2: Vector2, end: Vector2, t: float)**: Computes the cubic Bezier curve at position `t`.
+- **bounce(n: Vector2)**: Bounces the vector off the given normal `n`.
+- **ceil()**: Returns a vector with all components rounded up to the nearest integer.
+- **clamp(min: Vector2, max: Vector2)**: Clamps the vector's components between the minimum and maximum vectors.
+- **clampf(min: float, max: float)**: Clamps the vector's components between `min` and `max` floats.
+- **cross(with: Vector2)**: Computes the 2D cross product of this vector and `with`.
+- **cubic_interpolate(b: Vector2, pre_a: Vector2, post_b: Vector2, weight: float)**: Performs cubic interpolation between this vector and `b`.
+- **cubic_interpolate_in_time(b: Vector2, pre_a: Vector2, post_b: Vector2, weight: float, b_t: float, pre_a_t: float, post_b_t: float)**: Performs cubic interpolation with time.
+- **direction_to(to: Vector2)**: Returns a normalized vector pointing from this vector to `to`.
+- **distance_squared_to(to: Vector2)**: Returns the squared distance between this vector and `to`.
+- **distance_to(to: Vector2)**: Returns the distance between this vector and `to`.
+- **dot(with: Vector2)**: Computes the dot product of this vector and `with`.
+- **floor()**: Returns a vector with all components rounded down to the nearest integer.
+- **from_angle(angle: float)**: Creates a Vector2 from an angle in radians.
+- **is_equal_approx(to: Vector2)**: Checks if this vector is approximately equal to `to`.
+- **is_finite()**: Checks if the vector is finite (no infinities or NaNs).
+- **is_normalized()**: Checks if the vector is normalized (length is 1).
+- **is_zero_approx()**: Checks if the vector is approximately zero.
+- **length()**: Returns the length (magnitude) of the vector.
+- **length_squared()**: Returns the squared length (magnitude) of the vector.
+- **lerp(to: Vector2, weight: float)**: Performs linear interpolation between this vector and `to`.
+- **limit_length(length: float = 1.0)**: Limits the vector's length to the given `length`.
+- **max(with: Vector2)**: Returns a vector with the maximum components of this vector and `with`.
+- **max_axis_index()**: Returns the index of the axis with the maximum component.
+- **maxf(with: float)**: Returns a vector with the maximum of each component and `with`.
+- **min(with: Vector2)**: Returns a vector with the minimum components of this vector and `with`.
+- **min_axis_index()**: Returns the index of the axis with the minimum component.
+- **minf(with: float)**: Returns a vector with the minimum of each component and `with`.
+- **move_toward(to: Vector2, delta: float)**: Moves the vector toward `to` by a maximum distance of `delta`.
+- **normalized()**: Returns a normalized version of the vector.
+- **orthogonal()**: Returns a vector rotated by 90 degrees clockwise.
+- **posmod(mod: float)**: Computes the positive modulus of the vector's components with `mod`.
+- **posmodv(modv: Vector2)**: Computes the positive modulus of the vector's components with `modv`.
+- **project(b: Vector2)**: Projects this vector onto vector `b`.
+- **reflect(line: Vector2)**: Reflects the vector off the given line.
+- **rotated(angle: float)**: Returns a vector rotated by `angle` radians.
+- **round()**: Returns a vector with all components rounded to the nearest integer.
+- **sign()**: Returns a vector with the sign of each component.
+- **slerp(to: Vector2, weight: float)**: Performs spherical linear interpolation between this vector and `to`.
+- **slide(n: Vector2)**: Slides the vector along the given normal `n`.
+- **snapped(step: Vector2)**: Snaps the vector's components to the nearest multiple of `step`.
+- **snappedf(step: float)**: Snaps the vector's components to the nearest multiple of `step`.
+
+### Operators
+- **!= (right: Vector2)**: Checks if two Vector2 are not equal.
+- *** (right: Transform2D)**: Multiplies the vector by a Transform2D.
+- *** (right: Vector2)**: Multiplies the vector by another Vector2 (component-wise).
+- *** (right: float)**: Multiplies the vector by a float.
+- *** (right: int)**: Multiplies the vector by an int.
+- **+ (right: Vector2)**: Adds another Vector2 to this vector.
+- **- (right: Vector2)**: Subtracts another Vector2 from this vector.
+- ** / (right: Vector2)**: Divides the vector by another Vector2 (component-wise).
+- ** / (right: float)**: Divides the vector by a float.
+- ** / (right: int)**: Divides the vector by an int.
+- **< (right: Vector2)**: Checks if this vector is less than `right` (lexicographical comparison).
+- **<= (right: Vector2)**: Checks if this vector is less than or equal to `right` (lexicographical comparison).
+- **== (right: Vector2)**: Checks if two Vector2 are equal.
+- **> (right: Vector2)**: Checks if this vector is greater than `right` (lexicographical comparison).
+- **>= (right: Vector2)**: Checks if this vector is greater than or equal to `right` (lexicographical comparison).
+- **[] (index: int)**: Accesses the component at the given index (0 for x, 1 for y).
+- **unary+()**: Returns the vector itself.
+- **unary-()**: Returns the negation of the vector.
+
+### Enumerations
+- **Axis**:
+  - **AXIS_X**: Represents the X axis (value `0`).
+  - **AXIS_Y**: Represents the Y axis (value `1`).
+
+### Constants
+- **ZERO**: `Vector2(0, 0)` - The zero vector.
+- **ONE**: `Vector2(1, 1)` - The one vector.
+- **INF**: `Vector2(inf, inf)` - The infinity vector.
+- **LEFT**: `Vector2(-1, 0)` - The left unit vector.
+- **RIGHT**: `Vector2(1, 0)` - The right unit vector.
+- **UP**: `Vector2(0, -1)` - The up unit vector (Y is down in 2D).
+- **DOWN**: `Vector2(0, 1)` - The down unit vector (Y is down in 2D).
+```
+
+--------------------------------
+
+TITLE: Absolute Value of Vector2 Components
+DESCRIPTION: Calculates the absolute value for each component (x and y) of a Vector2, returning a new Vector2 with non-negative values. This is useful for comparisons or when only the magnitude of components matters.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: gdscript
+CODE:
+```
+var vec = Vector2(-5, 10)
+var abs_vec = vec.abs()
+print(abs_vec) # Output: (5, 10)
+```
+
+--------------------------------
+
+TITLE: Vector2 Geometric Transformations in GDScript
+DESCRIPTION: Provides examples of geometric transformation methods for Vector2 in GDScript, such as rotation, reflection, and bouncing.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: gdscript
+CODE:
+```
+var vec = Vector2(1.0, 0.0)
+var angle_rad = PI / 2.0
+var normal = Vector2(0.0, 1.0)
+
+var rotated_vec = vec.rotated(angle_rad)
+var reflected_vec = vec.reflect(normal)
+var bounced_vec = vec.bounce(normal)
+```
+
+--------------------------------
+
+TITLE: Direction Vector Between Two Vector2 Points
+DESCRIPTION: Calculates a normalized vector pointing from one Vector2 to another. This is equivalent to subtracting the vectors and then normalizing the result.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: gdscript
+CODE:
+```
+var from_point = Vector2(1, 1)
+var to_point = Vector2(4, 5)
+var direction = from_point.direction_to(to_point)
+print(direction) # Output: (0.6, 0.8) normalized vector
+```
+
+--------------------------------
+
+TITLE: Vector2 Arithmetic Operators: Division
+DESCRIPTION: Performs element-wise division of a Vector2 by another Vector2, a float, or an int. Returns a new Vector2 with the results.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: GDScript
+CODE:
+```
+print(Vector2(10, 20) / Vector2(2, 5)) # Prints (5.0, 4.0)
+```
+
+--------------------------------
+
+TITLE: Vector2 Aspect Ratio Calculation
+DESCRIPTION: Returns the aspect ratio of a Vector2 by dividing its x-component by its y-component. This is commonly used in graphics to determine display ratios.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: gdscript
+CODE:
+```
+var vec = Vector2(1920, 1080)
+var aspect_ratio = vec.aspect()
+print(aspect_ratio) # Output: 1.777777...
+```
+
+--------------------------------
+
+TITLE: Vector2 Arithmetic Operators: Addition and Subtraction
+DESCRIPTION: Performs element-wise addition or subtraction between two Vector2 objects. Returns a new Vector2 with the results. Handles potential floating-point inaccuracies for comparisons.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: GDScript
+CODE:
+```
+print(Vector2(10, 20) + Vector2(3, 4)) # Prints (13.0, 24.0)
+print(Vector2(10, 20) - Vector2(3, 4)) # Prints (7.0, 16.0)
+```
+
+--------------------------------
+
+TITLE: Vector2 Constructor: From Vector2i (GDScript)
+DESCRIPTION: Initializes a Vector2 using the integer components from a Vector2i. This allows for easy conversion between integer and float vector types.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: GDScript
+CODE:
+```
+var int_vec = Vector2i(10, 5)
+var float_vec = Vector2(from: int_vec)
+```
+
+--------------------------------
+
+TITLE: Vector2 Constructors and Initialization in GDScript
+DESCRIPTION: Demonstrates various ways to construct and initialize a Vector2 object in GDScript. This includes default initialization, copying from another Vector2, converting from Vector2i, and initializing with explicit x and y float values.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: gdscript
+CODE:
+```
+var v1 = Vector2()
+var v2 = Vector2(Vector2(10.0, 5.0))
+var v3 = Vector2(Vector2i(2, 3))
+var v4 = Vector2(x=7.5, y=2.5)
+```
+
+--------------------------------
+
+TITLE: Dot Product of Two Vector2 Vectors
+DESCRIPTION: Calculates the dot product of two Vector2 vectors. This is used to determine the angle between vectors, project one vector onto another, and check for orthogonality.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: gdscript
+CODE:
+```
+var vec1 = Vector2(2, 3)
+var vec2 = Vector2(4, -1)
+var dot_product = vec1.dot(vec2)
+print(dot_product) # Output: 5.0 (2*4 + 3*(-1) = 8 - 3 = 5)
+```
+
+--------------------------------
+
+TITLE: Angle Calculation for Vector2
+DESCRIPTION: Determines the angle of a Vector2 relative to the positive X axis in radians. It's equivalent to using atan2(y, x). Useful for determining orientation or direction.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: gdscript
+CODE:
+```
+var vec = Vector2(1, 1)
+var angle_rad = vec.angle()
+print(angle_rad) # Output: 0.785398 (PI/4)
+```
+
+--------------------------------
+
+TITLE: Vector2 Property Access: x and y Components (GDScript)
+DESCRIPTION: Accesses the individual x and y components of a Vector2 object. Components can also be accessed using array-like indexing.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: GDScript
+CODE:
+```
+var vec = Vector2(10.0, 5.0)
+var x_comp = vec.x  # or vec[0]
+var y_comp = vec.y  # or vec[1]
+```
+
+--------------------------------
+
+TITLE: Vector2 Arithmetic Operators
+DESCRIPTION: Performs arithmetic operations (addition, subtraction, multiplication, division) between Vector2 objects and other types.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: APIDOC
+CODE:
+```
+## Vector2 operator +(right: Vector2)
+
+### Description
+Adds each component of the **Vector2** by the components of the given **Vector2**.
+
+### Method
++ (Addition)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+```gdscript
+print(Vector2(10, 20) + Vector2(3, 4)) # Prints (13.0, 24.0)
+```
+
+### Response
+#### Success Response (200)
+- **Vector2** - The resulting Vector2 after addition.
+
+#### Response Example
+```json
+{
+  "result": {"x": 13.0, "y": 24.0}
+}
+```
+
+## Vector2 operator -(right: Vector2)
+
+### Description
+Subtracts each component of the **Vector2** by the components of the given **Vector2**.
+
+### Method
+- (Subtraction)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+```gdscript
+print(Vector2(10, 20) - Vector2(3, 4)) # Prints (7.0, 16.0)
+```
+
+### Response
+#### Success Response (200)
+- **Vector2** - The resulting Vector2 after subtraction.
+
+#### Response Example
+```json
+{
+  "result": {"x": 7.0, "y": 16.0}
+}
+```
+
+## Vector2 operator *(right: Transform2D)
+
+### Description
+Inversely transforms (multiplies) the **Vector2** by the given Transform2D transformation matrix, under the assumption that the transformation basis is orthonormal. `vector * transform` is equivalent to `transform.inverse() * vector`.
+
+### Method
+* (Multiply by Transform2D)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **Vector2** - The transformed Vector2.
+
+#### Response Example
+```json
+{
+  "result": {"x": 10.0, "y": 20.0}
+}
+```
+
+## Vector2 operator *(right: Vector2)
+
+### Description
+Multiplies each component of the **Vector2** by the components of the given **Vector2**.
+
+### Method
+* (Component-wise Multiplication)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+```gdscript
+print(Vector2(10, 20) * Vector2(3, 4)) # Prints (30.0, 80.0)
+```
+
+### Response
+#### Success Response (200)
+- **Vector2** - The resulting Vector2 after component-wise multiplication.
+
+#### Response Example
+```json
+{
+  "result": {"x": 30.0, "y": 80.0}
+}
+```
+
+## Vector2 operator *(right: float)
+
+### Description
+Multiplies each component of the **Vector2** by the given float.
+
+### Method
+* (Scalar Multiplication)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **Vector2** - The resulting Vector2 after scalar multiplication.
+
+#### Response Example
+```json
+{
+  "result": {"x": 10.0, "y": 20.0}
+}
+```
+
+## Vector2 operator *(right: int)
+
+### Description
+Multiplies each component of the **Vector2** by the given int.
+
+### Method
+* (Scalar Multiplication)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **Vector2** - The resulting Vector2 after scalar multiplication.
+
+#### Response Example
+```json
+{
+  "result": {"x": 10.0, "y": 20.0}
+}
+```
+
+## Vector2 operator /(right: Vector2)
+
+### Description
+Divides each component of the **Vector2** by the components of the given **Vector2**.
+
+### Method
+/ (Component-wise Division)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+```gdscript
+print(Vector2(10, 20) / Vector2(2, 5)) # Prints (5.0, 4.0)
+```
+
+### Response
+#### Success Response (200)
+- **Vector2** - The resulting Vector2 after component-wise division.
+
+#### Response Example
+```json
+{
+  "result": {"x": 5.0, "y": 4.0}
+}
+```
+
+## Vector2 operator /(right: float)
+
+### Description
+Divides each component of the **Vector2** by the given float.
+
+### Method
+/ (Scalar Division)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **Vector2** - The resulting Vector2 after scalar division.
+
+#### Response Example
+```json
+{
+  "result": {"x": 10.0, "y": 20.0}
+}
+```
+
+## Vector2 operator /(right: int)
+
+### Description
+Divides each component of the **Vector2** by the given int.
+
+### Method
+/ (Scalar Division)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **Vector2** - The resulting Vector2 after scalar division.
+
+#### Response Example
+```json
+{
+  "result": {"x": 10.0, "y": 20.0}
+}
+```
+```
+
+--------------------------------
+
+TITLE: Vector2 Constructor: With x and y Components (GDScript)
+DESCRIPTION: Constructs a Vector2 by providing explicit float values for its x and y components. This is a common way to define a specific vector.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: GDScript
+CODE:
+```
+var vec = Vector2(x: 10.5, y: 5.2)
+```
+
+--------------------------------
+
+TITLE: 2D Cross Product Analog for Vector2
+DESCRIPTION: Calculates the 2D analog of the cross product, which represents the signed area of the parallelogram formed by two vectors. Useful for determining orientation and parallelism.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: gdscript
+CODE:
+```
+var vec1 = Vector2(2, 3)
+var vec2 = Vector2(4, 1)
+var cross_product = vec1.cross(vec2)
+print(cross_product) # Output: -10.0 (2*1 - 3*4)
+```
+
+--------------------------------
+
+TITLE: Vector2 Manipulation Methods
+DESCRIPTION: This section covers methods that modify or return new Vector2 values based on transformations and calculations.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: APIDOC
+CODE:
+```
+## Vector2 Methods
+
+### floor()
+
+Returns a new vector with all components rounded down (towards negative infinity).
+
+- **Method**: const
+- **Endpoint**: Vector2.floor()
+
+### from_angle(angle: float)
+
+Creates a Vector2 rotated to the given `angle` in radians. This is equivalent to doing `Vector2(cos(angle), sin(angle))` or `Vector2.RIGHT.rotated(angle)`.
+
+- **Method**: static
+- **Endpoint**: Vector2.from_angle(angle: float)
+- **Parameters**:
+  - **angle** (float) - The angle in radians.
+- **Request Example**:
+```json
+{
+  "code": "print(Vector2.from_angle(0)) // Prints (1.0, 0.0)"
+}
+```
+- **Response Example**:
+```json
+{
+  "code": "(1.0, 0.0)"
+}
+```
+
+### lerp(to: Vector2, weight: float)
+
+Returns the result of the linear interpolation between this vector and `to` by amount `weight`. `weight` is on the range of `0.0` to `1.0`, representing the amount of interpolation.
+
+- **Method**: const
+- **Endpoint**: Vector2.lerp(to: Vector2, weight: float)
+- **Parameters**:
+  - **to** (Vector2) - The target vector.
+  - **weight** (float) - The interpolation factor (0.0 to 1.0).
+
+### limit_length(length: float = 1.0)
+
+Returns the vector with a maximum length by limiting its length to `length`. If the vector is non-finite, the result is undefined.
+
+- **Method**: const
+- **Endpoint**: Vector2.limit_length(length: float = 1.0)
+- **Parameters**:
+  - **length** (float) - The maximum allowed length. Defaults to 1.0.
+
+### max(with: Vector2)
+
+Returns the component-wise maximum of this and `with`, equivalent to `Vector2(maxf(x, with.x), maxf(y, with.y))`.
+
+- **Method**: const
+- **Endpoint**: Vector2.max(with: Vector2)
+- **Parameters**:
+  - **with** (Vector2) - The vector to compare components with.
+
+### maxf(with: float)
+
+Returns the component-wise maximum of this and `with`, equivalent to `Vector2(maxf(x, with), maxf(y, with))`.
+
+- **Method**: const
+- **Endpoint**: Vector2.maxf(with: float)
+- **Parameters**:
+  - **with** (float) - The float value to compare components with.
+
+### min(with: Vector2)
+
+Returns the component-wise minimum of this and `with`, equivalent to `Vector2(minf(x, with.x), minf(y, with.y))`.
+
+- **Method**: const
+- **Endpoint**: Vector2.min(with: Vector2)
+- **Parameters**:
+  - **with** (Vector2) - The vector to compare components with.
+
+### minf(with: float)
+
+Returns the component-wise minimum of this and `with`, equivalent to `Vector2(minf(x, with), minf(y, with))`.
+
+- **Method**: const
+- **Endpoint**: Vector2.minf(with: float)
+- **Parameters**:
+  - **with** (float) - The float value to compare components with.
+
+### move_toward(to: Vector2, delta: float)
+
+Returns a new vector moved toward `to` by the fixed `delta` amount. Will not go past the final value.
+
+- **Method**: const
+- **Endpoint**: Vector2.move_toward(to: Vector2, delta: float)
+- **Parameters**:
+  - **to** (Vector2) - The target vector.
+  - **delta** (float) - The amount to move towards the target.
+
+### normalized()
+
+Returns the result of scaling the vector to unit length. Equivalent to `v / v.length()`. Returns `(0, 0)` if `v.length() == 0`. See also is_normalized().
+
+**Note:** This function may return incorrect values if the input vector length is near zero.
+
+- **Method**: const
+- **Endpoint**: Vector2.normalized()
+
+### orthogonal()
+
+Returns a perpendicular vector rotated 90 degrees counter-clockwise compared to the original, with the same length.
+
+- **Method**: const
+- **Endpoint**: Vector2.orthogonal()
+
+### posmod(mod: float)
+
+Returns a vector composed of the @GlobalScope.fposmod() of this vector's components and `mod`.
+
+- **Method**: const
+- **Endpoint**: Vector2.posmod(mod: float)
+- **Parameters**:
+  - **mod** (float) - The modulus value.
+
+### posmodv(modv: Vector2)
+
+Returns a vector composed of the @GlobalScope.fposmod() of this vector's components and `modv`'s components.
+
+- **Method**: const
+- **Endpoint**: Vector2.posmodv(modv: Vector2)
+- **Parameters**:
+  - **modv** (Vector2) - The vector modulus values.
+
+### project(b: Vector2)
+
+Returns a new vector resulting from projecting this vector onto the given vector `b`. The resulting new vector is parallel to `b`. See also slide().
+
+**Note:** If the vector `b` is a zero vector, the components of the resulting new vector will be @GDScript.NAN.
+
+- **Method**: const
+- **Endpoint**: Vector2.project(b: Vector2)
+- **Parameters**:
+  - **b** (Vector2) - The vector to project onto.
+
+### reflect(line: Vector2)
+
+Returns the result of reflecting the vector from a line defined by the given direction vector `line`.
+
+**Note:** reflect() differs from what other engines and frameworks call `reflect()`. In other engines, `reflect()` takes a normal direction which is a direction perpendicular to the line. In Godot, you specify the direction of the line directly. See also bounce() which does what most engines call `reflect()`.
+
+- **Method**: const
+- **Endpoint**: Vector2.reflect(line: Vector2)
+- **Parameters**:
+  - **line** (Vector2) - The direction vector of the line.
+
+### rotated(angle: float)
+
+Returns the result of rotating this vector by `angle` (in radians). See also @GlobalScope.deg_to_rad().
+
+- **Method**: const
+- **Endpoint**: Vector2.rotated(angle: float)
+- **Parameters**:
+  - **angle** (float) - The angle in radians.
+
+```
+
+--------------------------------
+
+TITLE: Vector2 Unary Operators and Indexing
+DESCRIPTION: Details on the unary plus/minus operators and component access via indexing for Vector2.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: APIDOC
+CODE:
+```
+## Vector2 operator unary+()
+
+### Description
+Returns the same value as if the `+` was not there. Unary `+` does nothing, but sometimes it can make your code more readable.
+
+### Method
++ (Unary Plus)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **Vector2** - The original Vector2 value.
+
+#### Response Example
+```json
+{
+  "result": {"x": 10.0, "y": 20.0}
+}
+```
+
+## Vector2 operator unary-()
+
+### Description
+Returns the negation of the vector, where each component is multiplied by -1.
+
+### Method
+- (Unary Minus)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **Vector2** - The negated Vector2.
+
+#### Response Example
+```json
+{
+  "result": {"x": -10.0, "y": -20.0}
+}
+```
+
+## float operator [](index: int)
+
+### Description
+Access vector components using their `index`. `v[0]` is equivalent to `v.x`, and `v[1]` is equivalent to `v.y`.
+
+### Method
+[] (Indexing)
+
+### Parameters
+#### Path Parameters
+- **index** (int) - Required - The index of the component to access (0 for x, 1 for y).
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **float** - The value of the component at the specified index.
+
+#### Response Example
+```json
+{
+  "result": 10.0
+}
+```
+```
+
+--------------------------------
+
+TITLE: Vector2 Methods
+DESCRIPTION: This section covers various methods available for the Vector2 class, providing details on their functionality, parameters, and return values.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: APIDOC
+CODE:
+```
+## Vector2 Methods
+
+### abs()
+
+**Description**: Returns a new vector with all components in absolute values (i.e. positive).
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+### angle()
+
+**Description**: Returns this vector's angle with respect to the positive X axis, or `(1, 0)` vector, in radians.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+### angle_to(to: Vector2)
+
+**Description**: Returns the signed angle to the given vector, in radians.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **to** (Vector2) - Required - The target vector.
+
+### angle_to_point(to: Vector2)
+
+**Description**: Returns the angle between the line connecting the two points and the X axis, in radians.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **to** (Vector2) - Required - The target point.
+
+### aspect()
+
+**Description**: Returns the aspect ratio of this vector, the ratio of x to y.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+### bezier_derivative(control_1: Vector2, control_2: Vector2, end: Vector2, t: float)
+
+**Description**: Returns the derivative at the given `t` on the Bézier curve defined by this vector and the given `control_1`, `control_2`, and `end` points.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **control_1** (Vector2) - Required - The first control point.
+- **control_2** (Vector2) - Required - The second control point.
+- **end** (Vector2) - Required - The end point of the curve.
+- **t** (float) - Required - The interpolation factor (0.0 to 1.0).
+
+### bezier_interpolate(control_1: Vector2, control_2: Vector2, end: Vector2, t: float)
+
+**Description**: Returns the point at the given `t` on the Bézier curve defined by this vector and the given `control_1`, `control_2`, and `end` points.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **control_1** (Vector2) - Required - The first control point.
+- **control_2** (Vector2) - Required - The second control point.
+- **end** (Vector2) - Required - The end point of the curve.
+- **t** (float) - Required - The interpolation factor (0.0 to 1.0).
+
+### bounce(n: Vector2)
+
+**Description**: Returns the vector "bounced off" from a line defined by the given normal `n` perpendicular to the line.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **n** (Vector2) - Required - The normal vector of the line.
+
+### ceil()
+
+**Description**: Returns a new vector with all components rounded up (towards positive infinity).
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+### clamp(min: Vector2, max: Vector2)
+
+**Description**: Returns a new vector with all components clamped between the components of `min` and `max`, by running @GlobalScope.clamp() on each component.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **min** (Vector2) - Required - The minimum clamp vector.
+- **max** (Vector2) - Required - The maximum clamp vector.
+
+### clampf(min: float, max: float)
+
+**Description**: Returns a new vector with all components clamped between `min` and `max`, by running @GlobalScope.clamp() on each component.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **min** (float) - Required - The minimum clamp value.
+- **max** (float) - Required - The maximum clamp value.
+
+### cross(with: Vector2)
+
+**Description**: Returns the 2D analog of the cross product for this vector and `with`. This is the signed area of the parallelogram formed by the two vectors.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **with** (Vector2) - Required - The vector to compute the cross product with.
+
+### cubic_interpolate(b: Vector2, pre_a: Vector2, post_b: Vector2, weight: float)
+
+**Description**: Performs a cubic interpolation between this vector and `b` using `pre_a` and `post_b` as handles, and returns the result at position `weight`. `weight` is on the range of 0.0 to 1.0, representing the amount of interpolation.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **b** (Vector2) - Required - The end vector of the interpolation.
+- **pre_a** (Vector2) - Required - The handle control point before the start vector.
+- **post_b** (Vector2) - Required - The handle control point after the end vector.
+- **weight** (float) - Required - The interpolation factor (0.0 to 1.0).
+
+### cubic_interpolate_in_time(b: Vector2, pre_a: Vector2, post_b: Vector2, weight: float, b_t: float, pre_a_t: float, post_b_t: float)
+
+**Description**: Performs a cubic interpolation between this vector and `b` using `pre_a` and `post_b` as handles, and returns the result at position `weight`. `weight` is on the range of 0.0 to 1.0, representing the amount of interpolation. It can perform smoother interpolation than cubic_interpolate() by the time values.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **b** (Vector2) - Required - The end vector of the interpolation.
+- **pre_a** (Vector2) - Required - The handle control point before the start vector.
+- **post_b** (Vector2) - Required - The handle control point after the end vector.
+- **weight** (float) - Required - The interpolation factor (0.0 to 1.0).
+- **b_t** (float) - Required - The time value for the end vector.
+- **pre_a_t** (float) - Required - The time value for the pre_a handle.
+- **post_b_t** (float) - Required - The time value for the post_b handle.
+
+### direction_to(to: Vector2)
+
+**Description**: Returns the normalized vector pointing from this vector to `to`. This is equivalent to using `(b - a).normalized()`.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **to** (Vector2) - Required - The target vector.
+
+### distance_squared_to(to: Vector2)
+
+**Description**: Returns the squared distance between this vector and `to`. This method runs faster than distance_to(), so prefer it if you need to compare vectors or need the squared distance for some formula.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **to** (Vector2) - Required - The target vector.
+
+### distance_to(to: Vector2)
+
+**Description**: Returns the distance between this vector and `to`.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **to** (Vector2) - Required - The target vector.
+
+### dot(with: Vector2)
+
+**Description**: Returns the dot product of this vector and `with`. This can be used to compare the angle between two vectors.
+
+**Method**: N/A (Method of Vector2 object)
+
+**Endpoint**: N/A
+
+**Parameters**:
+#### Path Parameters
+- N/A
+
+#### Query Parameters
+- N/A
+
+#### Request Body
+- **with** (Vector2) - Required - The vector to compute the dot product with.
+
+```
+
+--------------------------------
+
+TITLE: Vector2 Comparison Operators
+DESCRIPTION: Compares two Vector2 objects for equality, inequality, and ordering.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: APIDOC
+CODE:
+```
+## bool operator !=(right: Vector2)
+
+### Description
+Returns `true` if the vectors are not equal. Note: Due to floating-point precision errors, consider using `is_equal_approx()` instead. Vectors with @GDScript.NAN elements may yield inaccurate results.
+
+### Method
+!= (Not Equal)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **bool** - `true` if vectors are not equal, `false` otherwise.
+
+#### Response Example
+```json
+{
+  "result": true
+}
+```
+
+## bool operator ==(right: Vector2)
+
+### Description
+Returns `true` if the vectors are exactly equal. Note: Due to floating-point precision errors, consider using `is_equal_approx()` instead. Vectors with @GDScript.NAN elements may yield inaccurate results.
+
+### Method
+== (Equal)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **bool** - `true` if vectors are equal, `false` otherwise.
+
+#### Response Example
+```json
+{
+  "result": true
+}
+```
+
+## bool operator <(right: Vector2)
+
+### Description
+Compares two **Vector2** vectors by first checking if the X value of the left vector is less than the X value of the `right` vector. If the X values are exactly equal, then it repeats this check with the Y values of the two vectors. This operator is useful for sorting vectors. Note: Vectors with @GDScript.NAN elements may yield inaccurate results.
+
+### Method
+< (Less Than)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **bool** - `true` if the left vector is less than the right vector, `false` otherwise.
+
+#### Response Example
+```json
+{
+  "result": true
+}
+```
+
+## bool operator <=(right: Vector2)
+
+### Description
+Compares two **Vector2** vectors by first checking if the X value of the left vector is less than or equal to the X value of the `right` vector. If the X values are exactly equal, then it repeats this check with the Y values of the two vectors. This operator is useful for sorting vectors. Note: Vectors with @GDScript.NAN elements may yield inaccurate results.
+
+### Method
+<= (Less Than or Equal To)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **bool** - `true` if the left vector is less than or equal to the right vector, `false` otherwise.
+
+#### Response Example
+```json
+{
+  "result": true
+}
+```
+
+## bool operator >(right: Vector2)
+
+### Description
+Compares two **Vector2** vectors by first checking if the X value of the left vector is greater than the X value of the `right` vector. If the X values are exactly equal, then it repeats this check with the Y values of the two vectors. This operator is useful for sorting vectors. Note: Vectors with @GDScript.NAN elements may yield inaccurate results.
+
+### Method
+> (Greater Than)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **bool** - `true` if the left vector is greater than the right vector, `false` otherwise.
+
+#### Response Example
+```json
+{
+  "result": true
+}
+```
+
+## bool operator >=(right: Vector2)
+
+### Description
+Compares two **Vector2** vectors by first checking if the X value of the left vector is greater than or equal to the X value of the `right` vector. If the X values are exactly equal, then it repeats this check with the Y values of the two vectors. This operator is useful for sorting vectors. Note: Vectors with @GDScript.NAN elements may yield inaccurate results.
+
+### Method
+>= (Greater Than or Equal To)
+
+### Parameters
+#### Path Parameters
+None
+
+#### Query Parameters
+None
+
+#### Request Body
+None
+
+### Request Example
+None
+
+### Response
+#### Success Response (200)
+- **bool** - `true` if the left vector is greater than or equal to the right vector, `false` otherwise.
+
+#### Response Example
+```json
+{
+  "result": true
+}
+```
+```
+
+--------------------------------
+
+TITLE: Signed Angle Between Vector2 Points
+DESCRIPTION: Computes the signed angle in radians from one Vector2 point to another. This method is useful for calculating relative rotations between two positions.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: gdscript
+CODE:
+```
+var a = Vector2(1, 0)
+var b = Vector2(0, 1)
+var angle = a.angle_to(b)
+print(angle) # Output: 1.5708 (PI/2)
+```
+
+--------------------------------
+
+TITLE: Ceiling Value for Vector2 Components
+DESCRIPTION: Returns a new Vector2 with each component rounded up to the nearest integer (towards positive infinity). Useful for grid-based systems or UI scaling.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: gdscript
+CODE:
+```
+var vec = Vector2(3.14, -2.71)
+var ceil_vec = vec.ceil()
+print(ceil_vec) # Output: (4, -2)
+```
+
+--------------------------------
+
+TITLE: Squared Distance Between Two Vector2 Points
+DESCRIPTION: Computes the squared Euclidean distance between two Vector2 points. This is computationally faster than calculating the actual distance and is often sufficient for comparisons.
+
+SOURCE: https://docs.godotengine.org/en/stable/classes/class_vector2
+
+LANGUAGE: gdscript
+CODE:
+```
+var point1 = Vector2(1, 2)
+var point2 = Vector2(4, 6)
+var dist_sq = point1.distance_squared_to(point2)
+print(dist_sq) # Output: 25.0 ( (4-1)^2 + (6-2)^2 = 3^2 + 4^2 = 9 + 16 = 25)
+```
