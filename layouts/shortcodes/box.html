@@ -8,9 +8,9 @@
 {{- $block := findRE "(?is)^<(?:address|article|aside|blockquote|canvas|dd|div|dl|dt|fieldset|figcaption|figure|footer|form|h(?:1|2|3|4|5|6)|header|hgroup|hr|li|main|nav|noscript|ol|output|p|pre|section|table|tfoot|ul|video)\\b" $raw 1 -}}
 
 {{/*  Emoji icons  */}}
-{{- $tipEmoji := "✅" -}}
-{{- $warningEmoji := "⚠️" -}}
-{{- $infoEmoji := "ℹ️" -}}
+{{- $tipEmoji := "✅ " -}}
+{{- $warningEmoji := "⚠️ " -}}
+{{- $infoEmoji := "‼️ " -}}
 
 {{- $.Page.Scratch.Add "box_count" 1 -}}
 

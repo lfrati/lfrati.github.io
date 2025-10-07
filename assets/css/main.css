@@ -314,6 +314,17 @@ POSTS & CONTENT
   position: relative;
 }
 
+/* Match images to main content width */
+.post-content img,
+.post img {
+  display: block;
+  max-width: var(--posts-width);
+  width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 article.post {
   text-align: justify;
   text-justify: auto;
@@ -398,6 +409,25 @@ article.post {
   font-size: 1rem;
   font-weight: 500;
   color: #9ca3af;
+}
+
+.post blockquote {
+  position: relative;
+  margin: 2rem auto;
+  padding: 1rem 1rem 1rem 2rem;
+  border-left: 6px solid gray;
+  background: rgba(20, 20, 26, 0.65);
+  color: var(--tertiary-color);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.post blockquote > :first-child {
+  margin-top: 0;
+}
+
+.post blockquote > :last-child {
+  margin-bottom: 0;
 }
 
 /* Add some spacing after headings */
