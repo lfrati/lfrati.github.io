@@ -30,13 +30,13 @@ thumbnail = "helloworld.avif"
         }
         width = getWidth()
         const pageWidthSpan = document.getElementById('pageWidth')
-        if (pageWidthSpan) { pageWidthSpan.textContent = width + 'px' }
-        pageWidthSpan.style = 'color:red'
-        if(width >= 1600){pageWidthSpan.style = 'color:green'}
+        if (pageWidthSpan) { pageWidthSpan.textContent = width }
+        pageWidthSpan.style = 'color:var(--fail-red);background:#202020;padding: 0px 2px'
+        if(width >= 1600){pageWidthSpan.style = 'color:var(--success-green);background:#202020;padding: 1px 3px'}
     });
 </script>
 
-{{< box info "topbox" >}}This blog is best viewed on a screen at least 1600px wide. Your width: <span id="pageWidth"></span>{{< /box >}}
+{{< box warning >}}This blog is best viewed on a screen at least 1600px wide. Your width: <strong><span id="pageWidth"></span></strong>{{< /box >}}
 
 # Table of Contents
 
@@ -121,7 +121,7 @@ You should be careful when you click on stuff online, better to know in advance 
 
 Sometimes you need a bit of extra punch to make sure the user notices something. Getting that extra oomph is pretty easy with Hugo's shortcodes
 
-{{< box warning >}}Warning: Sketches run in your browser, so performance varies across devices.{{< /box >}}
+{{< box important >}}Warning: Sketches run in your browser, so performance varies across devices.{{< /box >}}
 
 # Image gallery example
 

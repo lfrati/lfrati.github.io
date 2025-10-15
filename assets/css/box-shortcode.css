@@ -1,56 +1,81 @@
 /* Box Shortcode Styles */
 .box-shortcode {
-  padding: 1.6em;
-  padding-top: 1.4em;
-  line-height: 1.4em;
-  margin-top: 1em;
-  margin-bottom: 2em;
-  border-radius: 4px;
-  background: #f3ebe850;
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 0.85rem 1rem;
+  border-radius: 6px;
+  border-left: 0.25em solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.04);
+  color: inherit;
 }
 
-.box-title {
-  margin: -18px -18px 12px;
-  padding: 4px 18px;
-  border-radius: 4px 4px 0 0;
-  font-weight: 700;
-  color: #fff;
-  background: #6ab0de;
+.box-shortcode .markdown-alert-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.85);
 }
 
-.box-shortcode.warning {
-  background: rgba(255, 107, 107, 0.15);
-}
-
-.box-shortcode.info {
-  background: rgba(0, 137, 228, 0.15);
-  box-shadow: 3px 3px 5px rgba(0, 137, 228, 0.06);
-}
-
-.box-shortcode.tip {
-  background: rgba(163, 255, 163, 0.15);
-  box-shadow: 3px 3px 5px rgba(0, 137, 228, 0.06);
-}
-
-.icon-box {
-  display: inline-flex;
-  align-self: center;
-  margin-right: 8px;
-  font-size: 1.2em;
+.box-shortcode .markdown-alert-title .octicon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
 }
 
 .box-shortcode p {
-  margin-bottom: 0.6em;
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
 }
 
-.box-shortcode p:first-of-type {
-  display: inline;
-}
-
-.box-shortcode p:nth-of-type(2) {
-  margin-top: 0.6em;
-}
-
-.box-shortcode p:last-child {
+.box-shortcode > :last-child {
   margin-bottom: 0;
+}
+
+.box-shortcode.markdown-alert-note {
+  border-left-color: #539bf5;
+  background-color: rgba(83, 155, 245, 0.12);
+}
+
+.box-shortcode.markdown-alert-note .markdown-alert-title {
+  color: #8abaff;
+}
+
+.box-shortcode.markdown-alert-tip {
+  border-left-color: #3fb950;
+  background-color: rgba(63, 185, 80, 0.12);
+}
+
+.box-shortcode.markdown-alert-tip .markdown-alert-title {
+  color: #85f799;
+}
+
+.box-shortcode.markdown-alert-important {
+  border-left-color: #a371f7;
+  background-color: rgba(163, 113, 247, 0.13);
+}
+
+.box-shortcode.markdown-alert-important .markdown-alert-title {
+  color: #c9a5ff;
+}
+
+.box-shortcode.markdown-alert-warning {
+  border-left-color: #d29922;
+  background-color: rgba(210, 153, 34, 0.18);
+}
+
+.box-shortcode.markdown-alert-warning .markdown-alert-title {
+  color: #f1c553;
+}
+
+.box-shortcode.markdown-alert-caution {
+  border-left-color: #f85149;
+  background-color: rgba(248, 81, 73, 0.14);
+}
+
+.box-shortcode.markdown-alert-caution .markdown-alert-title {
+  color: #ff9b96;
 }

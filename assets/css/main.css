@@ -28,6 +28,9 @@ CSS VARIABLES & GLOBAL SETTINGS
   --post-description-color: #cbd5e0a5;
   --link-color: #7cc8ff;
 
+  --fail-red: #FC100D;
+  --success-green: #4cae4f;
+
   --posts-width: 768px;
   --sidenote-width: 400px;
   --sidenote-offset: 20px;
