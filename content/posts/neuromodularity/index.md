@@ -149,8 +149,11 @@ Below we can see an example of this information spreading in a chemical looking 
 
 Now that approximate spiking information is available to nodes we can define some rules to guide edge formation. The nodes in the network are placed on a 2D lattice as in the previous examples, and the initial edges are sampled from bivariate gaussian distributions that favor local connections. 
 
-Edge formation is biased using a local gaussian distribution, as shown in the visualization on the 
-{{< sideimg "right." "gaussian_sample.png" >}} This approach creates initial networks that have a tunable degree of locality but are not optimized for spreading. The plot shows 10k sampled edges for a node in position (10,20), where darker shades of blue represent edges that are sampled more frequently. On the sides the marginal gaussian distributions are shown using kernel smoothing.
+Edge formation is biased using a local gaussian distribution, as shown in the visualization below.
+
+{{< img src="gaussian_sample.png" caption="Sampling edges from a bivariate gaussian keeps connectivity mostly local." width="420" >}}
+
+This approach creates initial networks that have a tunable degree of locality but are not optimized for spreading. The plot shows 10k sampled edges for a node in position (10,20), where darker shades of blue represent edges that are sampled more frequently. On the sides the marginal gaussian distributions are shown using kernel smoothing.
 
 The algorithm we have tested to promote locality works as follows:
 - If the node being optimized is **spiking**: the spiking information is used to locate nodes that are not spiking. This is done by multiplying it by the gaussian distribution used for edge formation so that close by nodes with low activity are more likely to be sampled.
@@ -191,7 +194,9 @@ How much connectivity is essential to ensure the signal from a community can spr
 - an "activating" set of edges that keep the rest of the community alive
 - a "spreading" set of connections that are able to propagate the signal to neighboring communities.
 
-Once an activation threshold is determined then a minimal surviving **clique** is a set of _threshold + 1_ fully-connected nodes. The {{< sideimg "diagram" "minimal_community.png" "right" >}} illustrates this concept, showing in **red** a fully connected sub-component of 3+1 nodes that can survive a threshold of 3. In **blue** are the additional edges needed to make the rest of the community spike. The remaining connections can then be used to make the adjacent communities spike.
+Once an activation threshold is determined then a minimal surviving **clique** is a set of _threshold + 1_ fully-connected nodes. The diagram below illustrates this concept, showing in **red** a fully connected sub-component of 3+1 nodes that can survive a threshold of 3. In **blue** are the additional edges needed to make the rest of the community spike. The remaining connections can then be used to make the adjacent communities spike.
+
+{{< img src="minimal_community.png" caption="Kernel nodes (red) survive the threshold while blue edges keep the rest of the community alive." width="420" >}}
 
 To minimally connect two communities we need to make every node in the kernel of the community we want to excite spike. Since the kernel contains _threshold+1_ nodes and each of them needs to receive at least _threshold_ signals for a total of _threshold x (threshold + 1)_ edges. We can see this set up in the sketch below. Each community is connected to the next one forming a chain of communities that spans the whole network. The whole structure is resting on a precarious **equilibrium** since the network has barely enough signal to overcome the threshold barrier. We can see an example of this by using the "sabotage" button below. If enabled one single edge is removed from every center node of each community (the crippled node is shown in black). In this new regime the damaged kernel doesn't have enough activity to keep spiking so after propagating the signal the activity in the community dies out. This creates an interesting effect where the signal travels along the chain of communities like a propagating wave.
 
@@ -202,4 +207,3 @@ Use the "sabotage" checkbox to remove one edge from each community.
 Nodes missing an edge are shown in black, kernel nodes in red and spreading nodes in blue.
 
 This seemingly secondary result is more interesting than expected. What we have obtained seeking the minimal possible wiring is a setup where each community is essentially a node of a network in "**community space**". The nodes in this new space are supersets of the previous nodes where the "complex contagion" property has been assimilated into the activation function. Consider for example the case where activity is both excitatory and inhibitory, the previously simple threshold function that controls the activity in "nodes space" now becomes a much more complex stateful function in "community space". This complexification mechanism can allow us to appreciate the emergence of complex behaviour in networks governed by simple activation functions. Especially so if we consider that the network itself can change over time as a function of its own activity.
-

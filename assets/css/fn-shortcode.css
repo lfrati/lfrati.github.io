@@ -27,8 +27,8 @@
     display: block;
     float: right;
     clear: right; /* stack alongside previous right floats only */
-    width: var(--sideimg-effective-width);
-    margin-right: calc(-1 * (var(--sideimg-effective-width) + var(--sidenote-offset)));
+    width: var(--sidenote-effective-width);
+    margin-right: calc(-1 * (var(--sidenote-effective-width) + var(--sidenote-offset)));
     margin-top: 0; /* align with the line containing the label */
     margin-left: 1rem; /* gap from main text */
     margin-bottom: 0.75rem;
@@ -58,5 +58,4 @@ section.footnotes {
 section.footnotes ol {
   padding-left: 1.25rem;
 }
-
 

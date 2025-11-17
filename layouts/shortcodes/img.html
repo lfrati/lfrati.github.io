@@ -1,0 +1,29 @@
+{{- $raw := or (.Get "src") (.Get 0) -}}
+{{- if not $raw -}}
+  {{- errorf "img shortcode requires a 'src' parameter" -}}
+{{- end -}}
+{{- $src := strings.TrimSpace $raw -}}
+{{- $caption := .Get "caption" -}}
+
+{{- $style := "" -}}
+{{- with strings.TrimSpace (default "" (.Get "width")) }}
+  {{- $val := . -}}
+  {{- if findRE "^[0-9]+$" $val }}
+    {{- $val = printf "%spx" $val -}}
+  {{- end }}
+  {{- $style = printf "max-width: %s;" $val -}}
+{{- end -}}
+
+{{- $img := .Page.Resources.GetMatch $src -}}
+{{- if not $img }}
+  {{- errorf "img shortcode: image %q not found for page %s" $src .Page.Path -}}
+{{- end -}}
+
+<figure class="post-img" {{ if $style }}style="{{ $style | safeCSS }}"{{ end }}>
+  <a href="{{ $img.RelPermalink }}" target="_blank" rel="noopener noreferrer">
+    <img src="{{ $img.RelPermalink }}" alt="" loading="lazy" decoding="async" width="{{ $img.Width }}" height="{{ $img.Height }}" />
+  </a>
+  {{- if $caption }}
+    <figcaption>{{ $caption }}</figcaption>
+  {{- end }}
+</figure>

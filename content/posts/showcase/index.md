@@ -57,21 +57,21 @@ Hugo has some nice footnotes that send you to the bottom of the page when clicke
 
 If you are a compulsive hoverer like me you've also probably already noticed that if you hover the preview or the footnote number it highlights where it's coming from. You're welcome.
 
-# Side images and layout rules
+# Images and captions
 
-Other citizens of the side margin include images that are nice to have but not so important to take a whole chunk of the main column for themselves.
+Images can be placed using `img` shortcode
 
-Let's say for example we are talking about {{< sideimg "sampling" "/posts/neuromodularity/gaussian_sample.png" >}} and I would like to show you samples with their marginal distributions. I could ask you to just imagine it or give you an example in the side. Why not indulge ourselves.
+{{< img src="gaussian_sample.png" caption="Sampled edges and their marginals for a bivariate gaussian distribution." width="400" >}}
 
-Again, if you are confused about where that image comes from, just go ahead and hover it, and if you would like to take a closer look because it's too small in the side feel free to click on it and open it in a new page (I made a hover preview but the JS/CSS weren't worth it).
+If you would like to take a closer look because it's too small feel free to click on it and open it in a new page (I made a hover preview but the JS/CSS weren't worth it).
 
 # Side elements do not overlap
 
 Multiple side images and footnotes are spaced to avoid overlap. 
 
-Here is {{< sideimg "another image" "/posts/neuromodularity/minimal_community.png" >}} but it's not immediately to the right of the link (unless you have ungodly huge font size, in which case use your imagination).
+Here is another image but it's not immediately to the right of the link (unless you have ungodly huge font size, in which case use your imagination).
 
-This sentence references a second note{{< fn >}}Side elements are queued and spaced; they won’t overlap even when close in the flow.{{< /fn >}} so you can see that stacking behavior takes care of both images and sidenotes.
+This sentence references a second note{{< fn >}}Side elements are queued and spaced; they won’t overlap even when close in the flow.{{< /fn >}} and a third note{{< fn >}}Hopefully I'm not overlapping with other elements... right?{{< /fn >}}so you can see that stacking behavior takes care of both images and sidenotes.
 
 Placing things to the right of specific elements is a surprisingly tricky problem but maybe it'll get easier when [anchor positioning](https://kizu.dev/anchor-positioning-experiments/) becomes widely implemented.
 

@@ -12,6 +12,12 @@ summary: "Selected projects and experiments"
     base="github.com/lfrati/" >}}
 
 {{< project 
+    title="SNURM" 
+    summary="A lightweight job scheduler to queue and manage command execution on a local machine with a  simple HTTP-based API"
+    languages="python, http" 
+    base="github.com/lfrati/" >}}
+
+{{< project 
     title="stegaplots" 
     summary="putting parameters/source code in the plots using steganography" 
     languages="python, matplotlib" 
@@ -36,12 +42,6 @@ summary: "Selected projects and experiments"
     base="github.com/lfrati/" >}}
 
 {{< project 
-    title="portentcalc" 
-    summary="website to test the effectiveness of &quot;portent of calamity&quot; in Tron decks?" 
-    languages="html,css, js" 
-    base="fratilapo.com/" >}}
-
-{{< project 
     title="dnditems" 
     summary="website to keep track of dnd 3.5 items" 
     languages="html, css, js" 
@@ -51,6 +51,12 @@ summary: "Selected projects and experiments"
     title="dndspells" 
     summary="website to keep track of dnd 3.5 spells" 
     languages="html, css, js" 
+    base="fratilapo.com/" >}}
+
+{{< project 
+    title="portentcalc" 
+    summary="Let's test the effectiveness of 'portent of calamity' in Tron decks" 
+    languages="html,css, js" 
     base="fratilapo.com/" >}}
 
 {{< project 

@@ -34,7 +34,7 @@ CSS VARIABLES & GLOBAL SETTINGS
   --posts-width: 768px;
   --sidenote-width: 400px;
   --sidenote-offset: 20px;
-  --sideimg-effective-width: min( var(--sidenote-width), calc((100vw - var(--posts-width)) / 2 - var(--sidenote-offset))
+  --sidenote-effective-width: min( var(--sidenote-width), calc((100vw - var(--posts-width)) / 2 - var(--sidenote-offset))
   );
 }
 
