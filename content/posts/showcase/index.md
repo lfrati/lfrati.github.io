@@ -139,6 +139,4 @@ And when you don't feel like making a shortcode (yet) it's pretty nice to mix so
   <p style="font-size: 90%; color: #666; margin-top: 8px;">Evolved topology illustration.</p>
 </div>
 
-In hindsight, maybe this should've been at the beginning? 🤔🤷‍♂️
-
 To conclude, a special thanks to [LeaderLine](https://anseki.github.io/leader-line/) for helping me point at HTML elements
