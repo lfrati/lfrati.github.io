@@ -3,7 +3,6 @@ title = 'A Peek into Neuromodularity'
 date = 2025-09-07
 draft = false
 summary = "Exploring the intersection of geometric graphs, complex contagion, and neural networks through interactive visualizations and reservoir computing."
-thumbnail = "neuromod_thumb.png"
 +++
 
 {{< box warning >}} Warning: All sketches in this page are running on your machine. May the gods of computing bestow their blessing upon you. {{< /box >}}
@@ -128,7 +127,7 @@ A natural question to ask is "Can a similar optimal modularity be grown?". To te
 The results have then been analysed using some standard modularity detection algorithms such as **Louvain**. As can be seen below such optimal modularity is almost entirely recovered and the networks evolve toward a μ measure of roughly 0.4, which is consistent with the results obtained in other studies. Some of the communities identified using the Louvain measure have been joined together but we can still identify the original block structure. In all experiments the center community can be clearly distinguished from the others due to the specific setting used. As the only "central" community in close proximity to all other it can play a key role in facilitating the spread of information between distant communities.
 
 <div style="text-align: center; padding: 20px 0;">
-  <img src="evolved.png" style="max-width: 80%; height: auto;" alt="Evolved topology" />
+  <img src="images/evolved.png" style="max-width: 80%; height: auto;" alt="Evolved topology" />
   <p style="text-align: center; font-size: 90%; color: #666; margin-top: 10px;">
     Topology evolved using the described fitness functions. Various communities have been joined together but only 2 nodes out of 81 have been assigned to the wrong super-community.
   </p>
@@ -142,7 +141,7 @@ Below we can see an example of this information spreading in a chemical looking 
 
 <div style="text-align: center; padding-bottom: 30px;">
   <video muted autoplay loop style="max-width: 100%;">
-      <source src="gossip_diffusion.mp4" type="video/mp4">
+      <source src="images/gossip_diffusion.mp4" type="video/mp4">
   </video>
   <p style="text-align: center; font-size: 80%;">Information diffusion across the network. Each cell is colored based on the absolute difference between the local information and the true activity of the network.</p>
 </div>
@@ -151,7 +150,7 @@ Now that approximate spiking information is available to nodes we can define som
 
 Edge formation is biased using a local gaussian distribution, as shown in the visualization below.
 
-{{< img src="gaussian_sample.png" caption="Sampling edges from a bivariate gaussian keeps connectivity mostly local." width="420" >}}
+{{< img src="images/gaussian_sample.png" caption="Sampling edges from a bivariate gaussian keeps connectivity mostly local." width="420" >}}
 
 This approach creates initial networks that have a tunable degree of locality but are not optimized for spreading. The plot shows 10k sampled edges for a node in position (10,20), where darker shades of blue represent edges that are sampled more frequently. On the sides the marginal gaussian distributions are shown using kernel smoothing.
 
@@ -166,10 +165,10 @@ As we can see below as simulation progresses we can observe that the signals sta
 
 <div style="display: flex; justify-content: space-between; padding-bottom: 30px;">
   <video style="width: 47.5%;" muted autoplay loop>
-      <source src="failed_activity_cropped.mp4" type="video/mp4">
+      <source src="images/failed_activity_cropped.mp4" type="video/mp4">
   </video>
   <video style="width: 47.5%;" muted autoplay loop>
-      <source src="failed_spikes_cropped.mp4" type="video/mp4">
+      <source src="images/failed_spikes_cropped.mp4" type="video/mp4">
   </video>
 </div>
 <p style="text-align: left; font-style: italic;"><b>On the left</b>: Activity levels of the neurons that receive signals, as the modularity decreases the signals spread over a larger area. <br/> <b>On the right</b>: neurons that manage to cross the spiking threshold. As the modularity decreases fewer and fewer neurons are able to spike (as activity decays to zero faster and faster the episodes become shorted which makes the recording look as if accelerating).</p>
@@ -178,11 +177,11 @@ If we take a closer look at the network topology we can observe the effect of ou
 
 <div style="display: flex; justify-content: space-between; padding-bottom: 30px;">
   <div style="width: 47.5%;">
-    <img src="total_modularity.png" style="width: 100%;" />
+    <img src="images/total_modularity.png" style="width: 100%;" />
     <p style="text-align: center; font-size: 80%;">Initial modularity.</p>
   </div>
   <div style="width: 47.5%;">
-    <img src="failed_modularity.png" style="width: 100%;" />
+    <img src="images/failed_modularity.png" style="width: 100%;" />
     <p style="text-align: center; font-size: 80%;">Disrupted modularity.</p>
   </div>
 </div>
@@ -196,7 +195,7 @@ How much connectivity is essential to ensure the signal from a community can spr
 
 Once an activation threshold is determined then a minimal surviving **clique** is a set of _threshold + 1_ fully-connected nodes. The diagram below illustrates this concept, showing in **red** a fully connected sub-component of 3+1 nodes that can survive a threshold of 3. In **blue** are the additional edges needed to make the rest of the community spike. The remaining connections can then be used to make the adjacent communities spike.
 
-{{< img src="minimal_community.png" caption="Kernel nodes (red) survive the threshold while blue edges keep the rest of the community alive." width="420" >}}
+{{< img src="images/minimal_community.png" caption="Kernel nodes (red) survive the threshold while blue edges keep the rest of the community alive." width="420" >}}
 
 To minimally connect two communities we need to make every node in the kernel of the community we want to excite spike. Since the kernel contains _threshold+1_ nodes and each of them needs to receive at least _threshold_ signals for a total of _threshold x (threshold + 1)_ edges. We can see this set up in the sketch below. Each community is connected to the next one forming a chain of communities that spans the whole network. The whole structure is resting on a precarious **equilibrium** since the network has barely enough signal to overcome the threshold barrier. We can see an example of this by using the "sabotage" button below. If enabled one single edge is removed from every center node of each community (the crippled node is shown in black). In this new regime the damaged kernel doesn't have enough activity to keep spiking so after propagating the signal the activity in the community dies out. This creates an interesting effect where the signal travels along the chain of communities like a propagating wave.
 

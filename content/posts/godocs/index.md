@@ -3,7 +3,6 @@ title = "What's in a doc?"
 date = 2025-10-06
 draft = false
 summary = "Would you rather have tons of documentation that distracts your agent, or just the right amount that helps it become your best coding buddy?"
-thumbnail = "godocs.png"
 +++
 
 # Factual grounding
@@ -20,7 +19,7 @@ But that’s a double-edged sword: useful information can enrich their capabilit
 A quick look at the Godot docs reveals a troubling fact: the docs folder for version 4.5 is **1.25 GB**. Of `.html` files!?!? How?
 A peek into any of those HTML files shows the root problem: each one contains over **12,000 lines** of table of contents... woah.
 
-![toc insanity](./toc-insanity.png)
+![toc insanity](./images/toc-insanity.png)
 
 Can we get rid of it? Sure — but what about not *having it* in the first place?
 
@@ -42,15 +41,15 @@ We could also discard information that’s very useful for humans (like summary 
 Before diving in, I was curious to see how other projects handle their docs.
 
 * [context7](https://context7.com/?q=godot): Some projects do a pretty good job scraping and parsing docs.
-  ![context7](./context7_vector2.png) ([full output](./vector2.txt))
+  ![context7](./images/context7_vector2.png) ([full output](./vector2.txt))
   Interestingly, they also [benchmark](https://context7.com/logs/websites/godotengine_en_4_5) their results:
-  ![bench](./benchmark.png)
+  ![bench](./images/benchmark.png)
   though I’m not entirely sure what that means exactly.
 
 * [LLM-Docs](https://llm-docs.com/): Others take a more “cookie-cutter” approach
-  ![llmdocs](llm-docs.png)
+  ![llmdocs](./images/llm-docs.png)
   and end up leaving unwanted information in the data:
-  ![copyright](./llmdocs-copyright.png)
+  ![copyright](./images/llmdocs-copyright.png)
 
 # Tailoring it to Godot
 
@@ -59,7 +58,7 @@ I haven’t had the smoothest experience browsing Godot’s documentation — so
 
 I’ve built a simple search script to navigate the processed docs we’ll serve to agents.
 
-![search](./godocs_search.png)
+![search](./images/godocs_search.png)
 
 And voilà — nice, searchable docs, without any [scraping](https://docs.crawl4ai.com/) needed.
 

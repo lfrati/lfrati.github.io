@@ -14,9 +14,9 @@
             {{ end }}
           </div>
           <div class="post-illustration">
-            {{ $thumbnail := .Resources.GetMatch .Params.thumbnail }}
+            {{ $thumbnail := .Resources.GetMatch "thumbnail.*" }}
             {{ if not $thumbnail }}
-              {{ errorf "Post '%s': thumbnail '%s' not found (missing frontmatter param or file doesn't exist)" .Title (.Params.thumbnail | default "MISSING") }}
+              {{ errorf "Post '%s': expected bundle image named 'thumbnail.*' (place e.g. thumbnail.jpg alongside the post)" .Title }}
             {{ end }}
             <img src="{{ $thumbnail.RelPermalink }}" alt="{{ .Title }}" />
           </div>

@@ -4,7 +4,6 @@ date = 2025-09-06
 draft = false
 summary = 'For a long time I had a simple Jekyll website but it was time for a refresh and Hugo seems pretty cool...'
 math = true
-thumbnail = "helloworld.avif"
 +++
 
 <script src="leader-line.min.js"></script>
@@ -61,7 +60,7 @@ If you are a compulsive hoverer like me you've also probably already noticed tha
 
 Images can be placed using `img` shortcode
 
-{{< img src="gaussian_sample.png" caption="Sampled edges and their marginals for a bivariate gaussian distribution." width="400" >}}
+{{< img src="images/gaussian_sample.png" caption="Sampled edges and their marginals for a bivariate gaussian distribution." width="400" >}}
 
 If you would like to take a closer look because it's too small feel free to click on it and open it in a new page (I made a hover preview but the JS/CSS weren't worth it).
 
