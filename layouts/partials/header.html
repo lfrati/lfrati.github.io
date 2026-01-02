@@ -19,10 +19,11 @@
   <ul>
     {{- range .Site.Menus.main }}
       <li>
+        {{ $isActive := or ($.IsMenuCurrent .Menu .) ($.HasMenuCurrent .Menu .) }}
         <a
           href="{{ .URL }}"
-          class="brackets {{ if $.IsMenuCurrent .Menu . }}active{{ end }}"
-          {{ if $.IsMenuCurrent .Menu . }}aria-current="page"{{ end }}
+          class="brackets {{ if $isActive }}active{{ end }}"
+          {{ if $isActive }}aria-current="page"{{ end }}
         >
           {{ .Name }}
         </a>
