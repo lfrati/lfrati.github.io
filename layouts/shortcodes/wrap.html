@@ -1,0 +1,43 @@
+{{- $raw := or (.Get "src") (.Get 0) -}}
+{{- if not $raw -}}
+  {{- errorf "wrap shortcode requires a 'src' parameter" -}}
+{{- end -}}
+{{- $src := strings.TrimSpace $raw -}}
+{{- $caption := .Get "caption" -}}
+
+{{- $alt := "" -}}
+{{- with .Get "alt" -}}
+  {{- $alt = . -}}
+{{- else -}}
+  {{- if $caption -}}
+    {{- $alt = $caption -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $style := "" -}}
+{{- with strings.TrimSpace (default "" (.Get "width")) }}
+  {{- $val := . -}}
+  {{- if findRE "^[0-9]+$" $val }}
+    {{- $val = printf "%spx" $val -}}
+  {{- end }}
+  {{- $style = printf "width: %s;" $val -}}
+{{- end -}}
+
+{{- $align := lower (strings.TrimSpace (default "right" (.Get "align"))) -}}
+{{- if not (in (slice "left" "right") $align) -}}
+  {{- $align = "right" -}}
+{{- end -}}
+
+{{- $img := .Page.Resources.GetMatch $src -}}
+{{- if not $img -}}
+  {{- errorf "wrap shortcode: image %q not found for page %s" $src .Page.Path -}}
+{{- end -}}
+
+<span class="wrap-img wrap-{{ $align }}" {{ if $style }}style="{{ $style | safeCSS }}"{{ end }}>
+  <a href="{{ $img.RelPermalink }}" target="_blank" rel="noopener noreferrer">
+    <img src="{{ $img.RelPermalink }}" alt="{{ $alt | htmlEscape }}" loading="lazy" decoding="async" width="{{ $img.Width }}" height="{{ $img.Height }}" />
+  </a>
+  {{- if $caption }}
+    <span class="wrap-caption">{{ $caption }}</span>
+  {{- end }}
+</span>

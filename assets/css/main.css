@@ -700,15 +700,15 @@ RESPONSIVE DESIGN & MOBILE STYLES
   }
 
   .post h1 {
-    font-size: 1.75rem;
-  }
-
-  .post h2 {
     font-size: 1.5rem;
   }
 
-  .post h3 {
+  .post h2 {
     font-size: 1.25rem;
+  }
+
+  .post h3 {
+    font-size: 1.15rem;
   }
 
   .post time {
