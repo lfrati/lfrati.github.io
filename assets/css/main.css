@@ -406,6 +406,10 @@ article.post {
   margin-bottom: 2rem;
 }
 
+.post h1 {
+  text-align: left;
+}
+
 /* Content headings styling */
 .post h2,
 .post h3,
