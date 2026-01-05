@@ -60,6 +60,7 @@ CSS VARIABLES & GLOBAL SETTINGS
   --code-color: #515152;
   --post-description-color: #cbd5e0a5;
   --link-color: #7cc8ff;
+  --hover-color: #ffd199;
 
   --fail-red: #FC100D;
   --success-green: #4cae4f;
@@ -179,7 +180,7 @@ HEADER & NAVIGATION
 }
 
 /* Right group: navigation */
-.navbar > ul {
+.nav-menu {
   display: flex;
   list-style: none;
   padding: 0;
@@ -187,14 +188,36 @@ HEADER & NAVIGATION
   gap: 1rem;
 }
 
-.navbar > ul > li > a {
-  color: white;
+.nav-menu > li > a {
+  color: var(--tertiary-color);
   text-decoration: none;
 }
 
-.navbar > ul > li > a.active {
-  border-bottom: 1px solid var(--tertiary-color);
-  padding: 0 0 2px;
+.nav-menu > li > a.active {
+  color: var(--hover-color);
+}
+
+/* Hide hamburger menu elements on desktop */
+.menu-toggle {
+  display: none;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+  padding-right: 16px;
+  z-index: 1001;
+}
+
+.hamburger span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
 }
 
 .brackets {
@@ -221,6 +244,20 @@ HEADER & NAVIGATION
   content: "]";
   color: var(--bracket-color);
   right: -0.1rem;
+}
+
+/* External link icon styling */
+.external-link-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.25rem;
+  transition: opacity 0.3s ease;
+  color: var(--tertiary-color);
+
+}
+
+.brackets:hover .external-link-icon {
+  opacity: 1;
 }
 
 /*============================================================================
@@ -273,7 +310,7 @@ POSTS & CONTENT
 }
 
 .post-item-link:hover .post-title {
-  color: #ffd199;
+  color: var(--hover-color);
   transition: color 0.3s ease;
 }
 
@@ -483,8 +520,8 @@ article.post {
 
 .post-content a:hover,
 .post-content a:focus-visible {
-  color: #ffd199;
-  text-decoration-color: #ffd199;
+  color: var(--hover-color);
+  text-decoration-color: var(--hover-color);
 }
 
 .post-title {
@@ -726,17 +763,57 @@ RESPONSIVE DESIGN & MOBILE STYLES
 
   /* Adjust navbar for mobile */
   .navbar {
-    padding: 1rem 0.5rem; /* Reduced padding */
+    padding: 1rem 0.5rem;
+    position: relative;
   }
 
-  .spacer {
-    flex: 1; /* Keep the spacer working */
+  /* Show hamburger menu on mobile */
+  .hamburger {
+    display: flex;
   }
 
-  .navbar > ul {
-    gap: 0.5rem; /* Reduce gap between nav items */
-    font-size: 0.9rem; /* Smaller nav text */
-    padding-right: 0.5rem; /* Add padding on the right */
+  /* Transform hamburger to X when checked */
+  .menu-toggle:checked + .hamburger span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .menu-toggle:checked + .hamburger span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-toggle:checked + .hamburger span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile menu styling */
+  .nav-menu {
+    position: fixed;
+    top: 80px;
+    right: -100%;
+    flex-direction: column;
+    background-color: var(--background-color);
+    border: 1px solid rgba(176, 196, 222, 0.3);
+    border-radius: 8px;
+    padding: 0.5rem;
+    gap: 0;
+    transition: right 0.3s ease;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  /* Show menu when checkbox is checked */
+  .menu-toggle:checked ~ .nav-menu {
+    right: 1rem;
+  }
+
+  .nav-menu > li > a {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+  }
+
+  .nav-menu > li > a:hover {
+    background-color: rgba(176, 196, 222, 0.1);
   }
 
   /* Reduce overall padding */
@@ -870,7 +947,7 @@ TABLE OF CONTENTS (TOC) STYLES
 
 .toc-item:hover {
   background-color: rgba(176, 196, 222, 0.1);
-  color: #ffd199;
+  color: var(--hover-color);
 }
 
 .toc-item.active {
