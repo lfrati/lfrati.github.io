@@ -5,6 +5,8 @@
   "main": "screenshot.js",
   "scripts": {
     "shot": "node screenshot.js",
+    "shot:mobile": "node screenshot.js --device mobile",
+    "shot:desktop": "node screenshot.js --device desktop",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

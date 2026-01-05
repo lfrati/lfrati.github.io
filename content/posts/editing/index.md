@@ -36,10 +36,9 @@ Now your life is great, you have the same power of creating text you had before,
 
 # Concept 2: Multidimensional arrangements
 
-{{< wrap src="images/text.png" caption="" align="left" width="100" >}}
-
-I'm not familiar with the evolution of UX for text editing, but I have a feeling that there is a reason text files are usually shaped like pages. Because that makes sense to anyone that ever held a book (people still read those, right?).
+{{< wrap src="images/text.png" caption="" width="100" >}} I'm not familiar with the evolution of UX for text editing, but I have a feeling that there is a reason text files are usually shaped like pages. Because that makes sense to anyone that ever held a book (people still read those, right?).
 And so when you open several files the "pages" get arranged in a neat list of tabs. The current page is highlighted and the other pages are one click away, to the left/right of it.
+
 {{< img src="images/tabs.png" caption="Tabs? Pages? Chaos?" width="600" >}}
 
 But that analogy is not that great if you think about it. Because what you have on screen is quite different than a book. Maybe a massive scroll would be more accurate? The main issue is that at any time you only see a small portion of the scroll. And to move around you gotta scroll, a lot. But that's not nice.
@@ -71,5 +70,5 @@ Responsiveness is only half of the equation. Another key component of flow for m
 This is it. I like an editor that allows me to easily talk to it, that arranges text in flexible and powerful ways, while being responsive and undistracting.
 An editor that lets the quantum wave of my thoughts expand and morph freely. Instead of collapsing it into drudgery.
 
-## (Bonus) Lua is a very cool language.
-Unlike [vimscript](https://vimdoc.sourceforge.net/htmldoc/usr_41.html), Lua is a small, elegant language that's a pleasure to use. So much so it made me want to write my own [search plugin](https://github.com/lfrati/onesearch.nvim) and [slime-like plugin](https://github.com/lfrati/szent.nvim).
+## (Bonus) Lua is a very cool language
+Unlike [vimscript](https://vimdoc.sourceforge.net/htmldoc/usr_41.html), Lua is a small, elegant language that's a pleasure to use. So much so that it made me want to write my own [search plugin](https://github.com/lfrati/onesearch.nvim) and [slime-like plugin](https://github.com/lfrati/szent.nvim).

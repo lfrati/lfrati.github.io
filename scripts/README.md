@@ -38,16 +38,18 @@ rmdir /s %USERPROFILE%\AppData\Local\ms-playwright
 
 - `screenshot.js` - Makes screenshots
 Usage:
-    ```bash
-    echo '{
-      "url": "http://localhost:1313/posts/editing/",
-      "device": "mobile",
-      "selector": "img.wrap-figure",
-      "output": "test.png"
-    }' | npm run shot
-    ```
+    
+```bash
+cd scripts
+npm run shot:mobile -- \
+  --url "http://localhost:1313/posts/editing/" \
+  --selector "img.wrap-figure" \
+  --output "test.png"
+```
 
 ### Notes
 - This tool is intentionally **single-shot**: provide one `url` + `selector` + `device` + `output` per invocation.
-- Prefer writing screenshots to `scripts/artifacts/...` (the directory is gitignored).
+- Prefer `npm run shot:mobile` / `npm run shot:desktop` to avoid re-typing `--device`.
+- For any additional CLI args, keep using the npm separator: `npm run shot:mobile -- --url ... --selector ... --output ...`
+- `--output` must be a **filename only** (no path). Screenshots are always written under `scripts/artifacts/` (gitignored).
 - By default it screenshots a **square region centered on** the element matched by `selector` (to capture surrounding context). Use `"minPadding"`/`"maxPadding"` to control the side length. Set `"fullPage": true` only when you need broader context.
