@@ -2,7 +2,7 @@
 title = "An elegant editor for a more civilized age"
 date = 2025-10-06
 draft = false
-summary = "The features of an editor that make editing text a pleasure"
+summary = "What are the features of an editor that make editing text a pleasure instead of a chore?"
 tags = ["vim", "neovim"]
 +++
 
@@ -73,3 +73,6 @@ An editor that lets the quantum wave of my thoughts expand and morph freely. Ins
 
 ## (Bonus) Lua is a very cool language
 Unlike [vimscript](https://vimdoc.sourceforge.net/htmldoc/usr_41.html), Lua is a small, elegant language that's a pleasure to use. So much so that it made me want to write my own [search plugin](https://github.com/lfrati/onesearch.nvim) and [slime-like plugin](https://github.com/lfrati/szent.nvim).
+
+## (Malus) Multiple cursors are very cool.
+And not having them by default in Neovim hurts. But I guess that's what plugins are for...
