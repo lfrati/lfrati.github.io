@@ -1,6 +1,20 @@
-// Copy to clipboard functionality for code blocks
+// Expose resizeIframe globally so shortcodes can call it via onload
+window.resizeSketch = function resizeSketch(obj) {
+  try {
+    const cnv = obj?.contentWindow?.document?.body?.querySelector('#defaultCanvas0');
+    if (!cnv) {
+      return;
+    }
+    obj.style.height = cnv.style.height;
+    obj.style.width = cnv.style.width;
+  } catch (e) {
+    // Silently ignore cross-origin or timing issues
+  }
+};
+
+// ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
-  // Find all code blocks
+  // Copy to clipboard functionality for code blocks
   const codeBlocks = document.querySelectorAll('.highlight');
   
   codeBlocks.forEach(function(block) {
@@ -55,24 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-});
 
-// Expose resizeIframe globally so shortcodes can call it via onload
-window.resizeSketch = function resizeSketch(obj) {
-  try {
-    const cnv = obj?.contentWindow?.document?.body?.querySelector('#defaultCanvas0');
-    if (!cnv) {
-      return;
-    }
-    obj.style.height = cnv.style.height;
-    obj.style.width = cnv.style.width;
-  } catch (e) {
-    // Silently ignore cross-origin or timing issues
-  }
-};
-
-// ========== TABLE OF CONTENTS FUNCTIONALITY ==========
-document.addEventListener('DOMContentLoaded', function() {
+  // ========== TABLE OF CONTENTS FUNCTIONALITY ==========
   // Discover ToC elements and derive section IDs from DOM
   const tocButton = document.getElementById('tocButton');
   const tocPane = document.getElementById('tocPane');
@@ -88,12 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
     .map((item) => item.getAttribute('data-target'))
     .filter((id) => typeof id === 'string' && id.length > 0);
   if (sectionIds.length === 0) return;
-
-  // Build lookup dictionary once
-  const sectionById = {};
-  sectionIds.forEach((id, index) => {
-    sectionById[id] = index;
-  });
 
   // Cache section elements once
   const sectionEls = sectionIds.map((id) => document.getElementById(id));
@@ -127,13 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // IntersectionObserver-based highlighting observing server-wrapped sections
   const sectionWrappers = Array.from(document.querySelectorAll('.post-content .toc-section'));
   if (sectionWrappers.length === 0) return;
-
-  // // DEBUG: visualize server-wrapped sections without affecting layout
-  // sectionWrappers.forEach((wrapper) => {
-  //   wrapper.style.outline = '1px solid rgba(128, 145, 155, 0.5)';
-  //   wrapper.style.outlineOffset = '4px';
-  //   wrapper.style.borderRadius = '8px';
-  // });
 
   // Track visibility state of wrappers and toggle active classes accordingly
   const visibleSections = new Set();

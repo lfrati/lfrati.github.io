@@ -35,47 +35,43 @@
   margin-bottom: 0;
 }
 
+/* Box type variants using CSS custom properties */
 .box-shortcode.markdown-alert-note {
-  border-left-color: #539bf5;
-  background-color: rgba(83, 155, 245, 0.12);
-}
-
-.box-shortcode.markdown-alert-note .markdown-alert-title {
-  color: #8abaff;
+  --box-border: #539bf5;
+  --box-bg: rgba(83, 155, 245, 0.12);
+  --box-title: #8abaff;
 }
 
 .box-shortcode.markdown-alert-tip {
-  border-left-color: #3fb950;
-  background-color: rgba(63, 185, 80, 0.12);
-}
-
-.box-shortcode.markdown-alert-tip .markdown-alert-title {
-  color: #85f799;
+  --box-border: #3fb950;
+  --box-bg: rgba(63, 185, 80, 0.12);
+  --box-title: #85f799;
 }
 
 .box-shortcode.markdown-alert-important {
-  border-left-color: #a371f7;
-  background-color: rgba(163, 113, 247, 0.13);
-}
-
-.box-shortcode.markdown-alert-important .markdown-alert-title {
-  color: #c9a5ff;
+  --box-border: #a371f7;
+  --box-bg: rgba(163, 113, 247, 0.13);
+  --box-title: #c9a5ff;
 }
 
 .box-shortcode.markdown-alert-warning {
-  border-left-color: #d29922;
-  background-color: rgba(210, 153, 34, 0.18);
-}
-
-.box-shortcode.markdown-alert-warning .markdown-alert-title {
-  color: #f1c553;
+  --box-border: #d29922;
+  --box-bg: rgba(210, 153, 34, 0.18);
+  --box-title: #f1c553;
 }
 
 .box-shortcode.markdown-alert-caution {
-  border-left-color: #f85149;
-  background-color: rgba(248, 81, 73, 0.14);
+  --box-border: #f85149;
+  --box-bg: rgba(248, 81, 73, 0.14);
+  --box-title: #ff9b96;
 }
 
-.box-shortcode.markdown-alert-caution .markdown-alert-title {
-  color: #ff9b96;
+/* Apply the custom properties */
+.box-shortcode[class*="markdown-alert-"] {
+  border-left-color: var(--box-border);
+  background-color: var(--box-bg);
+}
+
+.box-shortcode[class*="markdown-alert-"] .markdown-alert-title {
+  color: var(--box-title);
 }

@@ -5,9 +5,9 @@ img.wrap-figure {
   max-width: 42%;
   width: var(--wrap-width, auto);
   margin: 0 1.5rem 1.25rem 0;
-  border-radius: 8px;
-  border: 1px solid rgba(176, 196, 222, 0.35);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--tertiary-35);
+  box-shadow: var(--shadow-md);
 }
 
 .wrap-caption {
@@ -17,16 +17,6 @@ img.wrap-figure {
   font-size: 0.95rem;
   margin-top: 0.75rem;
   clear: both;
-}
-
-/* On smaller screens we still wrap text around the image, but cap its width */
-@media (max-width: 900px) {
-  img.wrap-figure {
-    max-width: 55%;
-    width: min(var(--wrap-width, 55%), 55%);
-    margin: 0 1rem 0.75rem 0;
-    border-radius: 8px;
-  }
 }
 
 /* New sections/headings after a wrap should clear the float */
@@ -40,7 +30,15 @@ img.wrap-figure ~ .toc-section {
   clear: both;
 }
 
+/* On smaller screens we still wrap text around the image, but cap its width */
 @media (max-width: 900px) {
+  img.wrap-figure {
+    max-width: 55%;
+    width: min(var(--wrap-width, 55%), 55%);
+    margin: 0 1rem 0.75rem 0;
+    border-radius: var(--radius-md);
+  }
+
   img.wrap-figure ~ h1,
   img.wrap-figure ~ h2,
   img.wrap-figure ~ h3,
