@@ -31,10 +31,10 @@
     <div class="project-header">
       <h3 class="project-title">{{ $title }}</h3>
       {{- if gt (len $languages) 0 }}
-        <div class="project-langs">
+        <div class="post-tags">
           {{- range $languages }}
             {{- $lang := trim . " " -}}
-            {{- if $lang }}<span class="project-lang">{{ $lang }}</span>{{ end -}}
+            {{- if $lang }}<span class="post-tag">{{ $lang }}</span>{{ end -}}
           {{- end }}
         </div>
       {{- end }}

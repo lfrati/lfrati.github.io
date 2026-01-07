@@ -4,6 +4,7 @@ date = 2025-09-06
 draft = false
 summary = 'For a long time I had a simple Jekyll website but it was time for a refresh and Hugo seems pretty cool...'
 math = true
+tags = ["hugo", "js"]
 +++
 
 <script src="leader-line.min.js"></script>

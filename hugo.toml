@@ -2,7 +2,10 @@ baseURL = 'https://fratilapo.com/'
 languageCode = 'en-us'
 title = 'while(True):'
 enableRobotsTXT = true
-disableKinds = ["taxonomy", "term"]
+
+# Enable tags taxonomy
+[taxonomies]
+  tag = "tags"
 
 # Author information for RSS feeds
 [params]
@@ -89,6 +92,10 @@ disableKinds = ["taxonomy", "term"]
         url = "/projects/"
         weight = 2
     [[menu.main]]
+        name = "Tags"
+        url = "/tags/"
+        weight = 3
+    [[menu.main]]
         name = "About"
         url = "/about/"
-        weight = 3
+        weight = 4

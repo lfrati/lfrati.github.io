@@ -3,6 +3,7 @@ title = "What's in a doc?"
 date = 2025-10-06
 draft = false
 summary = "Would you rather have tons of documentation that distracts your agent, or just the right amount that helps it become your best coding buddy?"
+tags = ["mcp", "godot"]
 +++
 
 # Factual grounding

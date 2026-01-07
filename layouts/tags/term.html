@@ -1,6 +1,6 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
+  <h1 style="color: grey;">{{ .Title }}:</h1>
+  
   <div class="posts-list">
     {{ range .Pages }}
     <article class="post-item">
@@ -28,3 +28,4 @@
     {{ end }}
   </div>
 {{ end }}
+

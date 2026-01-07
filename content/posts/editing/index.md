@@ -3,6 +3,7 @@ title = "An elegant editor for a more civilized age"
 date = 2025-10-06
 draft = false
 summary = "The features of an editor that make editing text a pleasure"
+tags = ["vim", "neovim"]
 +++
 
 # Why (Neo)Vim is popular
