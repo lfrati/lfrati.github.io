@@ -1,0 +1,39 @@
+{{- /* Get all regular pages from posts section */ -}}
+{{- $pages := where site.RegularPages "Section" "posts" -}}
+{{- /* Sort by date descending (newest first) */ -}}
+{{- $pages = sort $pages "Date" "desc" -}}
+{{- /* Apply RSS limit if configured */ -}}
+{{- $limit := .Site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 -}}
+{{- $pages = $pages | first $limit -}}
+{{- end -}}
+{{- /* Calculate lastBuildDate from newest post */ -}}
+{{- $lastBuildDate := "" -}}
+{{- with (index $pages 0) -}}
+{{- $lastBuildDate = .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" -}}
+{{- end -}}
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ .Site.Title }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>Recent content on {{ .Site.Title }}</description>
+    <generator>Hugo</generator>{{ with .Site.LanguageCode }}
+    <language>{{.}}</language>{{end}}{{ with .Site.Copyright }}
+    <copyright>{{.}}</copyright>{{end}}{{ with $lastBuildDate }}
+    <lastBuildDate>{{ . }}</lastBuildDate>{{end}}
+    {{- with .OutputFormats.Get "RSS" }}
+    <atom:link href="{{ .Permalink }}" rel="self" type="{{ .MediaType }}" />
+    {{- end }}
+    {{- range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify }}{{ end }}</description>
+    </item>
+    {{- end }}
+  </channel>
+</rss>
+
