@@ -4,8 +4,8 @@
   align-items: start;
   gap: 16px;
   padding: 16px;
-  border: 1px solid rgba(176, 196, 222, 0.15);
-  border-radius: 12px;
+  border: 1px solid var(--tertiary-15);
+  border-radius: var(--radius-lg);
   background: rgba(20, 20, 26, 0.6);
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
   text-decoration: none; /* link wrapper */
@@ -19,7 +19,7 @@
 
 .project-item:hover {
   transform: translateY(-1px);
-  border-color: rgba(176, 196, 222, 0.25);
+  border-color: var(--tertiary-25);
   background: rgba(20, 20, 26, 0.7);
 }
 
@@ -57,8 +57,8 @@
   color: #9fb4d1;
   padding: 2px 6px;
   border-radius: 9999px;
-  background: rgba(176, 196, 222, 0.12);
-  border: 1px solid rgba(176, 196, 222, 0.2);
+  background: var(--tertiary-15);
+  border: 1px solid var(--tertiary-20);
 }
 
 .project-actions {
@@ -72,7 +72,7 @@
   justify-content: center;
   gap: 6px;
   padding: 6px 10px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: rgba(37, 99, 235, 0.15);
   color: #9ec1ff;
   text-decoration: none;
