@@ -1,5 +1,6 @@
 +++
 title = "An elegant editor for a more civilized age"
+slug = 'editing'
 date = 2025-10-06
 draft = false
 summary = "What are the features of an editor that make editing text a pleasure instead of a chore?"

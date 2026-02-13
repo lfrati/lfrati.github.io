@@ -1,5 +1,6 @@
 +++
 title = 'A Peek into Neuromodularity'
+slug = 'neuromodularity'
 date = 2025-09-07
 draft = false
 summary = "Exploring the intersection of geometric graphs, complex contagion, and neural networks through interactive visualizations and reservoir computing."
