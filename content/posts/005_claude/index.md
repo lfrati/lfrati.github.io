@@ -1,6 +1,6 @@
 +++
 title = 'What the AI?'
-slug = 'claude'
+slug = 'whattheai'
 date = 2026-04-28
 draft = false
 summary = "Six weeks, 600+ hours of agent work and 100M+ tokens later: notes from the trenches with frontier coding agents and what they did to my sanity."
@@ -9,7 +9,7 @@ tags = ["ai", "claude"]
 
 A couple of months ago I decided to evaluate for myself the capability of frontier models. I paid for the Claude Max (x20) top tier subscription from Anthropic and I have been working with Opus 4.6/4.7 as hard as I could.
 
-The following are notes I've gathered whenever the agents said something that made me go "What the ****!?" plus thoughts and lessons learned.
+The following are notes I've gathered whenever the agents said something that made me go "What the AI!?".
 
 {{< box warning >}}
 Using Claude Code I have managed to create several projects that I likely would've not completed without it, such as [lokaloptima.dev](https://www.lokaloptima.dev). I have obtained clear value from using these agents. That, for me, is undeniable. But the price I've paid for it is much more difficult to quantify (beyond the monetary one, that's 200€/month 💸). Here I report some of my experiences and thoughts I've had along the way.
@@ -246,7 +246,7 @@ I have burned 100M+ tokens but it feels like it was me that actually burned out.
 And I paid a bunch of money for it.
 
 # E quindi uscimmo a riveder le stelle
-That was a rough journey. I have focused on the strange, frustrating aspects of it but I want to reiterate: these agents provide real value. The problem is that value comes mixed into a bundle of insanity and chaos. I wish agents didn't speak like humans so my brain wouldn't be so often tricked into treating them like one. They are alien intelligences that we find ourselves interacting with in the digital depths of the terminal.
+That was a rough journey. I have focused on the strange, frustrating aspects of it but I want to reiterate: these agents provided real value. The problem is that value comes mixed into a bundle of insanity and chaos. I wish agents didn't speak like humans so my brain wouldn't be so often tricked into treating them like one. They are alien intelligences that we find ourselves interacting with in the digital depths of the terminal.
 
 Strange time to be alive. When I was younger I played some League of Legends, a (fun) multiplayer game known for its toxicity. That toxicity emerges from the need to have your teammates cooperate and the crushing sense of powerlessness you feel when you see them lose their marbles and start acting in the most degenerate ways. I've felt the same using these agents. A deep desire to scream at the screen, to insult whatever entity sits on the other side, despite the knowledge that it will fix nothing. But sometimes your teammates will carry you to victory, and that feels pretty good.
 
@@ -263,10 +263,14 @@ Things you should totally use an agent for: anything easy to verify.
 - Do you need to reshape, resize, rename? A file? An image? An audio file? Just point the agent at your files.
 
 Things you should NOT EXPECT:
-- **common sense**: "Great idea! We indeed don't need to do X every. SINGLE. TIME. this function is run."
+- **common sense**: "Great idea! We indeed don't need to do \<insert expensive operation\> every single time this function is run."
 - **estimates**: "Oh I'm sorry, turned out that the optimization I suggested actually makes the code slower. I'll be more careful in the future." (we both know it won't)
 - **consistency**: The same thing done with an unfamiliar framework will be much more likely to not work.
-- **sanity**: if you let the agents loose on your codebase.
+- **keep your sanity**: if you let the agents loose on your codebase.
 
 And don't worry, I know that it's hard to ignore that little voice in your head: "I bet if I'm careful I could use it for..."
 We've all been there.
+
+I've decided to write about the worst parts of my experience first. These moments were negative, but fewer than the positives (I've completed many interesting projects with these agents). They were also easier to summarize and more relatable than the wins, which tend to be technical. I plan to write about the positive side too, so stay tuned.
+
+Until then: vibe responsibly.
