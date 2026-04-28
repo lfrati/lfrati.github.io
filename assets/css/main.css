@@ -91,6 +91,7 @@ CSS VARIABLES & GLOBAL SETTINGS
   --sidenote-offset: 20px;
   --sidenote-effective-width: min( var(--sidenote-width), calc((100vw - var(--posts-width)) / 2 - var(--sidenote-offset))
   );
+  --text-color: #a1a1a1;
 }
 
 
@@ -99,7 +100,7 @@ BASE LAYOUT & BODY STYLES
 ============================================================================*/
 
 body {
-  color: white;
+  color: var(--text-color);
   background-color: var(--background-color);
   font-family: "Mulish", "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   line-height: 1.5;
