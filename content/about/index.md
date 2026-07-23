@@ -4,7 +4,7 @@ title = "About"
 
 ## whoami
 
-Just a guy with a keen interest in all things computation, a PhD in [Complex Systems and Data Science](https://vermontcomplexsystems.org/education/phd/), a bunch of deep learning experience in continual and meta-learning, and a passion for cellular automata.
+Just a guy with a keen interest in all things computation, a PhD in [Complex Systems and Data Science](https://vermontcomplexsystems.org/education/phd/), a bunch of deep learning experience in continual and meta-learning, and a passion for cellular automata. If you prefer the formal version, there is a [CV](/CV.pdf) for that.
 
 ## What is this blog?
 A quiet place for some thoughts?  
