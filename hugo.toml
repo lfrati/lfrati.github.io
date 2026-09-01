@@ -10,7 +10,6 @@ enableRobotsTXT = true
 # Author information for RSS feeds
 [params]
   author = "Lapo Frati"
-  math = true
   robots = [
   "AdsBot-Google",
   "Amazonbot",
