@@ -54,9 +54,11 @@ Ah, before I forget, if you click on the ToC it shows you more info and lets you
 Speaking of things that are usually a pain in a book, footnotes. Gosh I hate seeing a little non-clickable [n] and then having to go hunt, first at the bottom of the page, then at the end of the chapter and then begrudgingly at the end of the book for some related info.
 
 Hugo has some nice footnotes that send you to the bottom of the page when clicked and have a nice
-"<a class="footnote-backref" role="doc-backlink">↩︎</a>" that lets you go back. Since I hope you are reading this on a _reasonably_ sized screen (a smartphone is not _reasonably_ sized, <small style="color:lightgrey">sorry</small>) I've added a preview in the right column<span id="start">.&nbsp;&nbsp;</span>
+"<a class="footnote-backref" role="doc-backlink">↩︎</a>" that lets you go back. But bouncing up and down the page is still hunting, just with less cardio. So I stole a page from [Tufte](https://edwardtufte.github.io/tufte-css/) instead: on a _reasonably_ sized screen the notes simply sit in the right margin, next to the text they refer to<span id="start">.&nbsp;&nbsp;</span>
 
-If you are a compulsive hoverer like me you've also probably already noticed that if you hover the preview or the footnote number it highlights where it's coming from. You're welcome.
+On smaller screens (yes, even a smartphone) there is no margin to speak of, so the number becomes a toggle: tap it and the note unfolds right where you are reading, tap it again and it tucks itself away. No jumping, no hunting. Go ahead, resize the window and try it.
+
+If you are a compulsive hoverer like me you've also probably already noticed that if you hover a margin note or its footnote number it highlights where it's coming from. You're welcome.
 
 # Images and captions
 
