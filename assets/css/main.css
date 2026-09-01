@@ -88,7 +88,7 @@ CSS VARIABLES & GLOBAL SETTINGS
 
   --posts-width: 768px;
   --sidenote-width: 400px;
-  --sidenote-offset: 20px;
+  --sidenote-offset: 48px;
   --sidenote-effective-width: min( var(--sidenote-width), calc((100vw - var(--posts-width)) / 2 - var(--sidenote-offset))
   );
   --text-color: #a1a1a1;
