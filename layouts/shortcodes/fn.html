@@ -3,7 +3,8 @@
   Usage:
   {{< fn >}}Footnote content here{{< /fn >}}
   - Auto-numbers per page; no parameters needed
-  - Renders an inline sidenote box and also collects items for the bottom list
+  - Wide screens (>=1600px): note floats into the right margin
+  - Narrow screens: tapping the number expands the note inline (checkbox toggle)
 */}}
 
 {{- $next := or (.Page.Store.Get "fn_next") 1 -}}
@@ -12,18 +13,8 @@
 
 {{- $idStr := printf "fn%v" $fnId -}}
 {{- $inner := strings.TrimLeft " \n\t\r" .Inner -}}
-{{- $refStr := printf "fnref%v" $fnId -}}
-
-{{/* Collect for bottom list */}}
-{{- $list := or (.Page.Store.Get "fn_list") (slice) -}}
-{{- $entry := dict "id" $idStr "ref" $refStr "content" ($inner | safeHTML) -}}
-{{- $list = $list | append $entry -}}
-{{- .Page.Store.Set "fn_list" $list -}}
 
 <span class="footnote-sidenote">
-  <a href="#{{$idStr}}" id="{{$refStr}}" class="footnote-ref" role="doc-noteref">[{{$fnId}}]</a>
-  <span class="footnote-content" data-footnote-id="{{$idStr}}"><span class="footnote-num">{{$fnId}}</span>{{ $inner | safeHTML }}</span>
-  {{/* Keep original content flow intact */}}
+  <input type="checkbox" id="{{ $idStr }}-toggle" class="footnote-toggle" aria-label="Footnote {{ $fnId }}" /><label for="{{ $idStr }}-toggle" class="footnote-ref">[{{ $fnId }}]</label>
+  <span class="footnote-content" data-footnote-id="{{ $idStr }}"><span class="footnote-num">{{ $fnId }}</span>{{ $inner | safeHTML }}</span>
 </span>
-
-

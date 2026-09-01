@@ -2,15 +2,36 @@
   display: inline;
 }
 
+/* Hidden but keyboard-focusable checkbox driving the narrow-screen toggle */
+.footnote-toggle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  clip-path: inset(50%);
+  pointer-events: none;
+}
+
+.footnote-ref {
+  color: var(--link-color);
+  transition: color 0.15s ease;
+}
+
+.footnote-toggle:focus-visible + .footnote-ref {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 .footnote-content {
-  /* visual styles only; layout is handled in wide-screen media query */
-  max-width: var(--sidenote-width);
   box-sizing: border-box;
   color: var(--text-color);
   font-size: 0.85rem;
   line-height: 1.4;
-  min-width: 120px;
-  display: none; /* hidden by default; enabled on wide screens */
+  display: none; /* hidden until toggled (narrow) or floated to margin (wide) */
 }
 
 .footnote-content p {
@@ -26,12 +47,42 @@
   vertical-align: baseline;
 }
 
+/* Narrow screens: tapping the number opens the note as an inline inset */
+@media (max-width: 1599.98px) {
+  .footnote-ref {
+    cursor: pointer;
+  }
 
+  .footnote-ref:hover,
+  .footnote-toggle:checked + .footnote-ref {
+    color: var(--hover-color);
+  }
+
+  .footnote-toggle:checked ~ .footnote-content {
+    display: block;
+    float: left;
+    clear: both;
+    width: 95%;
+    margin: 0.75rem 2.5% 1rem;
+    padding: 0.6rem 0.9rem;
+    border-left: 0.25em solid var(--tertiary-30);
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+}
+
+/* Wide screens: notes float into the right margin, always visible */
 @media (min-width: 1600px) {
+  .footnote-ref {
+    cursor: default;
+  }
+
   .footnote-content {
     display: block;
     float: right;
     clear: right; /* stack alongside previous right floats only */
+    max-width: var(--sidenote-width);
+    min-width: 120px;
     width: var(--sidenote-effective-width);
     margin-right: calc(-1 * (var(--sidenote-effective-width) + var(--sidenote-offset)));
     margin-top: 0; /* align with the line containing the label */
@@ -39,26 +90,8 @@
     margin-bottom: 0.75rem;
   }
 
-  .post-content .footnote-sidenote:hover a.footnote-ref,
-  .post-content a.footnote-ref.footnote-highlight {
-    color: var(--hover-color);
-    text-decoration-color: var(--hover-color);
-  }
-
-  .post-content .footnote-sidenote:hover .footnote-content,
-  .post-content .footnote-content.footnote-highlight {
+  .post-content .footnote-sidenote:hover .footnote-ref,
+  .post-content .footnote-sidenote:hover .footnote-content {
     color: var(--hover-color);
   }
-}
-
-/* TODO: DO I NEED THIS? */
-/* Ensure bottom footnotes list is visible and not wrapped by floats */
-section.footnotes {
-  display: block;
-  clear: both;
-  margin-top: 8rem;
-}
-
-section.footnotes ol {
-  padding-left: 1.25rem;
 }
