@@ -1,4 +1,11 @@
-@import url("https://fonts.googleapis.com/css?family=Fira+Mono:400");
+/* Self-hosted Fira Mono (regular), used by the 404 glitch text */
+@font-face {
+  font-display: swap;
+  font-family: "Fira Mono";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/FiraMono/fira-mono-v16-latin-regular.woff2") format("woff2");
+}
 
 .glitch-container {
   display: flex;
