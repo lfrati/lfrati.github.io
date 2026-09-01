@@ -19,9 +19,10 @@
           <p class="post-description">{{ .Summary }}<span class="arrow-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="arrow"><path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"></path></svg></span></p>
         </a>
       </div>
+      {{ $post := . }}
       {{ with .Resources.GetMatch "thumbnail.*" }}
-      <a href="{{ $.RelPermalink }}" class="post-illustration">
-        <img src="{{ .RelPermalink }}" alt="{{ $.Title }}" loading="lazy">
+      <a href="{{ $post.RelPermalink }}" class="post-illustration">
+        <img src="{{ .RelPermalink }}" alt="{{ $post.Title }}" loading="lazy">
       </a>
       {{ end }}
     </article>
