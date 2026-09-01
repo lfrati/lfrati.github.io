@@ -23,13 +23,12 @@
             </a>
           {{ end }}
         </div>
-        <a href="{{ .RelPermalink }}" class="post-illustration">
-          {{ $thumbnail := .Resources.GetMatch "thumbnail.*" }}
-          {{ if not $thumbnail }}
-            {{ errorf "Post '%s': expected bundle image named 'thumbnail.*' (place e.g. thumbnail.jpg alongside the post)" .Title }}
-          {{ end }}
-          <img src="{{ $thumbnail.RelPermalink }}" alt="{{ .Title }}" />
+        {{ $post := . }}
+        {{ with .Resources.GetMatch "thumbnail.*" }}
+        <a href="{{ $post.RelPermalink }}" class="post-illustration">
+          <img src="{{ .RelPermalink }}" alt="{{ $post.Title }}" loading="lazy" />
         </a>
+        {{ end }}
       </article>
     {{ end }}
   </div>

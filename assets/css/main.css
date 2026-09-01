@@ -302,6 +302,11 @@ POSTS & CONTENT
   align-items: center;
 }
 
+/* Posts without a thumbnail let the text use the full row */
+.post-item:not(:has(.post-illustration)) {
+  grid-template-columns: 1fr;
+}
+
 .post-description-link {
   text-decoration: none;
   color: inherit;
