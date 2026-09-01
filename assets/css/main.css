@@ -586,18 +586,11 @@ article.post {
   font-weight: bold;
 }
 
-/* Moved footnote ref brackets into footnote-shortcode.css */
-
 .post-description {
   color: rgb(202, 189, 189);
   font-size: 0.95rem;
   display: inline-block;
   word-wrap: break-word;
-}
-
-svg.feather {
-  vertical-align: middle;
-  padding-right: 0.2rem;
 }
 
 /*============================================================================
@@ -910,12 +903,7 @@ RESPONSIVE DESIGN & MOBILE STYLES
   
   .about-content {
     gap: 1.5rem;
-  }
-  
-  .about-text h2 {
-    font-size: 1.25rem;
-  }
-}
+  }}
 
 /*============================================================================
 TABLE OF CONTENTS (TOC) STYLES
