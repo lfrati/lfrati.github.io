@@ -1,0 +1,18 @@
+{{/* Rewrite Goldmark footnotes into inline tufte sidenotes: each <sup>
+     ref becomes the checkbox+label+content markup styled by
+     fn-shortcode.css, and the bottom endnotes list is removed.
+     Notes must hold inline content only: links, emphasis, code spans
+     and math are fine; lists or fenced code would break the inline span. */}}
+{{ $content := printf "%s" . }}
+{{ range findRE `(?s)<li id="fn:\d+">.*?</li>` $content }}
+  {{ $n := replaceRE `(?s)^<li id="fn:(\d+)">.*` "$1" . }}
+  {{ $body := replaceRE `(?s)^<li id="fn:\d+">(.*)</li>$` "$1" . }}
+  {{ $body = replaceRE `(?:&#160;)?<a href="#fnref:\d+" class="footnote-backref"[^>]*>[^<]*</a>` "" $body }}
+  {{ $body = replaceRE `</?p>` "" $body }}
+  {{ $body = strings.TrimSpace $body }}
+  {{ $ref := printf `<sup id="fnref:%s"><a href="#fn:%s" class="footnote-ref" role="doc-noteref">%s</a></sup>` $n $n $n }}
+  {{ $note := printf `<span class="footnote-sidenote"><input type="checkbox" id="fn%s-toggle" class="footnote-toggle" aria-label="Footnote %s" /><label for="fn%s-toggle" class="footnote-ref">[%s]</label> <span class="footnote-content" data-footnote-id="fn%s"><span class="footnote-num">%s</span>%s</span></span>` $n $n $n $n $n $n $body }}
+  {{ $content = replace $content $ref $note }}
+{{ end }}
+{{ $content = replaceRE `(?s)<div class="footnotes" role="doc-endnotes">.*$` "" $content }}
+{{ return safeHTML $content }}

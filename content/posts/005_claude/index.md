@@ -100,11 +100,11 @@ Every time the agent couldn't match outputs between the base version and an opti
 
 I asked the agent to help me to quantize a model to reduce storage space and speed up startup time. The agent successfully converted the model and the code, but then proceeded to load both versions because it had left some tiny pieces of information in the original, defeating the purpose of using smaller weights.
 
-This quantization failure is one example of a more general pattern I've seen. The agents severely lack common sense, if that sense is not too common. By that I mean: it acts like a reasonable human would most of the time, but then fails horribly on rarer tasks. For example, when working on performance optimizations{{< fn >}}Plenty of information in the context about what we are doing and why; the agent knew exactly what the goal was.{{< /fn >}}, it would still add a bunch of useless runtime reshaping or processing of data that could totally just be done once and reused. If told to remove all the runtime cost of those operations, it says it's a great idea and it knows how to do it. But unless I ask, it will not occur to it that it's an easy win.
+This quantization failure is one example of a more general pattern I've seen. The agents severely lack common sense, if that sense is not too common. By that I mean: it acts like a reasonable human would most of the time, but then fails horribly on rarer tasks. For example, when working on performance optimizations [^context], it would still add a bunch of useless runtime reshaping or processing of data that could totally just be done once and reused. If told to remove all the runtime cost of those operations, it says it's a great idea and it knows how to do it. But unless I ask, it will not occur to it that it's an easy win.
 
 ## Garbage in, garbage out
 
-One issue I've tried over and over to get the agent to fix but have not managed to is: fixing some kernels that were causing corrupted outputs (nonsense and loops) in a small local model. No matter what I tried, the agent (Opus 4.6) would constantly lose its mind and either get stuck in endless loops of changing A, then B, then C, then A, then B, then… or just declare, "Done, it works now."{{< fn >}}Spoiler alert: it never worked, and it was very, very, very obvious that the output was nonsense.{{< /fn >}} No amount of babysitting, explaining the problem, talking about it or planning clear steps managed to fix this. In the end I just gave up. I suspect the broken output of the small model we were optimizing kept poisoning the agent context.
+One issue I've tried over and over to get the agent to fix but have not managed to is: fixing some kernels that were causing corrupted outputs (nonsense and loops) in a small local model. No matter what I tried, the agent (Opus 4.6) would constantly lose its mind and either get stuck in endless loops of changing A, then B, then C, then A, then B, then… or just declare, "Done, it works now." [^spoiler] No amount of babysitting, explaining the problem, talking about it or planning clear steps managed to fix this. In the end I just gave up. I suspect the broken output of the small model we were optimizing kept poisoning the agent context.
 
 ## Bug on, bug off
 
@@ -188,7 +188,7 @@ I persisted for a few more days but I just could not anymore.
 
 This model reaaaaaally loves to say "honest". Which irritates me so much. There is nothing honest about the agent's replies. Not because there is malice behind them. It doesn't even get to that point. The agent just lacks any sort of intention.
 
-This is evident to me when I ask it for an opinion{{< fn >}}Don't do it, really, you might just as well flip a coin{{< /fn >}}. For science, here is an example of one time I asked it to review some plan we drafted. This was not an exception, I've had plenty of conversations like this.
+This is evident to me when I ask it for an opinion [^coin]. For science, here is an example of one time I asked it to review some plan we drafted. This was not an exception, I've had plenty of conversations like this.
 
 ```text
 ❯ review plan.md
@@ -274,3 +274,7 @@ We've all been there.
 I've decided to write about the worst parts of my experience first. These moments were negative, but fewer than the positives (I've completed many interesting projects with these agents). They were also easier to summarize and more relatable than the wins, which tend to be technical. I plan to write about the positive side too, so stay tuned.
 
 Until then: vibe responsibly.
+
+[^context]: Plenty of information in the context about what we are doing and why; the agent knew exactly what the goal was.
+[^spoiler]: Spoiler alert: it never worked, and it was very, very, very obvious that the output was nonsense.
+[^coin]: Don't do it, really, you might just as well flip a coin

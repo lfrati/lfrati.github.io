@@ -43,7 +43,7 @@ tags = ["hugo", "js"]
 
 Books are cool. Paper has a unique feeling to it but also some pretty strong limitations. For example, getting around in a book isn't always the easiest thing. Luckily for us we can use some CSS and JS to help us with a ToC. I saw one implementation I liked on [Substack](https://substack.com/) and I implemented it.
 
-Getting the sections to highlight nicely has been more of a headache than I thought. For now I got Hugo to wrap sections into `div`s that I can then observe using [Intersection Observers](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) {{<fn>}} I could've observed the headings but then I would've needed to keep track of state because a long section could have no headings in the viewport so... tradeoffs{{</fn>}}. 
+Getting the sections to highlight nicely has been more of a headache than I thought. For now I got Hugo to wrap sections into `div`s that I can then observe using [Intersection Observers](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)[^observers]. 
 I later stumbled upon a [scroll-driven animation](https://kizu.dev/scroll-driven-animations/#table-ofcontents-with-highlighted-current-sections) solution that looks very nice but _oh well_ future work.
 
 Ah, before I forget, if you click on the ToC it shows you more info and lets you navigate to sections, with some highlighting upon landing. And the headings are linkable in case you are into taking quite specific notes.
@@ -74,7 +74,7 @@ Multiple side images and footnotes are spaced to avoid overlap.
 
 Here is another image but it's not immediately to the right of the link (unless you have ungodly huge font size, in which case use your imagination).
 
-This sentence references a second note{{< fn >}}Side elements are queued and spaced; they won’t overlap even when close in the flow.{{< /fn >}} and a third note{{< fn >}}Hopefully I'm not overlapping with other elements... right?{{< /fn >}}so you can see that stacking behavior takes care of both images and sidenotes.
+This sentence references a second note [^stacking] and a third note [^overlap] so you can see that stacking behavior takes care of both images and sidenotes.
 
 Placing things to the right of specific elements is a surprisingly tricky problem but maybe it'll get easier when [anchor positioning](https://kizu.dev/anchor-positioning-experiments/) becomes widely implemented.
 
@@ -143,3 +143,7 @@ And when you don't feel like making a shortcode (yet) it's pretty nice to mix so
 </div>
 
 To conclude, a special thanks to [LeaderLine](https://anseki.github.io/leader-line/) for helping me point at HTML elements
+
+[^observers]: I could've observed the headings but then I would've needed to keep track of state because a long section could have no headings in the viewport so... tradeoffs
+[^stacking]: Side elements are queued and spaced; they won't overlap even when close in the flow.
+[^overlap]: Hopefully I'm not overlapping with other elements... right?

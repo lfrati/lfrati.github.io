@@ -63,7 +63,7 @@ enableRobotsTXT = true
     guessSyntax = false
 
 [markup.goldmark.extensions]
-  footnote = false
+  footnote = true
 
 [markup.goldmark.extensions.passthrough]
   enable = true

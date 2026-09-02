@@ -56,7 +56,7 @@ Before diving in, I was curious to see how other projects handle their docs.
 # Tailoring it to Godot
 
 I think our agents deserve better. Honestly, I want better for myself too.
-I haven’t had the smoothest experience browsing Godot’s documentation — so why not get two birds with one doc {{<fn>}}“Doc” sounds like “rock,” and a rock is a stone, so…{{</fn>}}
+I haven’t had the smoothest experience browsing Godot’s documentation — so why not get two birds with one doc [^pun]
 
 I’ve built a simple search script to navigate the processed docs we’ll serve to agents.
 
@@ -68,3 +68,5 @@ And voilà — nice, searchable docs, without any [scraping](https://docs.crawl4
 {{< box info >}} If you'd like to try it yourself checkout [this repo](https://github.com/lfrati/godocs) {{< /box >}}
 
 <img src="just_right.webp" style="width: 300px;" />
+
+[^pun]: "Doc" sounds like "rock," and a rock is a stone, so...

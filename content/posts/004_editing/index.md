@@ -24,7 +24,7 @@ Sometimes you want to _talk text_ to put down words, sometimes you want to _talk
 If you use Word to edit code, well first of all how do you stand with such massive cojones, and second, you've probably transcended physical reality so you are not reading this. But let's say for the sake of argument you do indeed use Word.
 The communication channel with the text is your keyboard. The communication channel with Word is the mouse. Pretty easy and straightforward.
 
-However reaching for the mouse all the time and clicking through the interface is not pleasant. Maybe you just want to make a word **bold**, and your hands are already on the keyboard so you think why not just use a shortcut, let's say `Cmd+b(old)`. {{<fn>}} While writing this I asked my wife to check that Cmd+b makes text bold in Word. She said "ok, wait I'm starting the application and it takes a while..." foreshadowing #3 {{</fn>}}
+However reaching for the mouse all the time and clicking through the interface is not pleasant. Maybe you just want to make a word **bold**, and your hands are already on the keyboard so you think why not just use a shortcut, let's say `Cmd+b(old)`. [^wife]
 
 After a while you might think, there is also this other thing that I really like to do often, maybe I should make another shortcut...
 The problem is that the keyboard is already very busy with the alphabet. So you gotta get creative with Ctrl/Alt \& co. Things quickly get out of control.
@@ -77,3 +77,5 @@ Unlike [vimscript](https://vimdoc.sourceforge.net/htmldoc/usr_41.html), Lua is a
 
 ## (Malus) Multiple cursors are very cool.
 And not having them by default in Neovim hurts. But I guess that's what plugins are for...
+
+[^wife]: While writing this I asked my wife to check that Cmd+b makes text bold in Word. She said "ok, wait I'm starting the application and it takes a while..." foreshadowing #3
