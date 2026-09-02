@@ -1,9 +1,8 @@
-{{/* Extract headings from .TableOfContents and return a slice of {id, text} */}}
+{{/* Return a slice of {id, text} for the page's top-level headings */}}
 {{ $h1s := slice }}
-{{ $tocHTML := .TableOfContents }}
-{{ range findRE `(?s)<a\s+href="#([^"]+)"[^>]*>(.*?)</a>` $tocHTML }}
-  {{ $id := . | replaceRE `(?s).*href=\"#([^\"]+)\".*` "$1" }}
-  {{ $text := . | replaceRE `(?s).*>(.*?)</a>` "$1" | replaceRE "<[^>]*>" "" | plainify | strings.TrimSpace }}
-  {{ $h1s = $h1s | append (dict "id" $id "text" $text) }}
+{{ range .Fragments.Headings }}
+  {{ if eq .Level 1 }}
+    {{ $h1s = $h1s | append (dict "id" .ID "text" (.Title | plainify | strings.TrimSpace)) }}
+  {{ end }}
 {{ end }}
 {{ return $h1s }}

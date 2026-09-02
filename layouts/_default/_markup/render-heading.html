@@ -1,18 +1,16 @@
-{{/* Server-side section wrapping for TOC using Scratch (namespaced keys) */}}
-{{ $tocIds := .Page.Scratch.Get "tocwrap_ids" }}
-{{ $tocEnabled := and $tocIds (gt (len $tocIds) 0) }}
-{{ $isBoundary := and $tocEnabled (in $tocIds .Anchor) }}
+{{/* Server-side section wrapping for the posts TOC: every h1 in a post
+     starts a new .toc-section; state lives in Scratch across hook calls */}}
+{{ $isBoundary := and (eq .Page.Section "posts") (eq .Level 1) }}
 
 {{ if $isBoundary }}
-  {{/* Close previous open wrapper if any */}}
-  {{ $open := .Page.Scratch.Get "tocwrap_open" }}
-  {{ if $open }}
-    </div>
+  {{ if .Page.Scratch.Get "tocwrap_open" }}
+  </div>
   {{ end }}
-
-  {{/* Increment section counter and open new wrapper */}}
-  {{ .Page.Scratch.Add "tocwrap_index" 1 }}
-  {{ $idx := .Page.Scratch.Get "tocwrap_index" }}
+  {{/* 1-based counter: Scratch.Get returns nil before the first section,
+       and `or` would also treat a stored 0 as unset */}}
+  {{ $count := add (int (or (.Page.Scratch.Get "tocwrap_count") 0)) 1 }}
+  {{ .Page.Scratch.Set "tocwrap_count" $count }}
+  {{ $idx := sub $count 1 }}
   {{ .Page.Scratch.Set "tocwrap_open" true }}
   <div class="toc-section" data-section="{{ $idx }}">
 {{ end }}
