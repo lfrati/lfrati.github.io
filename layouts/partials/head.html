@@ -12,6 +12,10 @@
   <meta name="description" content="{{ . | plainify | htmlUnescape | truncate 160 }}" />
 {{ end }}
 
+<link rel="canonical" href="{{ .Permalink }}" />
+{{ template "_internal/opengraph.html" . }}
+{{ template "_internal/twitter_cards.html" . }}
+
 <link
   rel="preload"
   as="font"
