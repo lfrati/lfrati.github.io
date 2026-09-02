@@ -55,9 +55,9 @@ Ah, before I forget, if you click on the ToC it shows you more info and lets you
 Speaking of things that are usually a pain in a book, footnotes. Gosh I hate seeing a little non-clickable [n] and then having to go hunt, first at the bottom of the page, then at the end of the chapter and then begrudgingly at the end of the book for some related info.
 
 Hugo has some nice footnotes that send you to the bottom of the page when clicked and have a nice
-"<a class="footnote-backref" role="doc-backlink">↩︎</a>" that lets you go back. But bouncing up and down the page is still hunting, just with less cardio. So I stole a page from [Tufte](https://edwardtufte.github.io/tufte-css/) instead: on a _reasonably_ sized screen the notes simply sit in the right margin, next to the text they refer to<span id="start">.&nbsp;&nbsp;</span>
+"<a class="footnote-backref" role="doc-backlink">↩︎</a>" that lets you go back. But bouncing up and down the page is still annoying. So I copied the approach of [Tufte](https://edwardtufte.github.io/tufte-css/): on a _reasonably_ sized screen the notes simply sit in the right margin, next to the text they refer to. CSS only, no JS needed. <span id="start">Isn't it nice? &nbsp;&nbsp;</span>
 
-On smaller screens (yes, even a smartphone) there is no margin to speak of, so the number becomes a toggle: tap it and the note unfolds right where you are reading, tap it again and it tucks itself away. No jumping, no hunting. Go ahead, resize the window and try it.
+On smaller screens there is no margin to speak of, so the number becomes a toggle: tap it and the note unfolds right where you are reading, tap it again and it tucks itself away. No jumping, no hunting. Go ahead, resize the window and try it.
 
 If you are a compulsive hoverer like me you've also probably already noticed that if you hover a margin note or its footnote number it highlights where it's coming from. You're welcome.
 
@@ -123,7 +123,7 @@ You should be careful when you click on stuff online, better to know in advance 
 
 # Colored callouts
 
-Sometimes you need a bit of extra punch to make sure the user notices something. Getting that extra oomph is pretty easy with Hugo's shortcodes
+Sometimes you need a bit of extra punch to make sure the user notices something. Getting that extra oomph is as easy as writing `> [!IMPORTANT]` in markdown, and Hugo renders it as a proper callout
 
 > [!IMPORTANT]
 > Warning: Sketches run in your browser, so performance varies across devices.
