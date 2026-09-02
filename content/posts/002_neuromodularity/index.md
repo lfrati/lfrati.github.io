@@ -7,7 +7,8 @@ summary = "Exploring the intersection of geometric graphs, complex contagion, an
 tags = ["graphs", "p5"]
 +++
 
-{{< box warning >}} Warning: All sketches in this page are running on your machine. May the gods of computing bestow their blessing upon you. {{< /box >}}
+> [!WARNING]
+> Warning: All sketches in this page are running on your machine. May the gods of computing bestow their blessing upon you.
 
 # Geometric graphs
 

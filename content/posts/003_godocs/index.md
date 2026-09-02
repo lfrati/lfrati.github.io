@@ -65,7 +65,8 @@ I’ve built a simple search script to navigate the processed docs we’ll serve
 And voilà — nice, searchable docs, without any [scraping](https://docs.crawl4ai.com/) needed.
 
 
-{{< box info >}} If you'd like to try it yourself checkout [this repo](https://github.com/lfrati/godocs) {{< /box >}}
+> [!NOTE]
+> If you'd like to try it yourself checkout [this repo](https://github.com/lfrati/godocs)
 
 <img src="just_right.webp" style="width: 300px;" />
 

@@ -1,26 +1,8 @@
-{{/*  Source:https://gitlab.com/Roneo/hugo-shortcode-roneo-collection  */}}
-
-{{/* Available box types: note, tip, important, warning, caution (info maps to note) */}}
-{{- $config := dict
-  "note" (dict "title" "Note" "type" "note")
-  "tip" (dict "title" "Tip" "type" "tip")
-  "important" (dict "title" "Important" "type" "important")
-  "warning" (dict "title" "Warning" "type" "warning")
-  "caution" (dict "title" "Caution" "type" "caution")
-  "info" (dict "title" "Info" "type" "note")
--}}
-{{- $rawType := .Get 0 | default "note" | lower -}}
-{{- $settings := or (index $config $rawType) (index $config "note") -}}
-{{- $boxType := index $settings "type" -}}
-{{- $title := index $settings "title" -}}
-
-{{/* Workaround markdownify inconsistency for single/multiple paragraphs */}}
-{{- $raw := (markdownify .Inner | chomp) -}}
-{{- $block := findRE "(?is)^<(?:address|article|aside|blockquote|canvas|dd|div|dl|dt|fieldset|figcaption|figure|footer|form|h(?:1|2|3|4|5|6)|header|hgroup|hr|li|main|nav|noscript|ol|output|p|pre|section|table|tfoot|ul|video)\\b" $raw 1 -}}
-
-{{- $.Page.Scratch.Add "box_count" 1 -}}
-
-<div class="box box-shortcode markdown-alert markdown-alert-{{ $boxType }}" {{ if len .Params | eq 2 }} id="{{ .Get 1 }}" {{ end }}>
+{{- if eq .Type "alert" -}}
+{{/* GitHub-style alerts: > [!NOTE] etc. Types: note, tip, important, warning, caution (unknown maps to note) */}}
+{{- $titles := dict "note" "Note" "tip" "Tip" "important" "Important" "warning" "Warning" "caution" "Caution" -}}
+{{- $boxType := cond (isset $titles .AlertType) .AlertType "note" -}}
+<div class="box box-shortcode markdown-alert markdown-alert-{{ $boxType }}">
   <p class="markdown-alert-title">
     <svg class="octicon" viewBox="0 0 16 16" version="1.1" aria-hidden="true">
       {{- if eq $boxType "note" -}}
@@ -35,11 +17,12 @@
         <path d="M4.47.22A.749.749 0 0 1 5 0h6c.199 0 .389.079.53.22l4.25 4.25c.141.14.22.331.22.53v6a.749.749 0 0 1-.22.53l-4.25 4.25A.749.749 0 0 1 11 16H5a.749.749 0 0 1-.53-.22L.22 11.53A.749.749 0 0 1 0 11V5c0-.199.079-.389.22-.53Zm.84 1.28L1.5 5.31v5.38l3.81 3.81h5.38l3.81-3.81V5.31L10.69 1.5ZM8 4a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path>
       {{- end -}}
     </svg>
-    <span>{{ $title }}</span>
+    <span>{{ index $titles $boxType }}</span>
   </p>
-  {{- if or $block (not $raw) }}
-    {{ $raw }}
-  {{ else }}
-    <p>{{ $raw }}</p>
-  {{ end -}}
+  {{ .Text }}
 </div>
+{{- else -}}
+<blockquote>
+  {{ .Text }}
+</blockquote>
+{{- end -}}

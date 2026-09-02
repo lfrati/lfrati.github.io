@@ -37,7 +37,8 @@ tags = ["hugo", "js"]
     });
 </script>
 
-{{< box warning >}}This blog is best viewed on a screen at least 1600px wide. Your width: <strong><span id="pageWidth"></span></strong>{{< /box >}}
+> [!WARNING]
+> This blog is best viewed on a screen at least 1600px wide. Your width: <strong><span id="pageWidth"></span></strong>
 
 # Table of Contents
 
@@ -124,7 +125,8 @@ You should be careful when you click on stuff online, better to know in advance 
 
 Sometimes you need a bit of extra punch to make sure the user notices something. Getting that extra oomph is pretty easy with Hugo's shortcodes
 
-{{< box important >}}Warning: Sketches run in your browser, so performance varies across devices.{{< /box >}}
+> [!IMPORTANT]
+> Warning: Sketches run in your browser, so performance varies across devices.
 
 # Image gallery example
 

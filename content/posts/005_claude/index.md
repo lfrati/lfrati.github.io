@@ -11,9 +11,8 @@ A couple of months ago I decided to evaluate for myself the capability of fronti
 
 The following are notes I've gathered whenever the agents said something that made me go "What the AI!?".
 
-{{< box warning >}}
-Using Claude Code I have managed to create several projects that I likely would've not completed without it, such as [lokaloptima.dev](https://www.lokaloptima.dev). I have obtained clear value from using these agents. That, for me, is undeniable. But the price I've paid for it is much more difficult to quantify (beyond the monetary one, that's 200€/month 💸). Here I report some of my experiences and thoughts I've had along the way.
-{{< /box >}}
+> [!WARNING]
+> Using Claude Code I have managed to create several projects that I likely would've not completed without it, such as [lokaloptima.dev](https://www.lokaloptima.dev). I have obtained clear value from using these agents. That, for me, is undeniable. But the price I've paid for it is much more difficult to quantify (beyond the monetary one, that's 200€/month 💸). Here I report some of my experiences and thoughts I've had along the way.
 
 **TL;DR**
 
