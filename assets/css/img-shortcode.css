@@ -3,12 +3,6 @@
   width: 100%;
 }
 
-.post-content figure.post-img img {
-  border-radius: var(--radius-md);
-  border: 1px solid var(--tertiary-35);
-  box-shadow: var(--shadow-md);
-}
-
 .post-content figure.post-img figcaption {
   text-align: center;
   color: var(--post-description-color);
