@@ -1,0 +1,93 @@
+/* Markdown tables (wrapped by layouts/_default/_markup/render-table.html) */
+.post-content .post-table {
+  margin: 2rem auto;
+  max-width: 100%;
+  width: fit-content;
+  overflow-x: auto;
+  border: 1px solid var(--tertiary-35);
+  border-radius: var(--radius-md);
+}
+
+.post-content .post-table table {
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.post-content .post-table th,
+.post-content .post-table td {
+  padding: 0.55rem 1.1rem;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.post-content .post-table thead th {
+  background-color: var(--tertiary-10);
+  color: var(--tertiary-color);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--tertiary-35);
+}
+
+.post-content .post-table tbody tr + tr td {
+  border-top: 1px solid var(--tertiary-15);
+}
+
+.post-content .post-table tbody tr:hover td {
+  background-color: var(--tertiary-10);
+}
+
+.post-content .post-table tbody td:first-child {
+  color: var(--tertiary-color);
+  font-weight: 600;
+}
+
+.post-content .post-table code {
+  white-space: nowrap;
+}
+
+/* Subtle scrollbar when the table overflows on narrow screens */
+.post-content .post-table::-webkit-scrollbar {
+  height: 2px;
+}
+.post-content .post-table::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 4px;
+}
+
+/* Table notes (see partials/table-notes.html): footnotes referenced inside a
+   table render as <sup>n</sup> markers, with their bodies listed in the
+   caption paragraph ({.table-caption}) under the table. The figure makes the
+   caption exactly as wide as the table. */
+.post-content .post-table-figure {
+  width: fit-content;
+  max-width: 100%;
+  margin: 2rem auto;
+}
+
+.post-content .post-table-figure .post-table {
+  margin: 0;
+}
+
+.post-content .post-table-figure .table-caption {
+  width: 0;          /* do not widen the figure beyond the table... */
+  min-width: 100%;   /* ...but stretch to the table's width */
+  margin: 0.6rem 0 0;
+  text-align: left;
+  color: var(--post-description-color);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.post-content .post-table sup,
+.post-content .table-caption sup {
+  font-size: 0.7em;
+  line-height: 0; /* keep row height unchanged */
+  color: var(--link-color);
+}

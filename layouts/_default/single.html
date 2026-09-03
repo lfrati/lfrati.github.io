@@ -17,7 +17,7 @@
     </header>
 
     <div class="post-content">
-    {{ partial "fn-transform.html" .Content }}
+    {{ partial "table-notes.html" (partial "fn-transform.html" .Content) }}
 
     {{/* Close any open section wrapper after content render */}}
     {{ partial "toc-close-section.html" . }}

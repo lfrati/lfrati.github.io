@@ -1,0 +1,29 @@
+{{/* Table notes. Footnotes referenced from inside a table cannot become
+     margin sidenotes (cells contain their floats), so for every markdown
+     table this turns each in-table sidenote into a plain <sup>n</sup>
+     marker and appends "<br><sup>n</sup> body" lines to the caption
+     paragraph that follows the table (a paragraph tagged {.table-caption}),
+     creating that paragraph when there is none. Table and caption are then
+     wrapped in a figure so they share the same width.
+     Must run after fn-transform.html. */}}
+{{ $content := printf "%s" . }}
+{{ $sidenote := `(?s)<span class="footnote-sidenote"><input[^>]*><label[^>]*>\[(\d+)\]</label> <span class="footnote-content"[^>]*><span class="footnote-num">\d+</span>(.*?)</span></span>` }}
+{{ range findRE `(?s)<div class="post-table">.*?</table>\s*</div>(?:\s*<p class="table-caption">.*?</p>)?` $content }}
+  {{ $block := . }}
+  {{ $table := replaceRE `(?s)^(.*?</table>\s*</div>).*$` "$1" $block }}
+  {{ $caption := strings.TrimPrefix $table $block | strings.TrimSpace }}
+  {{ $notes := "" }}
+  {{ range findRE $sidenote $table }}
+    {{ $n := replaceRE (printf "^%s$" $sidenote) "$1" . }}
+    {{ $body := replaceRE (printf "^%s$" $sidenote) "$2" . }}
+    {{ $notes = printf `%s<br><sup>%s</sup> %s` $notes $n (strings.TrimSpace $body) }}
+    {{ $table = replace $table . (printf `<sup>%s</sup>` $n) }}
+  {{ end }}
+  {{ if and $notes (not $caption) }}
+    {{ $caption = printf `<p class="table-caption">%s</p>` (strings.TrimPrefix "<br>" $notes) }}
+  {{ else if $notes }}
+    {{ $caption = replace $caption "</p>" (printf "%s</p>" $notes) }}
+  {{ end }}
+  {{ $content = replace $content $block (printf `<figure class="post-table-figure">%s%s</figure>` $table $caption) }}
+{{ end }}
+{{ return safeHTML $content }}
