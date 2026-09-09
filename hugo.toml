@@ -92,10 +92,6 @@ enableRobotsTXT = true
         url = "https://fratilapo.com/barelycomplex"
         weight = 1
     [[menu.main]]
-        name = "Projects"
-        url = "/projects/"
-        weight = 2
-    [[menu.main]]
         name = "Tags"
         url = "/tags/"
         weight = 3
