@@ -12,6 +12,15 @@
 CSS VARIABLES & GLOBAL SETTINGS
 ============================================================================*/
 
+/* Self-hosted Fira Mono (regular), used for inline code, code blocks and the 404 glitch text */
+@font-face {
+  font-display: swap;
+  font-family: "Fira Mono";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/FiraMono/fira-mono-v16-latin-regular.woff2") format("woff2");
+}
+
 /* Self-hosted Mulish (regular, italic, 600, 700) */
 @font-face {
   font-display: swap;
@@ -57,7 +66,9 @@ CSS VARIABLES & GLOBAL SETTINGS
   /* Colors for the alive and dead states in the logo */
   --alive-color: #e5e5e5;
   --dead-color: #2d3748;
-  --code-color: #515152;
+  --mono-font: "Fira Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --code-color: #cfd3d8;         /* inline code text: a notch brighter than body text */
+  --code-bg: var(--tertiary-10); /* inline code fill: same tint as the tag chips */
   --post-description-color: #cbd5e0a5;
   --link-color: #7cc8ff;
   --hover-color: #ffd199;
@@ -603,13 +614,18 @@ CODE HIGHLIGHTING & SYNTAX
 ============================================================================*/
 
 
-/* Inline backticks only (exclude fenced code blocks) */
+/* Inline backticks only (exclude fenced code blocks).
+   Kept light on purpose: no border, a faint tint, and text slightly brighter
+   than the prose so the code reads as "code" without the box shouting. */
 .post-content :not(pre) > code {
-  font-family: inconsolata, monospace, stixgeneral;
-  background-color: var(--code-color);
-  border: .075rem solid #d7d7d790;
-  padding: 0 .25rem;
-  border-radius: 4px;
+  font-family: var(--mono-font);
+  font-size: 0.875em;            /* mono glyphs look larger than Mulish at equal size */
+  color: var(--code-color);
+  background-color: var(--code-bg);
+  padding: 0.1em 0.35em;
+  border-radius: var(--radius-sm);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;   /* padding on both halves when it wraps across lines */
 }
 
 /* Reset inside Hugo/Chroma code blocks */
@@ -622,6 +638,7 @@ pre code {
 
 /* Make code blocks horizontally scrollable */
 .highlight pre {
+  font-family: var(--mono-font);
   overflow-x: auto;
   white-space: pre;
   word-wrap: normal;
