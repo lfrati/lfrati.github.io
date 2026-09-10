@@ -295,6 +295,49 @@ HEADER & NAVIGATION
 POSTS & CONTENT
 ============================================================================*/
 
+/* Tagline above the post list on the home page, set like a line typed in a
+   terminal: monospace, a prompt marker in front, a blinking cursor after. */
+.home-intro {
+  margin: 1.5rem 0 2.5rem;
+  color: var(--post-description-color);
+  font-family: var(--mono-font);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.home-intro p {
+  margin: 0;
+}
+
+.home-intro p::before {
+  content: "$ ";
+  color: var(--tertiary-color);
+}
+
+.home-intro p::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 0.15em;
+  vertical-align: -0.15em;
+  background: var(--post-description-color);
+  animation: home-cursor 1.1s steps(2, start) infinite;
+}
+
+/* solid cursor while the intro is being typed out (see layouts/index.html) */
+.home-intro p.typing::after {
+  animation: none;
+}
+
+@keyframes home-cursor {
+  to { visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-intro p::after { animation: none; }
+}
+
 /* Three-column post list layout for home page */
 .posts-list {
   display: flex;

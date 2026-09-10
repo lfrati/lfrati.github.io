@@ -1,4 +1,38 @@
 {{ define "main" }}
+  {{ with .Content }}
+    <div class="home-intro">
+      {{ . }}
+    </div>
+    <script>
+      // Type the intro out on load, like someone at a terminal. The full text is
+      // in the HTML already (for crawlers and no-JS), so this only animates it.
+      (function () {
+        var p = document.querySelector('.home-intro p');
+        if (!p) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var text = p.textContent;
+        p.style.minHeight = p.offsetHeight + 'px'; // keep the list from jumping
+        p.textContent = '';
+        p.classList.add('typing');
+        var i = 0;
+        function tick() {
+          p.textContent = text.slice(0, ++i);
+          if (i >= text.length) { p.classList.remove('typing'); return; }
+          var ch = text[i - 1];
+          var r = Math.random();
+          // Squaring the random number skews it low: most gaps are short and
+          // near-identical, a few are noticeably longer. Nothing is regular.
+          var delay = ch === ' '
+            ? 25 + r * r * 170                          // word break: usually brief, sometimes a beat
+            : 15 + r * r * 45;                          // in-word burst
+          if (r > 0.96) delay += 90 + Math.random() * 120; // the odd stall, anywhere
+          if (ch === '.' || ch === ',') delay += 200 + Math.random() * 150;
+          setTimeout(tick, delay);
+        }
+        setTimeout(tick, 350);
+      })();
+    </script>
+  {{ end }}
   <div class="posts-list">
     {{ range where site.RegularPages "Section" "posts" }}
       {{ partial "post-card.html" . }}
