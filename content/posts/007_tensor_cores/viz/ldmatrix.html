@@ -1,0 +1,537 @@
+<!-- ldmatrix → registers → mma.sync.m16n8k16, one warp.
+     Self-contained: open this file in a browser to work on it, include it in a
+     post with the embed shortcode. Semantics tables at the top of
+     the script are the only "facts"; everything drawn is generated from them. -->
+<style>
+  .ldmatrix-embed {
+    width: min(1100px, calc(100vw - 2rem));
+    position: relative; left: 50%; transform: translateX(-50%);
+    margin: 1.5rem 0 2rem; padding: 0.5rem 0;
+    background: var(--primary-color, #14141a);
+  }
+  .ldmatrix-embed .lm {
+    --lm-fg: #e5e5e5;
+    --lm-muted: var(--text-color, #a1a1a1);
+    --lm-empty: var(--tertiary-10, rgba(176, 196, 222, 0.1));
+    --lm-line: var(--tertiary-25, rgba(176, 196, 222, 0.25));
+    --lm-code-bg: var(--tertiary-10, rgba(176, 196, 222, 0.1));
+    --lm-accent: var(--link-color, #7cc8ff);
+    --lm-btn-bg: var(--tertiary-10, rgba(176, 196, 222, 0.1));
+    --lm-btn-fg: #e5e5e5;
+    --lm-canvas: var(--primary-color, #14141a);
+    font-family: inherit;
+  }
+  .ldmatrix-embed .lm .cap code { font-family: var(--mono-font, ui-monospace, Menlo, Consolas, monospace); color: var(--code-color, #cfd3d8); }
+  .ldmatrix-embed .lm:focus { outline: none; }
+</style>
+<div class="ldmatrix-embed"><div id="ldmatrix"></div></div>
+<script>
+/* ldmatrix-mma.js
+ * Animated explainer: one warp loads A[16x16] and B[16x8] (both row-major) from
+ * shared memory with ldmatrix / ldmatrix.trans, the fragments land in registers, then mma.sync.m16n8k16 computes
+ * D = A·B. Hover D to trace an output element to its inputs.
+ *
+ * Usage:
+ *   <div id="viz"></div>
+ *   <script src="ldmatrix-mma.js"><\/script>
+ *   <script>LdmatrixMma.mount(document.getElementById('viz'));<\/script>
+ *
+ * Everything drawn is generated from the semantic tables in section 1 and the
+ * layout constants in section 2. There are no hand-placed coordinates.
+ */
+(function (global) {
+'use strict';
+
+/* =======================================================================
+ * 1. Instruction semantics — the only "facts" in this file
+ * ======================================================================= */
+const M = 16, N = 8, K = 16;
+
+// mma.sync.aligned.m16n8k16.row.col with f16/bf16 inputs (PTX ISA, "Matrix
+// Fragments for mma.m16n8k16 with floating point type"):
+//   g = lane >> 2 (groupID), t = lane & 3 (threadID_in_group)
+//   A (16x16): reg0 = A[g][2t..2t+1]     reg1 = A[g+8][2t..2t+1]
+//              reg2 = A[g][2t+8..2t+9]   reg3 = A[g+8][2t+8..2t+9]
+//   B (16x8):  reg0 = B[k=2t..2t+1][n=g] reg1 = B[k=2t+8..2t+9][n=g]
+//   D (16x8):  reg0 = D[g][2t..2t+1]     reg1 = D[g+8][2t..2t+1]
+const mma = {
+  aOwner(r, c) { return { lane: (r & 7) * 4 + ((c & 7) >> 1), reg: (r >> 3) + 2 * (c >> 3), half: c & 1 }; },
+  bOwner(k, n) { return { lane: n * 4 + ((k & 7) >> 1),       reg: k >> 3,                 half: k & 1 }; },
+  dOwner(r, c) { return { lane: (r & 7) * 4 + (c >> 1),       reg: r >> 3,                 half: c & 1 }; },
+};
+
+// ldmatrix.sync.aligned.m8n8.xN{.trans}.shared.b16:
+//   lanes 8i..8i+7 supply the 8 row addresses of matrix i (row = 8 contiguous
+//   b16 = 16 bytes). Matrix i is written to destination register i. Inside each
+//   8x8 matrix, lane l receives row l>>2, columns 2(l&3) and 2(l&3)+1.
+//   With .trans the matrix is "loaded in column-major format" (PTX ISA): the
+//   mapping is transposed, lane l receives column l>>2, rows 2(l&3) and 2(l&3)+1.
+const ldmatrix = {
+  recv(l, trans) { return trans ? { row: 2 * (l & 3), col: l >> 2 } : { row: l >> 2, col: 2 * (l & 3) }; },
+};
+
+// Shared memory layout used here: both operands row-major, the way they arrive
+// from a straight copy of global memory.
+//   A[16][16]: lane l points at &A[l & 15][(l >> 4) * 8]   (ldmatrix.x4)
+//   B[16][8]:  lane l points at &B[l & 15][0]              (ldmatrix.x2.trans)
+//   Only lanes 0..15 supply addresses for .x2; the rest are ignored.
+const aAddr = l => ({ row: l & 15, col: (l >> 4) * 8, matrix: l >> 3 });
+const bAddr = l => (l < 16 ? { k: l & 15, n: 0, matrix: l >> 3 } : null);
+
+/* Simulate ldmatrix literally: gather the 8 row addresses of every matrix from
+ * the lanes that supply them, then hand each receiving lane its two elements.
+ * Returns delivered[reg][lane][half] = {row, col} in the source array. */
+function simulateLdmatrix(nMatrices, addrOf, trans) {
+  const out = [];
+  for (let q = 0; q < nMatrices; q++) {
+    const rows = [];
+    for (let i = 0; i < 8; i++) rows[i] = addrOf(8 * q + i);      // lanes 8q..8q+7 → rows 0..7 of matrix q
+    out[q] = [];
+    for (let l = 0; l < 32; l++) {
+      const rc = ldmatrix.recv(l, trans);
+      out[q][l] = [0, 1].map(h => {
+        const src = trans ? rows[rc.row + h] : rows[rc.row];       // .trans: the pair runs down a column
+        return { row: src.row, col: src.col + rc.col + (trans ? 0 : h) };
+      });
+    }
+  }
+  return out;
+}
+
+// Self-check: does ldmatrix (as addressed above) produce exactly the mma layout?
+function selfCheck() {
+  const bad = [];
+  const dA = simulateLdmatrix(4, aAddr);
+  for (let q = 0; q < 4; q++) for (let l = 0; l < 32; l++) for (let h = 0; h < 2; h++) {
+    const { row, col } = dA[q][l][h], o = mma.aOwner(row, col);
+    if (o.lane !== l || o.reg !== q || o.half !== h) bad.push(`A[${row}][${col}] landed in lane ${l} a${q}.${h}, mma wants lane ${o.lane} a${o.reg}.${o.half}`);
+  }
+  const dB = simulateLdmatrix(2, l => { const a = bAddr(l); return { row: a.k, col: a.n }; }, true);
+  for (let q = 0; q < 2; q++) for (let l = 0; l < 32; l++) for (let h = 0; h < 2; h++) {
+    const { row: k, col: n } = dB[q][l][h], o = mma.bOwner(k, n);
+    if (o.lane !== l || o.reg !== q || o.half !== h) bad.push(`B[k=${k}][n=${n}] landed in lane ${l} b${q}.${h}, mma wants lane ${o.lane} b${o.reg}.${o.half}`);
+  }
+  return { ok: bad.length === 0, checked: 4 * 32 * 2 + 2 * 32 * 2, bad };
+}
+
+/* =======================================================================
+ * 2. Layout constants (viewBox units)
+ * ======================================================================= */
+const CELL = 16;   // matrix cell size
+const HW   = 10;   // width of one 16-bit half of a register slot
+const LH   = 14;   // height of one lane row in the register panel
+const GAP  = 12;
+
+const SM = { x: 46, y: 50 };                                    // shared-memory panel origin (A tile)
+const SMB = { x: SM.x, y: SM.y + M * CELL + 36 };               // B tile below A, 16 (k) x 8 (n)
+const RG = { x: 372, y: SM.y, label: 26 };                      // register panel
+const RGS = { x: RG.x + RG.label, y: RG.y };                    // first slot
+const AW = 8 * HW, BW = 4 * HW, DW = 4 * HW, RGAP = 8;          // frag widths inside a lane row
+const RG_W = RG.label + AW + RGAP + BW + RGAP + DW;
+const MM = { x: RG.x + RG_W + 76, y: SM.y };                    // mma panel: B top-right, A bottom-left, D bottom-right
+const MMB = { x: MM.x + K * CELL + GAP, y: MM.y };
+const MMA = { x: MM.x, y: MM.y + K * CELL + GAP };
+const MMD = { x: MMB.x, y: MMA.y };
+const VW = MMB.x + N * CELL + 24, VH = Math.max(MMA.y + M * CELL, SMB.y + K * CELL) + 16;
+
+// Where a (frag, reg, half) slot of a lane sits in the register panel.
+function slot(lane, frag, reg, half) {
+  let x = RGS.x;
+  if (frag === 'a') x += reg * 2 * HW + half * HW;
+  else if (frag === 'b') x += AW + RGAP + reg * 2 * HW + half * HW;
+  else x += AW + RGAP + BW + RGAP + reg * 2 * HW + half * HW;
+  return { x, y: RGS.y + lane * LH };
+}
+
+// Lane colour: hue by g (8 groups), lightness by t (4 threads per group).
+function laneColor(l) {
+  const g = l >> 2, t = l & 3;
+  return `oklch(${[0.52, 0.62, 0.72, 0.82][t]} 0.16 ${g * 45 + 20})`;
+}
+function laneTextColor(l) { return (l & 3) < 2 ? '#fff' : '#111'; }
+
+/* =======================================================================
+ * 3. Step script
+ * ======================================================================= */
+const STEP = { smem: 0, aAddr: 1, aLoad0: 2, bAddr: 6, bLoad0: 7, frags: 9, mma: 10, last: 10 };
+
+const steps = [];
+steps[STEP.smem] = {
+  title: 'Shared memory',
+  code: '__shared__ half A[16][16], B[16][8];   // both row-major',
+};
+steps[STEP.aAddr] = {
+  title: 'ldmatrix.x4 — each lane supplies one row address',
+  code: 'addr = &A[lane & 15][(lane >> 4) * 8];   // lanes 8i..8i+7 describe matrix i',
+};
+for (let q = 0; q < 4; q++) steps[STEP.aLoad0 + q] = {
+  title: `matrix ${q} → a${q}`,
+  code: 'ldmatrix.sync.aligned.m8n8.x4.shared.b16 {a0,a1,a2,a3}, [addr];',
+  text: 'row r of the 8×8 matrix → lanes 4r..4r+3, one pair each',
+};
+steps[STEP.bAddr] = {
+  title: 'ldmatrix.x2.trans — addresses for B',
+  code: 'addr = &B[lane & 15][0];   // lanes 0-7 → matrix 0, 8-15 → matrix 1, 16-31 ignored',
+};
+for (let q = 0; q < 2; q++) steps[STEP.bLoad0 + q] = {
+  title: `matrix ${q} → b${q}, transposed`,
+  code: 'ldmatrix.sync.aligned.m8n8.x2.trans.shared.b16 {b0,b1}, [addr];',
+  text: '.trans: lane l gets column l>>2, rows 2(l&3) and 2(l&3)+1 — two k for one n, which is the column-major B fragment mma wants',
+};
+steps[STEP.frags] = {
+  title: 'Fragments in place',
+  text: 'colour = owning lane',
+};
+steps[STEP.mma] = {
+  title: 'mma.sync — the tensor core computes all of D = A·B at once',
+  code: 'mma.sync.aligned.m16n8k16.row.col.f16.f16.f16.f16 {d0,d1}, {a0,a1,a2,a3}, {b0,b1}, {d0,d1};',
+  text: 'hover a cell of D to trace the row of A and the column of B that produced it',
+};
+
+/* =======================================================================
+ * 4. Rendering
+ * ======================================================================= */
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) if (attrs[k] !== undefined && attrs[k] !== null) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function text(parent, x, y, s, cls, anchor) {
+  const t = el('text', { x, y, class: cls || '', 'text-anchor': anchor || 'start' }, parent);
+  t.textContent = s;
+  return t;
+}
+function place(node, x, y, w, h) {
+  node.style.transform = `translate(${x}px, ${y}px)`;
+  if (w !== undefined) { node.style.width = w + 'px'; node.style.height = h + 'px'; }
+}
+
+const DARK = `--lm-fg: #e6e6e6; --lm-muted: #9a9a9a; --lm-empty: #2b2b2b; --lm-line: #4a4a4a;
+  --lm-code-bg: #262626; --lm-accent: #58a6ff; --lm-btn-bg: #2a2a2a; --lm-btn-fg: #e6e6e6; --lm-canvas: #121212;`;
+const CSS = `
+.lm { --lm-fg: #1a1a1a; --lm-muted: #6b6b6b; --lm-empty: #e9e9e9; --lm-line: #bdbdbd;
+      --lm-code-bg: #eeeeee; --lm-accent: #1f6feb; --lm-btn-bg: #fff; --lm-btn-fg: #1a1a1a; --lm-canvas: #fafafa;
+      font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--lm-fg); max-width: 100%; }
+@media (prefers-color-scheme: dark) { .lm:not(.lm-light) { ${DARK} } }
+.lm.lm-dark { ${DARK} }
+.lm svg { width: 100%; height: auto; display: block; user-select: none; }
+.lm text { fill: var(--lm-fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 10px; pointer-events: none; }
+.lm text.title { font-size: 12px; font-weight: 600; font-family: system-ui, sans-serif; }
+.lm text.muted { fill: var(--lm-muted); font-size: 9px; }
+.lm text.tiny { font-size: 7.5px; }
+.lm text.quadlbl { font-size: 8.5px; font-weight: 600; paint-order: stroke; stroke: var(--lm-canvas); stroke-width: 3px; stroke-linejoin: round; }
+.lm text.lanelbl { font-size: 9px; pointer-events: all; cursor: pointer; }
+.lm rect.cell { fill: var(--lm-empty); stroke: var(--lm-line); stroke-width: 0.5; transition: fill .4s, opacity .4s, fill-opacity .4s; }
+.lm rect.slot { fill: none; stroke: var(--lm-line); stroke-width: 0.5; stroke-dasharray: 1 1; }
+.lm rect.mover { stroke: rgba(0,0,0,.35); stroke-width: 0.6; transition: transform .7s cubic-bezier(.4,0,.2,1), width .7s, height .7s, opacity .45s, fill-opacity .4s; }
+.lm rect.acc { stroke: rgba(0,0,0,.35); stroke-width: 0.6; transition: opacity .4s, fill-opacity .4s; }
+.lm rect.seg { fill: none; stroke-width: 2; transition: opacity .3s; }
+.lm rect.quad { fill: none; stroke: var(--lm-fg); stroke-width: 1; stroke-dasharray: 4 3; transition: opacity .3s; }
+.lm .gone { opacity: 0 !important; pointer-events: none; }
+.lm .hidden { opacity: 0 !important; pointer-events: none; }
+.lm .loaded { opacity: .45; }
+.lm.lm-hover [data-lane]:not(.sel) { opacity: .08; }
+.lm.lm-hover text[data-lane]:not(.sel) { opacity: .3; }
+.lm.lm-hover .sel, .lm.lm-hover .sel rect.cell { stroke: var(--lm-fg); stroke-width: 1.2; }
+.lm .ctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 4px; }
+.lm button { font: inherit; padding: 3px 10px; border: 1px solid var(--lm-line); border-radius: 6px; background: var(--lm-btn-bg); color: var(--lm-btn-fg); cursor: pointer; }
+.lm button:disabled { opacity: .4; cursor: default; }
+.lm input[type=range] { flex: 1; min-width: 120px; accent-color: var(--lm-accent); }
+.lm .cap { min-height: 4.4em; }
+.lm .cap b { font-weight: 600; }
+.lm .cap code { display: block; margin: 4px 0; padding: 4px 8px; border-radius: 6px; background: var(--lm-code-bg); font-size: 12.5px; white-space: pre-wrap; }
+.lm .cap p { margin: 0; color: var(--lm-muted); font-size: 13px; }
+.lm .info { font-size: 12.5px; color: var(--lm-muted); min-height: 1.4em; font-family: ui-monospace, Menlo, Consolas, monospace; }
+.lm .check { font-size: 12px; color: #c0392b; }
+.lm label.tog { font-size: 12.5px; color: var(--lm-muted); display: inline-flex; gap: 4px; align-items: center; }
+@media (prefers-reduced-motion: reduce) { .lm * { transition: none !important; } }
+`;
+
+function mount(container, opts) {
+  opts = opts || {};
+  if (!document.getElementById('lm-style')) {
+    const s = document.createElement('style'); s.id = 'lm-style'; s.textContent = CSS; document.head.appendChild(s);
+  }
+  container.classList.add('lm');
+  if (opts.theme === 'dark') container.classList.add('lm-dark');
+  if (opts.theme === 'light') container.classList.add('lm-light');
+  container.tabIndex = 0;
+
+  const svg = el('svg', { viewBox: `0 0 ${VW} ${VH}`, role: 'img', 'aria-label': 'ldmatrix and mma.m16n8k16 data flow' }, container);
+  const gBack = el('g', {}, svg), gCells = el('g', {}, svg), gOver = el('g', {}, svg), gMovers = el('g', {}, svg), gLabels = el('g', {}, svg);
+
+  /* ---- shared memory panel ---- */
+  text(gLabels, SM.x, SM.y - 30, 'Shared memory', 'title');
+  text(gLabels, SM.x, SM.y - 16, 'A[16][16]', 'muted');
+  const smA = [];  // smA[r][c] = rect
+  for (let r = 0; r < M; r++) { smA[r] = []; for (let c = 0; c < K; c++) {
+    const o = mma.aOwner(r, c);
+    smA[r][c] = el('rect', { class: 'cell', x: SM.x + c * CELL, y: SM.y + r * CELL, width: CELL, height: CELL, 'data-lane': o.lane, 'data-kind': 'smA', 'data-r': r, 'data-c': c }, gCells);
+  } }
+  for (let i = 0; i < M; i += 4) text(gLabels, SM.x - 4, SM.y + i * CELL + 11, i, 'muted', 'end');
+  for (let i = 0; i < K; i += 4) text(gLabels, SM.x + i * CELL + 2, SM.y - 3, i, 'muted');
+
+  text(gLabels, SMB.x, SMB.y - 16, 'B[16][8]', 'muted');
+  const smB = []; // smB[k][n]
+  for (let k = 0; k < K; k++) { smB[k] = []; for (let n = 0; n < N; n++) {
+    const o = mma.bOwner(k, n);
+    smB[k][n] = el('rect', { class: 'cell', x: SMB.x + n * CELL, y: SMB.y + k * CELL, width: CELL, height: CELL, 'data-lane': o.lane, 'data-kind': 'smB', 'data-k': k, 'data-n': n }, gCells);
+  } }
+  for (let i = 0; i < K; i += 4) text(gLabels, SMB.x - 4, SMB.y + i * CELL + 11, 'k' + i, 'muted', 'end');
+  for (let i = 0; i < N; i += 4) text(gLabels, SMB.x + i * CELL + 2, SMB.y - 3, 'n' + i, 'muted');
+
+  // address segments (one per supplying lane) + matrix outlines
+  const mkSegs = (n, addrOf, ox, oy, segs, lbls) => {
+    for (let l = 0; l < n; l++) {
+      const a = addrOf(l), x = ox + a.col * CELL, y = oy + a.row * CELL;
+      segs[l] = el('rect', { class: 'seg', x: x + 1, y: y + 1, width: 8 * CELL - 2, height: CELL - 2, stroke: laneColor(l), 'data-lane': l }, gOver);
+      lbls[l] = text(gOver, a.col === 0 ? x - 36 : x + 8 * CELL + 4, y + 11, 'T' + l, 'tiny', 'start');
+      lbls[l].style.fill = laneColor(l); lbls[l].setAttribute('data-lane', l);
+    }
+  };
+  const mkQuads = (n, originOf, ox, oy, quads, lbls) => {
+    for (let q = 0; q < n; q++) {
+      const { r0, c0 } = originOf(q);
+      quads[q] = el('rect', { class: 'quad', x: ox + c0 * CELL - 1.5, y: oy + r0 * CELL - 1.5, width: 8 * CELL + 3, height: 8 * CELL + 3 }, gOver);
+      lbls[q] = text(gOver, ox + c0 * CELL + 4 * CELL, oy + r0 * CELL + 4 * CELL + 4, `matrix ${q} ← T${8 * q}–${8 * q + 7}`, 'tiny quadlbl', 'middle');
+    }
+  };
+  const aSegs = [], aSegLbl = [], aQuads = [], aQuadLbl = [];
+  mkSegs(32, aAddr, SM.x, SM.y, aSegs, aSegLbl);
+  mkQuads(4, q => ({ r0: (q & 1) * 8, c0: (q >> 1) * 8 }), SM.x, SM.y, aQuads, aQuadLbl);
+  const bSegs = [], bSegLbl = [], bQuads = [], bQuadLbl = [];
+  mkSegs(16, l => { const b = bAddr(l); return { row: b.k, col: b.n }; }, SMB.x, SMB.y, bSegs, bSegLbl);
+  mkQuads(2, q => ({ r0: q * 8, c0: 0 }), SMB.x, SMB.y, bQuads, bQuadLbl);
+  const bIgnored = text(gOver, SMB.x, SMB.y + K * CELL + 12, 'T16–31: address ignored', 'muted');
+
+  /* ---- register panel ---- */
+  text(gLabels, RG.x, RG.y - 30, 'Registers · 32 lanes', 'title');
+  for (let i = 0; i < 4; i++) text(gLabels, slot(0, 'a', i, 0).x + HW, RG.y - 4, 'a' + i, 'muted', 'middle');
+  for (let i = 0; i < 2; i++) text(gLabels, slot(0, 'b', i, 0).x + HW, RG.y - 4, 'b' + i, 'muted', 'middle');
+  for (let i = 0; i < 2; i++) text(gLabels, slot(0, 'd', i, 0).x + HW, RG.y - 4, 'd' + i, 'muted', 'middle');
+  const laneLbl = [];
+  for (let l = 0; l < 32; l++) {
+    const y = RGS.y + l * LH;
+    if (l % 4 === 0) el('line', { x1: RG.x, y1: y - 0.5, x2: RGS.x + AW + RGAP + BW + RGAP + DW, y2: y - 0.5, stroke: 'var(--lm-line)', 'stroke-width': l % 8 === 0 ? 1 : 0.5 }, gBack);
+    laneLbl[l] = text(gLabels, RG.x + RG.label - 6, y + 10.5, l, 'lanelbl', 'end');
+    laneLbl[l].style.fill = laneColor(l); laneLbl[l].setAttribute('data-lane', l);
+    for (const [frag, nreg] of [['a', 4], ['b', 2], ['d', 2]])
+      for (let i = 0; i < nreg; i++) for (let h = 0; h < 2; h++) { const p = slot(l, frag, i, h); el('rect', { class: 'slot', x: p.x, y: p.y + 1, width: HW, height: LH - 2 }, gBack); }
+  }
+
+  /* ---- mma panel ---- */
+  text(gLabels, MM.x, MM.y - 30, 'mma.sync.m16n8k16', 'title');
+  text(gLabels, MM.x, MM.y - 16, 'D = A · B', 'muted');
+  text(gLabels, MMB.x, MMB.y - 4, 'B', 'muted'); text(gLabels, MMA.x, MMA.y - 4, 'A', 'muted'); text(gLabels, MMD.x, MMD.y - 4, 'D', 'muted');
+  const mkTile = (ox, oy, rows, cols, owner, kind) => {
+    const t = [];
+    for (let r = 0; r < rows; r++) { t[r] = []; for (let c = 0; c < cols; c++) {
+      const o = owner(r, c);
+      const g = el('g', { 'data-lane': o.lane, 'data-kind': kind, 'data-r': r, 'data-c': c }, gCells);
+      const rc = el('rect', { class: 'cell', x: ox + c * CELL, y: oy + r * CELL, width: CELL, height: CELL }, g);
+      const tx = text(g, ox + c * CELL + CELL / 2, oy + r * CELL + CELL / 2 + 2.7, o.lane, 'tiny', 'middle');
+      tx.style.fill = laneTextColor(o.lane);
+      t[r][c] = { g, rc, tx, lane: o.lane, r, c };
+    } }
+    return t;
+  };
+  const tA = mkTile(MMA.x, MMA.y, M, K, (r, c) => mma.aOwner(r, c), 'tA');
+  const tB = mkTile(MMB.x, MMB.y, K, N, (k, n) => mma.bOwner(k, n), 'tB');
+  const tD = mkTile(MMD.x, MMD.y, M, N, (r, c) => mma.dOwner(r, c), 'tD');
+
+  /* ---- movers: one per A and B element ---- */
+  const movers = [];
+  const mkMover = (lane, from, to, kind, meta) => {
+    const r = el('rect', { class: 'mover', x: 0, y: 0, width: CELL - 2, height: CELL - 2, fill: laneColor(lane), 'data-lane': lane, 'data-kind': kind, ...meta.attrs }, gMovers);
+    r.style.transitionDelay = `${(lane % 8) * 25 + (lane >> 3) * 8}ms`;
+    const mv = { r, lane, from, to, kind, ...meta };
+    movers.push(mv);
+    return mv;
+  };
+  const dA = simulateLdmatrix(4, aAddr);
+  for (let q = 0; q < 4; q++) for (let l = 0; l < 32; l++) for (let h = 0; h < 2; h++) {
+    const { row, col } = dA[q][l][h];
+    mkMover(l, { x: SM.x + col * CELL + 1, y: SM.y + row * CELL + 1 }, slot(l, 'a', q, h), 'A', { q, row, col, h, attrs: { 'data-r': row, 'data-c': col } });
+  }
+  const dB = simulateLdmatrix(2, l => { const a = bAddr(l); return { row: a.k, col: a.n }; }, true);
+  for (let q = 0; q < 2; q++) for (let l = 0; l < 32; l++) for (let h = 0; h < 2; h++) {
+    const { row: k, col: n } = dB[q][l][h];
+    mkMover(l, { x: SMB.x + n * CELL + 1, y: SMB.y + k * CELL + 1 }, slot(l, 'b', q, h), 'B', { q, k, n, h, attrs: { 'data-k': k, 'data-n': n } });
+  }
+  /* ---- D registers, one per output element ---- */
+  const accs = [];
+  for (let r = 0; r < M; r++) for (let c = 0; c < N; c++) {
+    const o = mma.dOwner(r, c), p = slot(o.lane, 'd', o.reg, o.half);
+    accs.push(el('rect', { class: 'acc', x: p.x + 0.5, y: p.y + 1.5, width: HW - 1, height: LH - 3, fill: laneColor(o.lane), 'data-lane': o.lane, 'data-kind': 'acc', 'data-r': r, 'data-c': c }, gMovers));
+  }
+
+  /* ---- controls ---- */
+  const ctl = document.createElement('div'); ctl.className = 'ctl'; container.appendChild(ctl);
+  const bPrev = document.createElement('button'); bPrev.textContent = '‹';
+  const bNext = document.createElement('button'); bNext.textContent = '›';
+  const bPlay = document.createElement('button'); bPlay.textContent = '▶';
+  const range = document.createElement('input'); range.type = 'range'; range.min = 0; range.max = STEP.last; range.step = 1;
+  const counter = document.createElement('span'); counter.className = 'info';
+  const tog = document.createElement('label'); tog.className = 'tog';
+  const togCb = document.createElement('input'); togCb.type = 'checkbox'; togCb.checked = opts.laneIds === true;
+  tog.appendChild(togCb); tog.appendChild(document.createTextNode('lane ids'));
+  ctl.append(bPrev, bNext, bPlay, range, counter, tog);
+  const cap = document.createElement('div'); cap.className = 'cap'; container.appendChild(cap);
+  const info = document.createElement('div'); info.className = 'info'; container.appendChild(info);
+
+  const check = selfCheck();
+  if (check.ok) console.info(`ldmatrix-mma: self-check ok, ${check.checked} elements match the mma.m16n8k16 fragment layout`);
+  else {
+    const chk = document.createElement('div'); chk.className = 'check';
+    chk.textContent = `✗ layout self-check failed: ${check.bad.length} mismatches. ` + check.bad.slice(0, 3).join('; ');
+    container.appendChild(chk);
+  }
+
+  /* ---- render(step): full state from scratch, CSS transitions animate the diff ---- */
+  let step = 0, hover = null, pinned = null, timer = null;
+
+  function render() {
+    const s = step;
+    const accFrac = s < STEP.mma ? 0 : 1;
+    // shared memory cells
+    for (let r = 0; r < M; r++) for (let c = 0; c < K; c++) {
+      const q = (r >> 3) + 2 * (c >> 3), loaded = s >= STEP.aLoad0 + q, rc = smA[r][c];
+      rc.style.fill = loaded ? laneColor(rc.dataset.lane) : '';
+      rc.classList.toggle('loaded', loaded);
+    }
+    for (let k = 0; k < K; k++) for (let n = 0; n < N; n++) {
+      const q = k >> 3, loaded = s >= STEP.bLoad0 + q, rc = smB[k][n];
+      rc.style.fill = loaded ? laneColor(rc.dataset.lane) : '';
+      rc.classList.toggle('loaded', loaded);
+    }
+    // address overlays
+    const aOn = s >= STEP.aAddr && s < STEP.bAddr, bOn = s >= STEP.bAddr && s < STEP.frags;
+    const showA = q => aOn && (s === STEP.aAddr || q === s - STEP.aLoad0);
+    const showB = q => bOn && (s === STEP.bAddr || q === s - STEP.bLoad0);
+    aSegs.forEach((e, l) => e.classList.toggle('hidden', !showA(aAddr(l).matrix)));
+    aSegLbl.forEach((e, l) => e.classList.toggle('hidden', !showA(aAddr(l).matrix)));
+    aQuads.forEach((e, q) => e.classList.toggle('hidden', !showA(q)));
+    aQuadLbl.forEach((e, q) => e.classList.toggle('hidden', !showA(q)));
+    bSegs.forEach((e, l) => e.classList.toggle('hidden', !showB(bAddr(l).matrix)));
+    bSegLbl.forEach((e, l) => e.classList.toggle('hidden', !showB(bAddr(l).matrix)));
+    bQuads.forEach((e, q) => e.classList.toggle('hidden', !showB(q)));
+    bQuadLbl.forEach((e, q) => e.classList.toggle('hidden', !showB(q)));
+    bIgnored.classList.toggle('hidden', !bOn);
+    // movers
+    for (const m of movers) {
+      const arrived = m.kind === 'A' ? s >= STEP.aLoad0 + m.q : s >= STEP.bLoad0 + m.q;
+      if (arrived) place(m.r, m.to.x + 0.5, m.to.y + 1.5, HW - 1, LH - 3);
+      else place(m.r, m.from.x, m.from.y, CELL - 2, CELL - 2);
+      m.r.classList.toggle('gone', !arrived);
+    }
+    // D registers appear all at once
+    for (const a of accs) a.classList.toggle('gone', s < STEP.mma);
+    // mma tiles
+    const tilesOn = s >= STEP.frags, showIds = togCb.checked;
+    const paintTile = (tile, fillOp) => {
+      for (const row of tile) for (const cell of row) {
+        cell.g.classList.toggle('hidden', !tilesOn);
+        cell.rc.style.fill = tilesOn ? laneColor(cell.lane) : '';
+        cell.rc.style.fillOpacity = fillOp;
+        cell.tx.classList.toggle('hidden', !showIds || fillOp < 0.5);
+      }
+    };
+    paintTile(tA, 1); paintTile(tB, 1); paintTile(tD, accFrac);
+    // controls
+    range.value = s; counter.textContent = `${s + 1}/${STEP.last + 1}`;
+    bPrev.disabled = s === 0; bNext.disabled = s === STEP.last;
+    const st = steps[s];
+    cap.innerHTML = `<b>${st.title}</b>` + (st.code ? `<code>${escapeHtml(st.code)}</code>` : '') + (st.text ? `<p>${escapeHtml(st.text)}</p>` : '');
+    renderHover();
+  }
+  function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function laneInfo(l) {
+    const g = l >> 2, t = l & 3, a = aAddr(l), b = bAddr(l);
+    return `lane ${l} · g=${g} t=${t} · A rows ${g},${g + 8} cols ${2 * t}-${2 * t + 1},${2 * t + 8}-${2 * t + 9} · B n=${g} k=${2 * t}-${2 * t + 1},${2 * t + 8}-${2 * t + 9} · D rows ${g},${g + 8} cols ${2 * t}-${2 * t + 1}` +
+      ` · addr A[${a.row}][${a.col}]` + (b ? `, B[${b.k}][0]` : '');
+  }
+  function traceInfo(i, j) {
+    const o = mma.dOwner(i, j), ga = i & 7, ra = i >> 3;
+    return `D[${i}][${j}] = Σk A[${i}][k]·B[k][${j}] · A row ${i}: lanes ${4 * ga}-${4 * ga + 3}, a${ra} a${ra + 2} · B col ${j}: lanes ${4 * j}-${4 * j + 3}, b0 b1 · D: lane ${o.lane}, d${o.reg} half ${o.half}`;
+  }
+  // sel = { lane } highlights everything a lane owns; sel = { i, j } traces D[i][j] back to its inputs
+  function matches(e, sel) {
+    const d = e.dataset;
+    if (sel.lane !== undefined) return +d.lane === sel.lane;
+    switch (d.kind) {
+      case 'smA': case 'tA': case 'A': return +d.r === sel.i;
+      case 'smB': case 'B': return +d.n === sel.j;
+      case 'tB': return +d.c === sel.j;
+      case 'tD': case 'acc': return +d.r === sel.i && +d.c === sel.j;
+      default: return false;
+    }
+  }
+  function selOf(target) {
+    const t = target && target.closest('[data-lane]');
+    if (!t) return null;
+    const d = t.dataset;
+    if (d.kind === 'tD' || d.kind === 'acc') return { i: +d.r, j: +d.c };
+    return { lane: +d.lane };
+  }
+  const sameSel = (a, b) => (a === b) || !!(a && b && a.lane === b.lane && a.i === b.i && a.j === b.j);
+  function renderHover() {
+    const sel = pinned || hover;
+    container.classList.toggle('lm-hover', !!sel);
+    if (sel) {
+      svg.querySelectorAll('[data-lane]').forEach(e => e.classList.toggle('sel', matches(e, sel)));
+      info.textContent = (sel.lane !== undefined ? laneInfo(sel.lane) : traceInfo(sel.i, sel.j)) + (pinned ? '  (pinned)' : '');
+    } else {
+      svg.querySelectorAll('.sel').forEach(e => e.classList.remove('sel'));
+      info.textContent = '';
+    }
+  }
+
+  svg.addEventListener('mouseover', e => {
+    const s = selOf(e.target);
+    if (!sameSel(s, hover)) { hover = s; renderHover(); }
+  });
+  svg.addEventListener('mouseleave', () => { hover = null; renderHover(); });
+  svg.addEventListener('click', e => {
+    const s = selOf(e.target);
+    pinned = (s && !sameSel(s, pinned)) ? s : null;
+    renderHover();
+  });
+
+  function goto(n) { step = Math.max(0, Math.min(STEP.last, n | 0)); render(); }
+  function stopPlay() { if (timer) { clearInterval(timer); timer = null; bPlay.textContent = '▶'; } }
+  bPrev.onclick = () => { stopPlay(); goto(step - 1); };
+  bNext.onclick = () => { stopPlay(); goto(step + 1); };
+  range.oninput = () => { stopPlay(); goto(+range.value); };
+  togCb.onchange = () => render();
+  bPlay.onclick = () => {
+    if (timer) return stopPlay();
+    if (step === STEP.last) goto(0);
+    bPlay.textContent = '❚❚';
+    timer = setInterval(() => { if (step >= STEP.last) stopPlay(); else goto(step + 1); }, opts.playMs || 1400);
+  };
+  container.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); stopPlay(); goto(step + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); stopPlay(); goto(step - 1); }
+    if (e.key === 'Home') goto(0); if (e.key === 'End') goto(STEP.last);
+  });
+
+  // initial step / pinned lane: option, data-* attribute, or ?step= ?lane= in the URL
+  const url = location.hash + location.search;
+  let init = opts.step ?? (container.dataset.step !== undefined ? +container.dataset.step : undefined);
+  if (init === undefined) { const m = url.match(/step=(\d+)/); if (m) init = +m[1]; }
+  let lane = opts.lane ?? (container.dataset.lane !== undefined ? +container.dataset.lane : undefined);
+  if (lane === undefined) { const m = url.match(/lane=(\d+)/); if (m) lane = +m[1]; }
+  if (lane !== undefined && lane >= 0 && lane < 32) pinned = { lane };
+  const md = url.match(/trace=(\d+),(\d+)/);
+  if (md) pinned = { i: +md[1], j: +md[2] };
+  goto(init ?? 0);
+  return { goto, get step() { return step; }, steps: STEP.last + 1, check };
+}
+
+global.LdmatrixMma = { mount, mma, ldmatrix, aAddr, bAddr, simulateLdmatrix, selfCheck, STEP, steps };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>LdmatrixMma.mount(document.getElementById('ldmatrix'), { theme: 'dark' });</script>

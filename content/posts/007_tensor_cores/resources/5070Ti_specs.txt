@@ -1,0 +1,54 @@
+GPU Engine Specs:
+NVIDIA CUDA Cores: 8960
+Shader Cores: Blackwell
+Tensor Cores (AI): 5th Generation, 1406 AI TOPS
+Ray Tracing Cores: 4th Generation, 133 TFLOPS
+Boost Clock (GHz): 2.45
+Base Clock (GHz): 2.30
+
+Memory Specs:
+Standard Memory Config: 16 GB GDDR7
+Memory Interface Width: 256-bit
+Memory Bandwidth: 896 GB/sec
+
+Display Support:
+Maximum Digital Resolution: 4K at 480Hz or 8K at 165Hz with DSC
+Standard Display Connectors: 3x Displ
+Multi Monitor: up to 4
+HDCP: 2.3
+
+Platform:
+NVIDIA DLSS: DLSS 4.5, Super Resolution, DLAA, Ray Reconstruction, Frame Generation, Multi Frame
+Generation, Dynamic Multi Frame Gener
+NVIDIA Reflex: Reflex 2, Low Latency Mode, Frame Warp (Coming Soon)
+NVIDIA App: Yes
+NVIDIA G-SYNC: Yes
+RTX Remix: Yes
+NVIDIA Broadcast: Yes
+Game Ready Drivers: Yes
+NVIDIA Studio Drivers: Yes
+RTX HDR: Yes
+VR Ready: Yes
+
+Additional Features:
+PCI Express: Gen 5
+NVIDIA Encoder (NVENC): 2x Ninth Generation
+NVIDIA Decoder (NVDEC): 1x Sixth Gene
+AV1 Encode: Yes
+AV1 Decode: Yes
+CUDA Capability: 12.0
+DX12 Ultimate: Yes
+OpenGL: 4.6
+Vulkan: 1.4
+
+Card Dimensions:
+Length: Varies by manufacturer
+Width: Varies by manufacturer
+Slot: Varies by manufacturer
+SFF-Ready Enthusiast GeForce Card: Va
+
+Thermal and Power Specs:
+Maximum GPU Temperature (in C): 88
+Total Graphics Power (W): 300
+Required System Power (W): 750
+Required Power Connectors: 2x PCIe 8-R 300 W or greater PCIe Gen 5 cable

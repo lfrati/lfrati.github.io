@@ -1,0 +1,47 @@
+My 5070Ti has 70SM, each SM has 4 tensor cores = 280 tensor cores, so we can compute 280 mma.sync AT ONE TIME.
+Each of those 280 mma.sync keeps the whole warp busy 
+computing a m16n8k16 
+
+and takes 16 cycles using 256 registers.
+
+
+Why 256 registers?
+Let's count the operands per thread for m16n8k16.f16:
+  ┌─────────┬──────────────────────┬──────────────────────────┐
+  │ Operand │ Registers per thread │          Holds           │
+  ├─────────┼──────────────────────┼──────────────────────────┤
+  │ A       │ 4 × u32              │ 8 halfs (piece of 16×16) │
+  ├─────────┼──────────────────────┼──────────────────────────┤
+  │ B       │ 2 × u32              │ 4 halfs (piece of 16×8)  │
+  ├─────────┼──────────────────────┼──────────────────────────┤
+  │ D/C     │ 2 × u32              │ 4 halfs (piece of 16×8)  │
+  ├─────────┼──────────────────────┼──────────────────────────┤
+  │ Total   │ 8                    │                          │
+  └─────────┴──────────────────────┴──────────────────────────┘
+
+C and D alias in our code (same d[0], d[1] as both input and output in the asm), so 8 registers per thread × 32 threads = 256 per
+warp.
+
+For context, the spec sheet says 17,920 KB register file = 256 KB per SM = 65,536 × 32-bit registers per SM. So one mma's 256
+registers is a tiny fraction — the SM has room for many warps' fragments simultaneously.
+
+So we are keeping 4 warps per SM (=128 threads) busy using 256 registers.
+
+But each SM has:
+- 16384 * 4 = 65536 x 32-bit registers
+- 48 max warps, so there are 44 (48 - 4) left.
+- 128 CUDA cores that can do scalar math, address calculations, index arithmetic, reductions
+- 16 SFU special function units that can do sin, cos, exp, log, rsqrt, rcp
+
+you probably don't want to run 44 warps, since resources are limited, but another 16 shouldn't be a problem
+
+To keep our SM busy we need:
+- 4 consumer-tensor warps running mma.sync every 16 cycles
+- ? consumer-cuda warps using cuda cores for computing something usefull 
+- ? producer warps loading data to feed the tensor warps
+
+
+One major bottleneck is the memory bandwidth of 896 GB/sec.
+We cannot feed new data to the tensor cores every 16 cycles
+
+NOTE: what about the latency?

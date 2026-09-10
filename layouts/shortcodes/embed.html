@@ -1,0 +1,25 @@
+{{/*
+  Inline a self-contained HTML visualization from the page bundle, like a figure.
+  Usage:
+    {{< embed "viz/ldmatrix.html" >}}
+    {{< embed src="viz/ldmatrix.html" caption="Hover D to trace it back to A and B." >}}
+  The file carries its own <style>, markup and <script>, so it can also be opened
+  directly in a browser while you work on it. It is read verbatim, not rendered
+  by Hugo, so it may contain anything a browser accepts.
+*/}}
+{{- $raw := or (.Get "src") (.Get 0) -}}
+{{- if not $raw -}}
+  {{- errorf "embed shortcode requires a 'src' parameter" -}}
+{{- end -}}
+{{- $src := strings.TrimSpace $raw -}}
+{{- $path := path.Join "content" .Page.File.Dir $src -}}
+{{- if not (fileExists $path) -}}
+  {{- errorf "embed shortcode: %q not found next to %s" $src .Page.File.Path -}}
+{{- end -}}
+{{- $caption := .Get "caption" -}}
+<figure class="post-embed">
+{{ os.ReadFile $path | safeHTML }}
+{{- with $caption }}
+  <figcaption>{{ . | markdownify }}</figcaption>
+{{- end }}
+</figure>
