@@ -99,6 +99,7 @@ CSS VARIABLES & GLOBAL SETTINGS
   --transition-base: 0.3s ease;
 
   --posts-width: 768px;
+  --table-breakout-gutter: 64px; /* viewport margin a wide table keeps on each side */
   --sidenote-width: 400px;
   --sidenote-offset: 48px;
   --sidenote-effective-width: min( var(--sidenote-width), calc((100vw - var(--posts-width)) / 2 - var(--sidenote-offset))

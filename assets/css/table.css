@@ -67,8 +67,24 @@
    caption exactly as wide as the table. */
 .post-content .post-table-figure {
   width: fit-content;
-  max-width: 100%;
   margin: 2rem auto;
+}
+
+/* Wide tables break out of the column when the viewport has room. The
+   figure keeps its fit-content width but is capped by the viewport instead
+   of the column (never narrower than the column, so phones are unaffected)
+   and re-centred on the column with the 50% / -50% trick; a table narrower
+   than the column lands exactly where it did before. Scrolling only starts
+   once the table exceeds the viewport cap. The gutter keeps it clear of the
+   fixed TOC button on the left. clear: right starts it below a margin
+   sidenote that is still hanging from the previous paragraph, which the
+   wider box would otherwise overlap. */
+.post-content .post-table-figure,
+.post-content .post-table:not(.post-table-figure *) {
+  max-width: max(100%, calc(100vw - 2 * var(--table-breakout-gutter)));
+  margin-left: 50%;
+  transform: translateX(-50%);
+  clear: right;
 }
 
 .post-content .post-table-figure .post-table {
