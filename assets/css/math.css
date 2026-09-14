@@ -1,0 +1,9 @@
+/* MathJax display math (see partials/math.html). An equation wider than the
+   column, long ones on phones, scrolls inside its own box instead of making
+   the whole page scroll sideways. Padding keeps the scrollbar off the glyphs. */
+mjx-container[jax="CHTML"][display="true"] {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding-block: 0.25em;
+}
