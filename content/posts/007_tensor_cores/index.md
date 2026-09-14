@@ -23,7 +23,7 @@ It's something that does
 
 My pc has a 5070Ti, which has 70SM and each SM has 4 5th generation tensor cores, for a total of 280 tensor cores.
 
-How powerful are these 280 TCores? The Blackwell whitepaper says all together they are capable of
+How powerful are these 280 TCores? The [Blackwell whitepaper](resources/nvidia-rtx-blackwell-gpu-architecture.pdf) says all together they are capable of
 
 | Type | Accumulate  | Peak TFLOPS | Sparse[^sparse] |
 |:----:|:-----------:|------------:|:-------|
