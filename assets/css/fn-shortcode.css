@@ -20,6 +20,16 @@
   transition: color 0.15s ease;
 }
 
+/* The inline anchor reads as a superscript. Raised with a relative offset
+   rather than vertical-align: super so the shifted box cannot stretch the
+   line box and leave ragged spacing in the paragraphs that carry a note.
+   Sized in em so a note dropped in a caption or table scales with it. */
+label.footnote-ref {
+  position: relative;
+  top: -0.45em;
+  font-size: 0.7em;
+}
+
 .footnote-toggle:focus-visible + .footnote-ref {
   outline: 2px solid var(--link-color);
   outline-offset: 2px;
