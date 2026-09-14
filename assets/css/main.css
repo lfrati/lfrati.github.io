@@ -74,6 +74,7 @@ CSS VARIABLES & GLOBAL SETTINGS
   --hover-color: #ffd199;
 
   --fail-red: #FC100D;
+  --wip-color: #e06c75;          /* unfinished sections and their TOC entries */
   --success-green: #4cae4f;
 
   /* Tertiary color variants with different alpha values */

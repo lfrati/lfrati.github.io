@@ -1,0 +1,43 @@
+/* Work-in-progress sections: `# Title {.wip}` in a draft. The heading hook
+   adds .wip to the section wrapper (see render-heading.html) and the TOC
+   marks the matching entry. Red like a reviewer's pen, so unfinished text
+   can't be mistaken for done while previewing. No overflow: hidden here:
+   the wrapper must stay a plain block so margin sidenotes can float out. */
+.post-content .toc-section.wip {
+  color: var(--wip-color);
+  border-left: 2px solid var(--wip-color);
+  padding-left: calc(1em - 2px);
+}
+
+.post-content .toc-section.wip h1,
+.post-content .toc-section.wip h2,
+.post-content .toc-section.wip h3 {
+  color: var(--wip-color);
+}
+
+.post-content .toc-section.wip > h1::after {
+  content: "WIP";
+  margin-left: 0.6em;
+  padding: 0.1em 0.45em;
+  border: 1px solid var(--wip-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.5em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  vertical-align: middle;
+}
+
+/* TOC: the section's line in the button and its entry in the pane */
+.line.wip {
+  background-color: var(--wip-color);
+}
+
+.toc-item.wip {
+  color: var(--wip-color);
+}
+
+.toc-item.wip::after {
+  content: " · wip";
+  opacity: 0.7;
+  font-size: 0.85em;
+}

@@ -12,7 +12,18 @@
   {{ .Page.Scratch.Set "tocwrap_count" $count }}
   {{ $idx := sub $count 1 }}
   {{ .Page.Scratch.Set "tocwrap_open" true }}
-  <div class="toc-section" data-section="{{ $idx }}">
+  {{/* `# Title {.wip}` marks the whole section as work in progress: the
+       wrapper gets a .wip class and the anchor is recorded for the TOC.
+       Draft-only: a non-draft page with one fails the build, so it can't
+       be published with unfinished sections in it. */}}
+  {{ $wip := in (split (or (index .Attributes "class") "") " ") "wip" }}
+  {{ if $wip }}
+    {{ if not .Page.Draft }}
+      {{ errorf "wip section %q in a non-draft page, finish it or set draft = true: %s" .PlainText .Page.File.Path }}
+    {{ end }}
+    {{ .Page.Scratch.SetInMap "tocwrap_wip" .Anchor true }}
+  {{ end }}
+  <div class="toc-section{{ if $wip }} wip{{ end }}" data-section="{{ $idx }}">
 {{ end }}
 
 <h{{ .Level }} id="{{ .Anchor | safeURL }}">

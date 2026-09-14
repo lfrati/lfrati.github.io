@@ -32,7 +32,7 @@
   <button class="toc-button" id="tocButton" aria-label="Table of Contents">
     <div class="toc-lines" id="tocLines">
       {{ range $index, $h1 := $h1s }}
-        <div class="line{{ if eq $index 0 }} active{{ end }}" data-section="{{ $index }}"></div>
+        <div class="line{{ if eq $index 0 }} active{{ end }}{{ if .wip }} wip{{ end }}" data-section="{{ $index }}"></div>
       {{ end }}
     </div>
   </button>
@@ -42,7 +42,7 @@
     <h3>Table of Contents</h3>
     <div id="tocItems">
       {{ range $index, $h1 := $h1s }}
-        <a href="#{{ .id }}" class="toc-item{{ if eq $index 0 }} active{{ end }}" data-section="{{ $index }}" data-target="{{ .id }}">{{ .text }}</a>
+        <a href="#{{ .id }}" class="toc-item{{ if eq $index 0 }} active{{ end }}{{ if .wip }} wip{{ end }}" data-section="{{ $index }}" data-target="{{ .id }}">{{ .text }}</a>
       {{ end }}
     </div>
   </div>

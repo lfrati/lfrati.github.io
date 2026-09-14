@@ -1,8 +1,11 @@
-{{/* Return a slice of {id, text} for the page's top-level headings */}}
+{{/* Return a slice of {id, text, wip} for the page's top-level headings.
+     wip comes from the map render-heading.html fills while rendering
+     .Content, so this must run after the content has been rendered. */}}
+{{ $wipmap := or (.Scratch.Get "tocwrap_wip") dict }}
 {{ $h1s := slice }}
 {{ range .Fragments.Headings }}
   {{ if eq .Level 1 }}
-    {{ $h1s = $h1s | append (dict "id" .ID "text" (.Title | plainify | strings.TrimSpace)) }}
+    {{ $h1s = $h1s | append (dict "id" .ID "text" (.Title | plainify | strings.TrimSpace) "wip" (isset $wipmap .ID)) }}
   {{ end }}
 {{ end }}
 {{ return $h1s }}
