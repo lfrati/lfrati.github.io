@@ -805,6 +805,14 @@ RESPONSIVE DESIGN & MOBILE STYLES
 ============================================================================*/
 
 /* Media query for mobile devices */
+/* Below 800px the body is narrower than the navbar's 100% + 1rem side
+   padding (content-box), which made phones scroll sideways by 16px. */
+@media (max-width: 799.98px) {
+  .navbar {
+    width: calc(100% - 1rem);
+  }
+}
+
 @media (max-width: 700px) {
   /* Hide elements */
   .glider-container {
