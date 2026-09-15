@@ -26,15 +26,13 @@
 </style>
 <div class="ldmatrix-embed"><div id="ldmatrix"></div></div>
 <script>
-/* ldmatrix-mma.js
+/* ldmatrix → mma.sync explainer
  * Animated explainer: one warp loads A[16x16] and B[16x8] (both row-major) from
  * shared memory with ldmatrix / ldmatrix.trans, the fragments land in registers, then mma.sync.m16n8k16 computes
- * D = A·B. Hover D to trace an output element to its inputs.
+ * D = A·B + C, with C = D (zeroed beforehand). Hover D to trace an output element to its inputs.
  *
- * Usage:
- *   <div id="viz"></div>
- *   <script src="ldmatrix-mma.js"><\/script>
- *   <script>LdmatrixMma.mount(document.getElementById('viz'));<\/script>
+ * Usage: the script is inlined below and mounted at the bottom of this file with
+ *   LdmatrixMma.mount(document.getElementById('ldmatrix'), { theme: 'dark' });
  *
  * Everything drawn is generated from the semantic tables in section 1 and the
  * layout constants in section 2. There are no hand-placed coordinates.
@@ -47,8 +45,9 @@
  * ======================================================================= */
 const M = 16, N = 8, K = 16;
 
-// mma.sync.aligned.m16n8k16.row.col with f16/bf16 inputs (PTX ISA, "Matrix
-// Fragments for mma.m16n8k16 with floating point type"):
+// mma.sync.aligned.m16n8k16.row.col with .f16 inputs and .f16 accumulate (PTX ISA,
+// "Matrix Fragments for mma.m16n8k16 with floating point type"). With .f32 accumulate
+// C/D are 4 scalar registers c0..c3 instead of 2 x .f16x2, same rows/cols:
 //   g = lane >> 2 (groupID), t = lane & 3 (threadID_in_group)
 //   A (16x16): reg0 = A[g][2t..2t+1]     reg1 = A[g+8][2t..2t+1]
 //              reg2 = A[g][2t+8..2t+9]   reg3 = A[g+8][2t+8..2t+9]
@@ -149,6 +148,9 @@ function laneColor(l) {
   return `oklch(${[0.52, 0.62, 0.72, 0.82][t]} 0.16 ${g * 45 + 20})`;
 }
 function laneTextColor(l) { return (l & 3) < 2 ? '#fff' : '#111'; }
+// Shared-memory colour: by position, hue = row within the 8x8, lightness = column pair.
+// Same rule for A and B, so the register panel shows what ldmatrix(.trans) did.
+const memColor = (r, c) => laneColor((r & 7) * 4 + ((c & 7) >> 1));
 
 /* =======================================================================
  * 3. Step script
@@ -167,25 +169,26 @@ steps[STEP.aAddr] = {
 for (let q = 0; q < 4; q++) steps[STEP.aLoad0 + q] = {
   title: `matrix ${q} → a${q}`,
   code: 'ldmatrix.sync.aligned.m8n8.x4.shared.b16 {a0,a1,a2,a3}, [addr];',
-  text: 'row r of the 8×8 matrix → lanes 4r..4r+3, one pair each',
+  text: 'row r of the 8×8 matrix → lanes 4r..4r+3, one pair each. Colour = position in shared memory (hue = row within the 8×8 matrix): each a register holds two neighbours from one row',
 };
 steps[STEP.bAddr] = {
   title: 'ldmatrix.x2.trans — addresses for B',
   code: 'addr = &B[lane & 15][0];   // lanes 0-7 → matrix 0, 8-15 → matrix 1, 16-31 ignored',
+  text: '.row.col is the only layout m16n8k16 supports: A fragments row-major, B fragments column-major (consecutive k per lane). B is row-major in shared memory, so .trans does the conversion. Lanes 16-31 are ignored on sm_80+ but still hold valid (duplicated) addresses, which sm_75 requires',
 };
 for (let q = 0; q < 2; q++) steps[STEP.bLoad0 + q] = {
   title: `matrix ${q} → b${q}, transposed`,
   code: 'ldmatrix.sync.aligned.m8n8.x2.trans.shared.b16 {b0,b1}, [addr];',
-  text: '.trans: lane l gets column l>>2, rows 2(l&3) and 2(l&3)+1 — two k for one n, which is the column-major B fragment mma wants',
+  text: '.trans: lane l gets column l>>2, rows 2(l&3) and 2(l&3)+1 — two k for one n, the column-major B fragment mma wants. Same colouring as A: each b register now holds two different rows',
 };
 steps[STEP.frags] = {
   title: 'Fragments in place',
-  text: 'colour = owning lane',
+  text: 'A and B: colour = position in shared memory, everywhere · D: colour = owning lane · toggle lane ids or hover to see ownership',
 };
 steps[STEP.mma] = {
-  title: 'mma.sync — the tensor core computes all of D = A·B at once',
+  title: 'mma.sync — one warp instruction computes the whole 16×8 tile, D = A·B + C',
   code: 'mma.sync.aligned.m16n8k16.row.col.f16.f16.f16.f16 {d0,d1}, {a0,a1,a2,a3}, {b0,b1}, {d0,d1};',
-  text: 'hover a cell of D to trace the row of A and the column of B that produced it',
+  text: 'd0,d1 are passed as C too, so the product accumulates into the same registers (zeroed beforehand here, so D = A·B). Hover a cell of D to trace the row of A and the column of B that produced it',
 };
 
 /* =======================================================================
@@ -234,7 +237,7 @@ const CSS = `
 .lm .loaded { opacity: .45; }
 .lm.lm-hover [data-lane]:not(.sel) { opacity: .08; }
 .lm.lm-hover text[data-lane]:not(.sel) { opacity: .3; }
-.lm.lm-hover .sel, .lm.lm-hover .sel rect.cell { stroke: var(--lm-fg); stroke-width: 1.2; }
+.lm.lm-hover rect.sel:not(.seg), .lm.lm-hover g.sel rect.cell { stroke: var(--lm-fg); stroke-width: 1.2; }
 .lm .ctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 4px; }
 .lm button { font: inherit; padding: 3px 10px; border: 1px solid var(--lm-line); border-radius: 6px; background: var(--lm-btn-bg); color: var(--lm-btn-fg); cursor: pointer; }
 .lm button:disabled { opacity: .4; cursor: default; }
@@ -323,9 +326,9 @@ function mount(container, opts) {
 
   /* ---- mma panel ---- */
   text(gLabels, MM.x, MM.y - 30, 'mma.sync.m16n8k16', 'title');
-  text(gLabels, MM.x, MM.y - 16, 'D = A · B', 'muted');
+  text(gLabels, MM.x, MM.y - 16, 'D = A · B + C   (C = D, zeroed)', 'muted');
   text(gLabels, MMB.x, MMB.y - 4, 'B', 'muted'); text(gLabels, MMA.x, MMA.y - 4, 'A', 'muted'); text(gLabels, MMD.x, MMD.y - 4, 'D', 'muted');
-  const mkTile = (ox, oy, rows, cols, owner, kind) => {
+  const mkTile = (ox, oy, rows, cols, owner, kind, color) => {
     const t = [];
     for (let r = 0; r < rows; r++) { t[r] = []; for (let c = 0; c < cols; c++) {
       const o = owner(r, c);
@@ -333,18 +336,18 @@ function mount(container, opts) {
       const rc = el('rect', { class: 'cell', x: ox + c * CELL, y: oy + r * CELL, width: CELL, height: CELL }, g);
       const tx = text(g, ox + c * CELL + CELL / 2, oy + r * CELL + CELL / 2 + 2.7, o.lane, 'tiny', 'middle');
       tx.style.fill = laneTextColor(o.lane);
-      t[r][c] = { g, rc, tx, lane: o.lane, r, c };
+      t[r][c] = { g, rc, tx, lane: o.lane, r, c, fill: color(r, c, o.lane) };
     } }
     return t;
   };
-  const tA = mkTile(MMA.x, MMA.y, M, K, (r, c) => mma.aOwner(r, c), 'tA');
-  const tB = mkTile(MMB.x, MMB.y, K, N, (k, n) => mma.bOwner(k, n), 'tB');
-  const tD = mkTile(MMD.x, MMD.y, M, N, (r, c) => mma.dOwner(r, c), 'tD');
+  const tA = mkTile(MMA.x, MMA.y, M, K, (r, c) => mma.aOwner(r, c), 'tA', (r, c) => memColor(r, c));
+  const tB = mkTile(MMB.x, MMB.y, K, N, (k, n) => mma.bOwner(k, n), 'tB', (k, n) => memColor(k, n));
+  const tD = mkTile(MMD.x, MMD.y, M, N, (r, c) => mma.dOwner(r, c), 'tD', (r, c, lane) => laneColor(lane));
 
   /* ---- movers: one per A and B element ---- */
   const movers = [];
   const mkMover = (lane, from, to, kind, meta) => {
-    const r = el('rect', { class: 'mover', x: 0, y: 0, width: CELL - 2, height: CELL - 2, fill: laneColor(lane), 'data-lane': lane, 'data-kind': kind, ...meta.attrs }, gMovers);
+    const r = el('rect', { class: 'mover', x: 0, y: 0, width: CELL - 2, height: CELL - 2, fill: meta.fill, 'data-lane': lane, 'data-kind': kind, ...meta.attrs }, gMovers);
     r.style.transitionDelay = `${(lane % 8) * 25 + (lane >> 3) * 8}ms`;
     const mv = { r, lane, from, to, kind, ...meta };
     movers.push(mv);
@@ -353,12 +356,12 @@ function mount(container, opts) {
   const dA = simulateLdmatrix(4, aAddr);
   for (let q = 0; q < 4; q++) for (let l = 0; l < 32; l++) for (let h = 0; h < 2; h++) {
     const { row, col } = dA[q][l][h];
-    mkMover(l, { x: SM.x + col * CELL + 1, y: SM.y + row * CELL + 1 }, slot(l, 'a', q, h), 'A', { q, row, col, h, attrs: { 'data-r': row, 'data-c': col } });
+    mkMover(l, { x: SM.x + col * CELL + 1, y: SM.y + row * CELL + 1 }, slot(l, 'a', q, h), 'A', { q, row, col, h, fill: memColor(row, col), attrs: { 'data-r': row, 'data-c': col } });
   }
   const dB = simulateLdmatrix(2, l => { const a = bAddr(l); return { row: a.k, col: a.n }; }, true);
   for (let q = 0; q < 2; q++) for (let l = 0; l < 32; l++) for (let h = 0; h < 2; h++) {
     const { row: k, col: n } = dB[q][l][h];
-    mkMover(l, { x: SMB.x + n * CELL + 1, y: SMB.y + k * CELL + 1 }, slot(l, 'b', q, h), 'B', { q, k, n, h, attrs: { 'data-k': k, 'data-n': n } });
+    mkMover(l, { x: SMB.x + n * CELL + 1, y: SMB.y + k * CELL + 1 }, slot(l, 'b', q, h), 'B', { q, k, n, h, fill: memColor(k, n), attrs: { 'data-k': k, 'data-n': n } });
   }
   /* ---- D registers, one per output element ---- */
   const accs = [];
@@ -398,12 +401,12 @@ function mount(container, opts) {
     // shared memory cells
     for (let r = 0; r < M; r++) for (let c = 0; c < K; c++) {
       const q = (r >> 3) + 2 * (c >> 3), loaded = s >= STEP.aLoad0 + q, rc = smA[r][c];
-      rc.style.fill = loaded ? laneColor(rc.dataset.lane) : '';
+      rc.style.fill = loaded ? memColor(r, c) : '';
       rc.classList.toggle('loaded', loaded);
     }
     for (let k = 0; k < K; k++) for (let n = 0; n < N; n++) {
       const q = k >> 3, loaded = s >= STEP.bLoad0 + q, rc = smB[k][n];
-      rc.style.fill = loaded ? laneColor(rc.dataset.lane) : '';
+      rc.style.fill = loaded ? memColor(k, n) : '';
       rc.classList.toggle('loaded', loaded);
     }
     // address overlays
@@ -433,7 +436,7 @@ function mount(container, opts) {
     const paintTile = (tile, fillOp) => {
       for (const row of tile) for (const cell of row) {
         cell.g.classList.toggle('hidden', !tilesOn);
-        cell.rc.style.fill = tilesOn ? laneColor(cell.lane) : '';
+        cell.rc.style.fill = tilesOn ? cell.fill : '';
         cell.rc.style.fillOpacity = fillOp;
         cell.tx.classList.toggle('hidden', !showIds || fillOp < 0.5);
       }
@@ -489,11 +492,18 @@ function mount(container, opts) {
     }
   }
 
+  // Crossing a gap between cells fires mouseover on the bare svg. Keep the current
+  // highlight for a short grace period instead of clearing it, so the pointer can
+  // move across gaps and panels without everything flashing back to full opacity.
+  const HOVER_GRACE_MS = 150;
+  let clearTimer = null;
+  const cancelClear = () => { if (clearTimer) { clearTimeout(clearTimer); clearTimer = null; } };
   svg.addEventListener('mouseover', e => {
     const s = selOf(e.target);
-    if (!sameSel(s, hover)) { hover = s; renderHover(); }
+    if (s) { cancelClear(); if (!sameSel(s, hover)) { hover = s; renderHover(); } }
+    else if (hover && !clearTimer) clearTimer = setTimeout(() => { clearTimer = null; hover = null; renderHover(); }, HOVER_GRACE_MS);
   });
-  svg.addEventListener('mouseleave', () => { hover = null; renderHover(); });
+  svg.addEventListener('mouseleave', () => { cancelClear(); hover = null; renderHover(); });
   svg.addEventListener('click', e => {
     const s = selOf(e.target);
     pinned = (s && !sameSel(s, pinned)) ? s : null;
