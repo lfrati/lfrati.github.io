@@ -84,7 +84,11 @@
           float dist = length((uv - center) / vec2(0.5, 0.3)); // elliptical mask
           float mask = smoothstep(1.0, 0.7, dist); // 1 in center → 0 outside
 
-          float time = floor(iTime * SPEED * 60.0);    
+          float time = floor(iTime * SPEED * 60.0);
+
+          // Gate: a trigger decision every 1s, ~50% fire, each blip lasts ~0.3s
+          float seg = floor(iTime);
+          float gate = step(0.5, random2d(vec2(seg, 42.0))) * step(fract(iTime), 0.3);
           vec3 outCol = texture2D(iChannel0, uv).rgb;
 
           float maxOffset = AMT/2.0;
@@ -93,7 +97,7 @@
             float sliceH = random2d(vec2(time , 9035.0 + float(i))) * 0.25;
             float hOffset = randomRange(vec2(time , 9625.0 + float(i)), -maxOffset, maxOffset);
             vec2 uvOff = uv;
-            uvOff.x += hOffset;
+            uvOff.x += hOffset * gate;
             if (insideRange(uv.y, sliceY, fract(sliceY+sliceH)) == 1.0 ){
               outCol = texture2D(iChannel0, uvOff).rgb;
             }
@@ -104,7 +108,7 @@
           vec2 colOffset = vec2(
             randomRange(vec2(time , 9545.0),-maxColOffset,maxColOffset),
             randomRange(vec2(time , 7205.0),-maxColOffset,maxColOffset)
-          ) * mask;
+          ) * mask * gate;
 
           if (rnd < 0.33){
             outCol.r = texture2D(iChannel0, uv + colOffset).r;
